@@ -1,45 +1,67 @@
-public class PacMan implements GameCharacter{
+import java.awt.Color;
+import edu.macalester.graphics.Arc;
+import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsObject;
 
-    @Override
-    public void updatePosition() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePosition'");
+public class PacMan implements GameCharacter, GameObject{
+    private Vector2D positionVector;
+    private CanvasWindow canvas;
+    private Arc pacManShape;
+    
+    public PacMan (Vector2D positionVector, CanvasWindow canvas){//Spawn him in the middle
+        this.positionVector = positionVector;
+        this.canvas = canvas;
+        pacManShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,5, 60, 240); //-45 to 45 deg should give us the right look
+        pacManShape.setStrokeColor(Color.YELLOW);
+        pacManShape.setStrokeWidth(5);
+        pacManShape.setScale(20);
+        addToCanvas();
+        //TODO: Figure out how to draw the Arc correctly
     }
 
     @Override
-    public void createCharacter() { //Spawn him in the middle
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createCharacter'");
-    }
-
-    @Override
-    public void handleCollisions() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'handleCollisions'");
+    public void handleCollisions() {//Handle collisions w/ MazeWalls and Ghosts
     }
 
     @Override
     public void moveUp() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveUp'");
     }
 
     @Override
     public void moveDown() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveDown'");
     }
 
     @Override
     public void moveLeft() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveLeft'");
     }
 
     @Override
     public void moveRight() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'moveRight'");
+    }
+    
+    @Override
+    public GraphicsObject getObjectShape() {
+        return pacManShape;
+    }
+
+    @Override
+    public void addToCanvas() {
+        canvas.add(pacManShape);
+    }
+
+    @Override
+    public void removeFromCanvas() {
+        canvas.remove(pacManShape);
+    }
+
+    @Override
+    public double getXPosition() {
+        return positionVector.getVX();
+    }
+
+    @Override
+    public double getYPosition() {
+      return positionVector.getVY();
     }
 
 }

@@ -1,13 +1,11 @@
 public class GhostManager implements Manager{
     public void chasePacMan(){
-
     }
 
-    public boolean intersectsPacMan(){ //Return true/false for CollisionManager
-        return true;
+    public boolean collidesWithPacMan(){ //Return true/false for CollisionManager
+        return true; //temp
     }
 
     public void spawnGhosts(){ //Spawn @ 4 cornerns
-
     }
 }
