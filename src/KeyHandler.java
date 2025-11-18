@@ -9,7 +9,6 @@ import edu.macalester.graphics.events.KeyboardEvent;
 public class KeyHandler { 
     private boolean upPressed, leftPressed, rightPressed, downPressed;
     private GameCharacter gameCharacter;
-    private Key pressedKey, releasedKey;
 
     /*
      * One example for purpose of GameCharacter interface. 
@@ -39,47 +38,35 @@ public class KeyHandler {
         }
     }
 
-    /*
-     * Both of the following methods will be used in the run method lambda,
-     * called in canvas.onKeyDown() and canvas.onKeyUp() respectively.
-     */
     public void keyPressed(KeyboardEvent event){ 
-        pressedKey = event.getKey();
+        Key pressedKey = event.getKey();
 
         if (pressedKey == Key.UP_ARROW){
             upPressed = true;
+            leftPressed = false;
+            rightPressed = false;
+            downPressed = false;
         }
 
         if (pressedKey == Key.DOWN_ARROW){
             downPressed = true;
+            upPressed = false;
+            rightPressed = false;
+            leftPressed = false;
         }
 
         if (pressedKey == Key.LEFT_ARROW){
             leftPressed = true;
+            rightPressed = false;
+            upPressed = false;
+            downPressed = false;
         }
 
         if (pressedKey == Key.RIGHT_ARROW){
             rightPressed = true;
-        }
-    }
-
-    public void keyReleased(KeyboardEvent event){
-        releasedKey = event.getKey();
-
-        if (releasedKey == Key.UP_ARROW){
             upPressed = false;
-        }
-
-        if (releasedKey == Key.DOWN_ARROW){
-            downPressed = false;
-        }
-
-        if (releasedKey == Key.LEFT_ARROW){
             leftPressed = false;
-        }
-
-        if (releasedKey == Key.RIGHT_ARROW){
-            rightPressed = false;
+            downPressed = false;
         }
     }
 }
