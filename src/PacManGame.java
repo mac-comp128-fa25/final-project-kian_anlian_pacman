@@ -29,8 +29,8 @@ public class PacManGame {
         pacManPositionVector = new Vector2D(canvas.getWidth()/2, canvas.getHeight()/2);
         pinkyPositionVector = new Vector2D(400,400);
         
-        pacManMovement = new Movement(pacManPositionVector);
-        pinkyMovement = new Movement(pinkyPositionVector);
+        pacManMovement = new StandardMovement(pacManPositionVector);
+        pinkyMovement = new StandardMovement(pinkyPositionVector);
         
         pacMan = new PacMan(pacManPositionVector, canvas, pacManMovement);
         pacManMovement.setShape(pacMan.getObjectShape());
@@ -38,7 +38,7 @@ public class PacManGame {
         pinky = new Ghost(pinkyPositionVector, canvas, pinkyMovement, Color.PINK);
         pinkyMovement.setShape(pinky.getObjectShape());
         
-        keyHandler = new KeyHandler(pacMan);
+        keyHandler = new KeyHandler(pacManMovement);
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
     }
 

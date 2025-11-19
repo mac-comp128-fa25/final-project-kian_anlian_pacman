@@ -8,7 +8,7 @@ import edu.macalester.graphics.events.KeyboardEvent;
  */
 public class KeyHandler { 
     private boolean upPressed, leftPressed, rightPressed, downPressed;
-    private GameCharacter gameCharacter;
+    private Movement movement;
 
     /*
      * One example for purpose of GameCharacter interface. 
@@ -16,25 +16,25 @@ public class KeyHandler {
      * they implement GameCharacter, we can move them
      * using KeyHandler.
      */
-    public KeyHandler (GameCharacter gameCharacter){ 
-        this.gameCharacter = gameCharacter;
+    public KeyHandler (Movement movement){ 
+        this.movement = movement;
     }
 
     public void checkKeyPresses(){
         if (upPressed){
-            gameCharacter.moveUp();
+            movement.moveUp();
         }
 
         if (downPressed){
-            gameCharacter.moveDown();
+            movement.moveDown();
         }
 
         if (leftPressed){
-            gameCharacter.moveLeft();
+            movement.moveLeft();
         }
 
         if (rightPressed){
-            gameCharacter.moveRight();
+            movement.moveRight();
         }
     }
 

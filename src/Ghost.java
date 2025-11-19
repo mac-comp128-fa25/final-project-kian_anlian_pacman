@@ -15,7 +15,7 @@ import edu.macalester.graphics.Arc;
 * right moveRight() will be called and so on.
 */
 
-public class Ghost implements GameCharacter, GameObject{
+public class Ghost implements GameObject{
     private GraphicsObject ghostShape; //Ellipse until we figure out how to draw ghosts
     private CanvasWindow canvas;
     private Vector2D positionVector;
@@ -54,22 +54,22 @@ public class Ghost implements GameCharacter, GameObject{
         return positionVector.getVY();
     }
 
-    @Override
+    
     public void moveUp() {
         movement.moveUp();
     }
 
-    @Override
+    
     public void moveDown() {
         movement.moveDown();
     }
 
-    @Override
+    
     public void moveLeft() {
         movement.moveLeft();
     }
 
-    @Override
+    
     public void moveRight() {
         movement.moveRight();
     }
@@ -83,6 +83,5 @@ public class Ghost implements GameCharacter, GameObject{
         ((Arc) ghostShape).setStrokeColor(color); //4 ghosts: Blue, Pink, Red, Orange
         ((Arc) ghostShape).setStrokeWidth(10);
         ghostShape.setScale(3.5);
-    }
-    
+    } 
 }

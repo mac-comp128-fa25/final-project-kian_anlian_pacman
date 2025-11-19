@@ -3,7 +3,7 @@ import edu.macalester.graphics.Arc;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 
-public class PacMan implements GameCharacter, GameObject{
+public class PacMan implements GameObject{
     private Vector2D positionVector;
     private CanvasWindow canvas;
     private GraphicsObject pacManShape;
@@ -17,26 +17,25 @@ public class PacMan implements GameCharacter, GameObject{
         addToCanvas();
     }
 
-    @Override
     public void handleCollisions() {//Handle collisions w/ MazeWalls and Ghosts
     }
 
-    @Override
+    
     public void moveUp() {
       movement.moveUp();
     }
 
-    @Override
+    
     public void moveDown() {
         movement.moveDown();
     }
 
-    @Override
+    
     public void moveLeft() {
       movement.moveLeft();
     }
 
-    @Override
+    
     public void moveRight() {
         movement.moveRight();
     }
@@ -72,5 +71,4 @@ public class PacMan implements GameCharacter, GameObject{
         ((Arc) pacManShape).setStrokeColor(Color.YELLOW);
         ((Arc) pacManShape).setStrokeWidth(5);
     }
-
 }
