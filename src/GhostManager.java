@@ -1,11 +1,13 @@
 public class GhostManager implements Manager{
-    public void chasePacMan(){
+    @Override
+    public void spawnCollection() { //Spawn @ 4 cornerns
     }
 
-    public boolean collidesWithPacMan(){ //Return true/false for CollisionManager
-        return true; //temp
+    @Override
+    public void manageCollection() { //Chase algorithm
     }
 
-    public void spawnGhosts(){ //Spawn @ 4 cornerns
+    @Override
+    public void handleCollisions() { //On collision, Pac-Man should lose one of his three lives
     }
 }

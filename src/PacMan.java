@@ -12,11 +12,8 @@ public class PacMan implements GameCharacter, GameObject{
     public PacMan (Vector2D positionVector, CanvasWindow canvas, Movement movement){//Spawn him in the middle
         this.positionVector = positionVector;
         this.canvas = canvas;
-        pacManShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,5, 60, 240); //-45 to 45 deg should give us the right look
-        ((Arc) pacManShape).setStrokeColor(Color.YELLOW);
-        ((Arc) pacManShape).setStrokeWidth(5);
-        pacManShape.setScale(5);
         this.movement = movement;
+        createPacMan();
         addToCanvas();
     }
 
@@ -67,6 +64,13 @@ public class PacMan implements GameCharacter, GameObject{
     @Override
     public double getYPosition() {
       return positionVector.getVY();
+    }
+
+    public void createPacMan(){
+        pacManShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,5, 60, 240);
+        pacManShape.setScale(5);
+        ((Arc) pacManShape).setStrokeColor(Color.YELLOW);
+        ((Arc) pacManShape).setStrokeWidth(5);
     }
 
 }
