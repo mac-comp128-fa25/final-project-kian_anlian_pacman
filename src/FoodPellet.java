@@ -6,7 +6,8 @@ public class FoodPellet implements GameObject{
     private Ellipse pelletShape;
     private Vector2D positionVector;
     private CanvasWindow canvas;
-    
+    private static final int PELLET_SIZE = 4;
+
     /*
      * TODO: Create a HashMap where the key is some tile at (x,y) and the value is 
      * an object of type FoodPellet.
@@ -15,7 +16,8 @@ public class FoodPellet implements GameObject{
     public FoodPellet(Vector2D positionVector, CanvasWindow canvas){
         this.positionVector = positionVector;
         this.canvas = canvas;
-        pelletShape = new Ellipse(0,0,10,10); //temp
+        pelletShape = new Ellipse(positionVector.getVX(),positionVector.getVY(),PELLET_SIZE,PELLET_SIZE); //temp
+        addToCanvas();
     }
 
     @Override
