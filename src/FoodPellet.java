@@ -4,6 +4,11 @@ import edu.macalester.graphics.GraphicsObject;
 public class FoodPellet implements GameObject{
     private Ellipse pelletShape;
     private Vector2D positionVector;
+    
+    /*
+     * TODO: Use a HashMap where the key is some tile at (x,y) and the value is 
+     * the pelletShape.
+     */
 
     public FoodPellet(Vector2D positionVector){
         this.positionVector = positionVector;
