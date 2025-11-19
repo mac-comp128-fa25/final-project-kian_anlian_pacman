@@ -1,22 +1,29 @@
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Rectangle;
 import java.awt.Color;
 
-public class Tile {
+public class Tile implements GameObject{
     private Boolean isWall = false;
-    private Boolean isPellet = false;
+    private Boolean hasPellet = false;
+    private Boolean isDefault = false;
     private Rectangle tileShape;
     private CanvasWindow canvas;
     private Vector2D positionVector;
-    private static final int TILE_SIZE = 10;
+    private Color defaultTileColor = Color.GRAY;
+    private static final int TILE_SIZE = 50;
     
-    public Tile(Boolean isWall, Boolean isPellet, Vector2D positionVector, CanvasWindow canvas) {
+    public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas) {
         this.isWall = isWall;
-        this.isPellet = isPellet;
+        this.hasPellet = hasPellet;
         this.positionVector = positionVector;
         this.canvas = canvas;
-        tileShape = new Rectangle (positionVector.getVX(), positionVector.getVY(), TILE_SIZE,  TILE_SIZE);
-
+        tileShape = new Rectangle(positionVector.getVX(), positionVector.getVY(), TILE_SIZE,  TILE_SIZE);
+        handleTileType();
+    }
+    
+    public int size(){
+        return TILE_SIZE;
     }
 
     public void addWall() {
@@ -24,9 +31,72 @@ public class Tile {
     }
 
     public void addPellet() {
-        Vector2D tempVector = new Vector2D(positionVector.getVX() + TILE_SIZE / 2, positionVector.getVY() + TILE_SIZE);
-        FoodPellet foodPellet = new FoodPellet(tempVector, canvas);
+        Vector2D pelletPosVector = new Vector2D(tileShape.getX() + (TILE_SIZE / 2), tileShape.getY() + (TILE_SIZE / 2));
+        FoodPellet foodPellet = new FoodPellet(pelletPosVector, canvas, this);
+        foodPellet.addToCanvas();
     }
 
+    public void handleTileType(){
+        
+        if (isWall && hasPellet){
+            System.out.println("ERROR: A tile cannot be a wall and have a pellet! This tile will be in default state");
+            isDefault = true;
+        }
+        
+        if (isWall){
+            addWall();
+        }
+
+        if  ((!(isWall && hasPellet)) || isDefault){
+            tileShape.setFillColor(defaultTileColor);
+            addToCanvas();
+        }
+
+        if (hasPellet){
+            addPellet();
+        }
+
+    }
+
+    public boolean isDefault(){
+       return isDefault;
+    }
+
+    public boolean isWall(){
+        return isWall;
+    }
+
+    public boolean hasFoodPellet(){
+        return hasPellet;
+    }
+
+    @Override
+    public GraphicsObject getObjectShape() {
+        return tileShape;
+    }
+
+    @Override
+    public void addToCanvas() {
+        canvas.add(tileShape);
+    }
+
+    @Override
+    public void removeFromCanvas() {
+        canvas.remove(tileShape);
+    }
+
+    @Override
+    public double getXPosition() {
+        return positionVector.getVX();
+    }
+
+    @Override
+    public double getYPosition() {
+        return positionVector.getVY();
+    }
+
+    @Override
+    public void handleCollisions() {
+    }
 
 }

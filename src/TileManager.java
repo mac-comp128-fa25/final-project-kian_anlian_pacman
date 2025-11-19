@@ -6,7 +6,7 @@
  * Using the Graph-Maze activity as our template
  * will make this easier.
  */
-public class MazeManager implements Manager{
+public class TileManager implements Manager{
 
     @Override
     public void spawnCollection() { //Where the algorithm for spawning the layout of walls will be

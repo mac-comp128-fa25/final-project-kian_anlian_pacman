@@ -7,6 +7,7 @@ public class PacManGame {
     private static final int CANVAS_HEIGHT = 1080; // 1920 x 1080p
     private PacMan pacMan;
     private Ghost pinky;
+    private Tile wallTile;
     private UI ui;
     private Vector2D pacManPositionVector;
     private Vector2D pinkyPositionVector;
@@ -28,6 +29,8 @@ public class PacManGame {
 
         pacManPositionVector = new Vector2D(canvas.getWidth()/2, canvas.getHeight()/2);
         pinkyPositionVector = new Vector2D(400,400);
+
+        wallTile = new Tile (false, true, pacManPositionVector, canvas);
         
         pacManMovement = new StandardMovement(pacManPositionVector);
         pinkyMovement = new StandardMovement(pinkyPositionVector);
