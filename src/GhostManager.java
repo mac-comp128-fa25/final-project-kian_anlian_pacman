@@ -56,7 +56,7 @@ public class GhostManager implements Manager{
     public void createGhosts(){
         pinky = new Ghost(pinkyPositionVector, canvas, pinkyMovement, Color.PINK);
         blinky = new Ghost(blinkyPositionVector, canvas, blinkyMovement, Color.RED);
-        inky = new Ghost(inkyPositionVector, canvas, inkyMovement, Color.BLUE);
+        inky = new Ghost(inkyPositionVector, canvas, inkyMovement, Color.CYAN);
         clyde = new Ghost(clydePositionVector, canvas, clydeMovement, Color.ORANGE);
     }
 

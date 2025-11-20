@@ -11,19 +11,26 @@ public class Tile implements GameObject{
     private CanvasWindow canvas;
     private Vector2D positionVector;
     private Color defaultTileColor = Color.GRAY;
-    private static final int TILE_SIZE = 50;
+    private int pacManSize;
+    private int tileSize;
     
-    public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas) {
+    public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas, int pacManSize) {
         this.isWall = isWall;
         this.hasPellet = hasPellet;
         this.positionVector = positionVector;
         this.canvas = canvas;
-        tileShape = new Rectangle(positionVector.getVX(), positionVector.getVY(), TILE_SIZE,  TILE_SIZE);
+        this.pacManSize = pacManSize;
+        scaleToPacMan();
+        tileShape = new Rectangle(positionVector.getVX(), positionVector.getVY(), tileSize,  tileSize);
         handleTileType();
+    }
+
+    public void scaleToPacMan(){
+        tileSize = pacManSize * 15;
     }
     
     public int size(){
-        return TILE_SIZE;
+        return tileSize;
     }
 
     public void addWall() {
@@ -31,7 +38,7 @@ public class Tile implements GameObject{
     }
 
     public void addPellet() {
-        Vector2D pelletPosVector = new Vector2D(tileShape.getX() + (TILE_SIZE / 2), tileShape.getY() + (TILE_SIZE / 2));
+        Vector2D pelletPosVector = new Vector2D(tileShape.getX() + (tileSize / 2), tileShape.getY() + (tileSize / 2));
         FoodPellet foodPellet = new FoodPellet(pelletPosVector, canvas, this);
         foodPellet.addToCanvas();
     }
@@ -44,17 +51,20 @@ public class Tile implements GameObject{
         }
 
         if(isWall){
-            tileShape.setFillColor(Color.BLUE);
+            addWall();
         }
 
-        if (isDefault){
+        if (isDefault || hasPellet){
             tileShape.setFillColor(defaultTileColor);
-            addToCanvas();
+            
         }
 
+        addToCanvas();
+        
         if (hasPellet){
             addPellet();
         }
+
     }
 
     public boolean isDefault(){
@@ -97,5 +107,4 @@ public class Tile implements GameObject{
     @Override
     public void handleCollisions() {
     }
-
 }

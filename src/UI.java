@@ -12,9 +12,33 @@ public class UI {
     private static long nextSecond = System.currentTimeMillis() + 1000; //1000 ms = 1 sec
     private static int framesInLastSecond = 0;
     private static int framesInCurrentSecond = 0;
+    private PacManShape life; //visual indicator to player.
+    private int lifeCount;
+    private PacManShape [] lives;
     
-    public UI(CanvasWindow canvas){
+    public UI(CanvasWindow canvas, int lifeCount){
         this.canvas = canvas;
+        this.lifeCount = lifeCount;
+        lives =  new PacManShape[lifeCount];
+        createLifeIndicators();
+    }
+
+    public int getLifeCount(){
+        return lifeCount;
+    }
+
+    public void createLifeIndicators(){
+        int startX = 0;
+        int y = canvas.getHeight() - (canvas.getWidth() / 15);
+        int scale = 3;
+        Vector2D currentPositionVector;
+
+        for (int i = 0; i < lifeCount; i++){
+            currentPositionVector = new Vector2D (startX += 50, y);
+            PacManShape pacManLife = lives[i];
+            pacManLife = new PacManShape(currentPositionVector, canvas, scale);
+            pacManLife.addToCanvas();
+        }
     }
     
      /*

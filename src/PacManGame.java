@@ -26,7 +26,7 @@ public class PacManGame {
         canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.setBackground(Color.BLACK); 
         
-        ui = new UI(canvas);
+        ui = new UI(canvas, 3);
         ui.initialize();
 
         pacManPositionVector = new Vector2D(canvas.getWidth()/2, canvas.getHeight()/2);
@@ -40,13 +40,17 @@ public class PacManGame {
         keyHandler = new KeyHandler(pacManMovement);
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
 
-        // Testing tiles
+        testTiles();
+    }
+
+    private void testTiles(){
         defaultTilePosVector = new Vector2D(pacMan.getXPosition() + 500, pacMan.getYPosition());
         wallTilePosVector = new Vector2D(pacMan.getXPosition() - 500, pacMan.getYPosition()); 
-        pelletTile = new Tile (false, true, pacManPositionVector, canvas);
-        defaultTile = new Tile (false, false, defaultTilePosVector, canvas);
-        //Wall tile not changing color to blue?
-        wallTile = new Tile(true, false, wallTilePosVector, canvas);
+        pelletTile = new Tile (false, true, pacManPositionVector, canvas, pacMan.getScale());
+        defaultTile = new Tile (false, false, defaultTilePosVector, canvas, pacMan.getScale());
+        wallTile = new Tile(true, false, wallTilePosVector, canvas, pacMan.getScale());
+
+        pacMan.addToCanvas(); //shouldn't be neccesary normally, just have to draw him again in this case to have him above the tiles
     }
 
     private void update(){ //Where we'll call all the move functions. Animates objects.
@@ -55,6 +59,7 @@ public class PacManGame {
         ui.update();
     });
     }
+
     
     public static void main(String[] args) {
         new PacManGame();

@@ -1,73 +1,32 @@
-import java.awt.Color;
-import edu.macalester.graphics.Arc;
-import edu.macalester.graphics.CanvasWindow;
-import edu.macalester.graphics.GraphicsObject;
 
-public class PacMan implements GameObject{
-    private Vector2D positionVector;
-    private CanvasWindow canvas;
-    private GraphicsObject pacManShape;
+import edu.macalester.graphics.CanvasWindow;
+
+public class PacMan extends PacManShape{
     private Movement movement;
+    private static final int SCALE = 5;
     
     public PacMan (Vector2D positionVector, CanvasWindow canvas, Movement movement){//Spawn him in the middle
-        this.positionVector = positionVector;
-        this.canvas = canvas;
+        super(positionVector, canvas, SCALE);
         this.movement = movement;
-        createPacMan();
-        addToCanvas();
-    }
-
-    public void handleCollisions() {//Handle collisions w/ MazeWalls and Ghosts
     }
 
     public void moveUp() {
-      movement.moveUp();
+        movement.moveUp();
     }
-
-    
+ 
     public void moveDown() {
         movement.moveDown();
     }
 
-    
     public void moveLeft() {
-      movement.moveLeft();
+        movement.moveLeft();
     }
-
-    
+ 
     public void moveRight() {
         movement.moveRight();
     }
-    
-    @Override
-    public GraphicsObject getObjectShape() {
-        return pacManShape;
-    }
 
-    @Override
-    public void addToCanvas() {
-        canvas.add(pacManShape);
-    }
-
-    @Override
-    public void removeFromCanvas() {
-        canvas.remove(pacManShape);
-    }
-
-    @Override
-    public double getXPosition() {
-        return positionVector.getVX();
-    }
-
-    @Override
-    public double getYPosition() {
-      return positionVector.getVY();
-    }
-
-    public void createPacMan(){
-        pacManShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,5, 60, 240);
-        pacManShape.setScale(5);
-        ((Arc) pacManShape).setStrokeColor(Color.YELLOW);
-        ((Arc) pacManShape).setStrokeWidth(5);
+    public int getScale(){
+        return SCALE;
     }
 }
