@@ -6,13 +6,15 @@ public class PacManGame {
     private static final int CANVAS_WIDTH = 1920; 
     private static final int CANVAS_HEIGHT = 1080; // 1920 x 1080p
     private PacMan pacMan;
-    private Ghost pinky;
+    private Tile pelletTile;
+    private Tile defaultTile;
     private Tile wallTile;
     private UI ui;
+    private GhostManager ghostManager;
     private Vector2D pacManPositionVector;
-    private Vector2D pinkyPositionVector;
+    private Vector2D defaultTilePosVector;
+    private Vector2D wallTilePosVector;
     private Movement pacManMovement;
-    private Movement pinkyMovement;
     private KeyHandler keyHandler;
 
     public PacManGame(){
@@ -28,24 +30,25 @@ public class PacManGame {
         ui.initialize();
 
         pacManPositionVector = new Vector2D(canvas.getWidth()/2, canvas.getHeight()/2);
-        pinkyPositionVector = new Vector2D(400,400);
-
-        wallTile = new Tile (false, true, pacManPositionVector, canvas);
-        
         pacManMovement = new StandardMovement(pacManPositionVector);
-        pinkyMovement = new StandardMovement(pinkyPositionVector);
+
+        ghostManager = new GhostManager(canvas);
         
         pacMan = new PacMan(pacManPositionVector, canvas, pacManMovement);
         pacManMovement.setShape(pacMan.getObjectShape());
         
-        pinky = new Ghost(pinkyPositionVector, canvas, pinkyMovement, Color.PINK);
-        pinkyMovement.setShape(pinky.getObjectShape());
-        
         keyHandler = new KeyHandler(pacManMovement);
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
+
+        // Testing tiles
+        defaultTilePosVector = new Vector2D(pacMan.getXPosition() + 500, pacMan.getYPosition());
+        wallTilePosVector = new Vector2D(pacMan.getXPosition() - 500, pacMan.getYPosition()); 
+        pelletTile = new Tile (false, true, pacManPositionVector, canvas);
+        defaultTile = new Tile (false, false, defaultTilePosVector, canvas);
+        //Wall tile not changing color to blue?
+        wallTile = new Tile(true, false, wallTilePosVector, canvas);
     }
 
-   
     private void update(){ //Where we'll call all the move functions. Animates objects.
     canvas.animate(animationEvent -> {
         keyHandler.checkKeyPresses();

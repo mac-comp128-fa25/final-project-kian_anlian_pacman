@@ -20,7 +20,6 @@ public class PacMan implements GameObject{
     public void handleCollisions() {//Handle collisions w/ MazeWalls and Ghosts
     }
 
-    
     public void moveUp() {
       movement.moveUp();
     }

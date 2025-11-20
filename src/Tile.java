@@ -38,16 +38,16 @@ public class Tile implements GameObject{
 
     public void handleTileType(){
         
-        if (isWall && hasPellet){
+        if (isWall && hasPellet || !isWall && !hasPellet){
             System.out.println("ERROR: A tile cannot be a wall and have a pellet! This tile will be in default state");
             isDefault = true;
         }
-        
-        if (isWall){
-            addWall();
+
+        if(isWall){
+            tileShape.setFillColor(Color.BLUE);
         }
 
-        if  ((!(isWall && hasPellet)) || isDefault){
+        if (isDefault){
             tileShape.setFillColor(defaultTileColor);
             addToCanvas();
         }
@@ -55,7 +55,6 @@ public class Tile implements GameObject{
         if (hasPellet){
             addPellet();
         }
-
     }
 
     public boolean isDefault(){

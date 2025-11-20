@@ -4,6 +4,7 @@ public class StandardMovement implements Movement{
     private boolean facingLeft, facingRight, facingUp, facingDown;
     private Vector2D positionVector;
     private Vector2D velocityVector = new Vector2D(0,0);
+    private final double velVectorComponent = 2.5;
     private GraphicsObject objectShape;
     
     public StandardMovement(Vector2D positionVector) {
@@ -15,7 +16,7 @@ public class StandardMovement implements Movement{
     }
 
     public void moveUp() {
-        velocityVector.set(0,2.5);
+        velocityVector.set(0,velVectorComponent);
         positionVector.add(velocityVector.getVX(),velocityVector.getVY()); //move 0 units right and 5 units up every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         
@@ -29,7 +30,7 @@ public class StandardMovement implements Movement{
     }
 
     public void moveDown() {
-        velocityVector.set(0,2.5);
+        velocityVector.set(0,velVectorComponent);
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); //move 0 units right and 5 units down every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         
@@ -43,7 +44,7 @@ public class StandardMovement implements Movement{
     }
 
     public void moveLeft() {
-        velocityVector.set(2.5,0);
+        velocityVector.set(velVectorComponent,0);
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); 
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         
@@ -57,7 +58,7 @@ public class StandardMovement implements Movement{
     }
 
     public void moveRight() {
-        velocityVector.set(2.5,0);
+        velocityVector.set(velVectorComponent,0);
         positionVector.add(velocityVector.getVX(), velocityVector.getVY());
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         

@@ -54,7 +54,6 @@ public class Ghost implements GameObject{
         return positionVector.getVY();
     }
 
-    
     public void moveUp() {
         movement.moveUp();
     }
