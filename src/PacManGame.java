@@ -3,8 +3,8 @@ import edu.macalester.graphics.CanvasWindow;
 
 public class PacManGame {
     private CanvasWindow canvas;
-    private static final int CANVAS_WIDTH = 1920; 
-    private static final int CANVAS_HEIGHT = 1080; // 1920 x 1080p
+    private static final int CANVAS_WIDTH = 1280; 
+    private static final int CANVAS_HEIGHT = 720; // 1920 x 1080p
     private PacMan pacMan;
     private Tile pelletTile;
     private Tile defaultTile;
@@ -44,11 +44,13 @@ public class PacManGame {
     }
 
     private void testTiles(){
-        defaultTilePosVector = new Vector2D(pacMan.getXPosition() + 500, pacMan.getYPosition());
-        wallTilePosVector = new Vector2D(pacMan.getXPosition() - 500, pacMan.getYPosition()); 
-        pelletTile = new Tile (false, true, pacManPositionVector, canvas, pacMan.getScale());
-        defaultTile = new Tile (false, false, defaultTilePosVector, canvas, pacMan.getScale());
-        wallTile = new Tile(true, false, wallTilePosVector, canvas, pacMan.getScale());
+        // defaultTilePosVector = new Vector2D(pacMan.getXPosition() + 500, pacMan.getYPosition());
+        // wallTilePosVector = new Vector2D(pacMan.getXPosition() - 500, pacMan.getYPosition()); 
+        // pelletTile = new Tile (false, true, pacManPositionVector, canvas, pacMan.getScale());
+        // defaultTile = new Tile (false, false, defaultTilePosVector, canvas, pacMan.getScale());
+        // wallTile = new Tile(true, false, wallTilePosVector, canvas, pacMan.getScale());
+
+        new TileManager(canvas, pacMan);
 
         pacMan.addToCanvas(); //shouldn't be neccesary normally, just have to draw him again in this case to have him above the tiles
     }

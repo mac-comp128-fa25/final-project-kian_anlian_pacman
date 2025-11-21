@@ -25,8 +25,17 @@ public class Tile implements GameObject{
         handleTileType();
     }
 
+    public void setWall(){
+        isWall = true;
+    }
+
+    public void setPellet(){
+        hasPellet = true;
+    }
+
     public void scaleToPacMan(){
         tileSize = pacManSize * 15;
+        System.out.println(tileSize);
     }
     
     public int size(){
