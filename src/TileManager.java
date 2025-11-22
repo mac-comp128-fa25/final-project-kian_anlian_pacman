@@ -11,24 +11,29 @@ import edu.macalester.graphics.CanvasWindow;
 
 public class TileManager implements Manager{
     private CanvasWindow canvas;
-    private PacMan pacMan;
     private int pacManSize;
     private Tile[][] tileMatrix;
+    private static final int NUM_COLS = 19;
+    private static final int NUM_ROWS = 10;
 
     public TileManager(CanvasWindow canvas, PacMan pacMan){
         this.canvas = canvas;
-        this.pacMan = pacMan;
         pacManSize = pacMan.getScale(); 
-        createTiles();
-
+        spawnCollection();
+        pacMan.addToCanvas(); //put him back on top layer of elements
     }
 
     public Tile[][] getTileMatrix(){
         return tileMatrix;
     }
 
+    public Tile getTile(int column, int row){
+        return tileMatrix[column][row];
+    }
+
     @Override
     public void spawnCollection() { //Where the algorithm for spawning the layout of walls will be
+        createTiles();
     }
 
     @Override
@@ -49,32 +54,30 @@ public class TileManager implements Manager{
     */
 
     public void createTiles(){
-        tileMatrix = new Tile [13][9];
-
+        
+        tileMatrix = new Tile [NUM_COLS][NUM_ROWS]; //[#columns][#rows]  
         
         Vector2D tilePosVector = new Vector2D(0,0);
+        
         Tile tile = new Tile (false, false, tilePosVector, canvas, pacManSize);
-        double previousRightX = tile.getXPosition() + tile.size();
-        double previousRightY = tile.getYPosition() + tile.size();
 
-        tileMatrix[0][0] = tile;
-        double tileX = tile.getXPosition();
-        double tileY = tile.getYPosition();
-        for (int i = 0; i < canvas.getWidth(); i++){
-            for (int j = 0; j < canvas.getHeight(); j++){
-                Vector2D tilePosVectorNew = new Vector2D(tileX, tileY);
-                Tile tileNew = new Tile(false, false, tilePosVectorNew, canvas, pacManSize);
-                tileMatrix[i][j] = tileNew;
-                tileNew.addToCanvas();
-                tileY = previousRightY;
-                previousRightY = tileY + tile.size();
-                // if (j-1 == canvas.getHeight()) {
-                //     tileY = tile.getYPosition();
-                //     previousRightY = tile.getYPosition() + tile.size();
-                // }
+        for (int i = 0; i < tileMatrix.length; i++){
+            
+            for (int j = 0; j < tileMatrix[0].length; j++){
+
+                Vector2D newTilePosVector = new Vector2D(tile.size() * i, tile.size() * j); //We were overcomplicating it way too much
+
+                Tile newTile = new Tile(false, false, newTilePosVector, canvas, pacManSize);
+
+                if (i == tileMatrix.length - 1){ //scaling to cover last bit of y axis
+                    newTile.scaleTile(2, 1);
+                }
+                
+                tileMatrix[i][j] = newTile;
+                
+                newTile.addToCanvas();
+
             }
-            tileX = previousRightX;
-            previousRightX = tileX + tile.size();
         }
     }
     

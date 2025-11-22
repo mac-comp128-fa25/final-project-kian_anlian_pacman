@@ -4,7 +4,7 @@ public class StandardMovement implements Movement{
     private boolean facingLeft, facingRight, facingUp, facingDown;
     private Vector2D positionVector;
     private Vector2D velocityVector = new Vector2D(0,0);
-    private final double velVectorComponent = 2.5;
+    private final double velVectorComponent = 4;
     private GraphicsObject objectShape;
     
     public StandardMovement(Vector2D positionVector) {

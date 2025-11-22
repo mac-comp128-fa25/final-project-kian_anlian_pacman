@@ -25,6 +25,10 @@ public class Tile implements GameObject{
         handleTileType();
     }
 
+    public void scaleTile(double scaleWidth, double scaleHeight){
+        tileShape.setSize(tileShape.getWidth() * scaleWidth, tileShape.getHeight() * scaleHeight);
+    }
+
     public void setWall(){
         isWall = true;
     }
@@ -34,8 +38,7 @@ public class Tile implements GameObject{
     }
 
     public void scaleToPacMan(){
-        tileSize = pacManSize * 15;
-        System.out.println(tileSize);
+        tileSize = pacManSize * 16;
     }
     
     public int size(){
