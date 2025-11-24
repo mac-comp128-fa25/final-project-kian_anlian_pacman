@@ -21,29 +21,40 @@ public class PacManGame {
         canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.setBackground(Color.BLACK); 
 
-        ui = new UI(canvas, 3);
-        ui.initialize();
-
         pacManPositionVector = new Vector2D(canvas.getWidth()/2, canvas.getHeight()/2);
-        pacManMovement = new StandardMovement(pacManPositionVector);
+        pacManMovement = new RotationMovement(pacManPositionVector);
 
         pacMan = new PacMan(pacManPositionVector, canvas, pacManMovement);
         pacManMovement.setShape(pacMan.getObjectShape());
 
-        new TileManager(canvas, pacMan);
-        
-        ui = new UI(canvas, 3);
-        ui.initialize();
+        TileManager tileManager = new TileManager(canvas, pacMan);
+
         ghostManager = new GhostManager(canvas);
         keyHandler = new KeyHandler(pacManMovement);
+        
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
+        
+        pacMan.addToCanvas(); //we want pac-man and ui to be top elements
+        ui = new UI(canvas, 3);
+        ui.initialize();
     }
 
     private void update(){ //Where we'll call all the move functions. Animates objects.
     canvas.animate(animationEvent -> {
         keyHandler.checkKeyPresses();
-        ui.update();
+        ui.update(); //TODO: Use KiltGraphics methods for implementing collision. 
+        testCollision();
     });
+    }
+
+    public void testCollision(){ //reference point for how to start working w/ collision
+        Movement pinkyMovement = ghostManager.getPinkyMovement();
+        double pinkyX = ghostManager.getPinky().getXPosition();
+        double pinkyY = ghostManager.getPinky().getYPosition();
+        
+        if (pacMan.getObjectShape().testHit(pinkyX, pinkyY)){
+            pinkyMovement.moveDown();
+        }
     }
 
     

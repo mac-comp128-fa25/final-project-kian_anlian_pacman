@@ -12,8 +12,7 @@ public class UI {
     private static long nextSecond = System.currentTimeMillis() + 1000; //1000 ms = 1 sec
     private static int framesInLastSecond = 0;
     private static int framesInCurrentSecond = 0;
-    private PacManShape life; //visual indicator to player.
-    private int lifeCount;
+    private int lifeCount = 3;
     private PacManShape [] lives;
     
     public UI(CanvasWindow canvas, int lifeCount){
@@ -23,11 +22,15 @@ public class UI {
         createLifeIndicators();
     }
 
-    public int getLifeCount(){
-        return lifeCount;
+    public void removeLife(){
+        if (lifeCount > 0){
+            lives[--lifeCount].removeFromCanvas(); 
+            lives[lifeCount] = null;
+        }
     }
 
     public void createLifeIndicators(){
+        lifeCount = 3; //in case we need to call again for restarting the game
         int startX = 0;
         int y = canvas.getHeight() - (canvas.getWidth() / 15);
         int scale = 3;
@@ -35,8 +38,8 @@ public class UI {
 
         for (int i = 0; i < lifeCount; i++){
             currentPositionVector = new Vector2D (startX += 50, y);
-            PacManShape pacManLife = lives[i];
-            pacManLife = new PacManShape(currentPositionVector, canvas, scale);
+            PacManShape pacManLife  = new PacManShape(currentPositionVector, canvas, scale);
+            lives[i] = pacManLife;
             pacManLife.addToCanvas();
         }
     }

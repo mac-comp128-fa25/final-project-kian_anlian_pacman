@@ -30,6 +30,15 @@ public class GhostManager implements Manager{
         chooseSpawnPoints();
         createGhosts();
         linkMovement();
+        
+    }
+
+    public Ghost getPinky(){
+        return pinky;
+    }
+
+    public Movement getPinkyMovement(){
+        return pinkyMovement;
     }
 
     @Override
@@ -67,6 +76,8 @@ public class GhostManager implements Manager{
         blinkyMovement.setShape(blinky.getObjectShape());
         inkyMovement.setShape(inky.getObjectShape());
         clydeMovement.setShape(clyde.getObjectShape());
+
+        
     }
 
     public void chooseMovement(){

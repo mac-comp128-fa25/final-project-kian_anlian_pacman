@@ -10,9 +10,11 @@ public class Tile implements GameObject{
     private Rectangle tileShape;
     private CanvasWindow canvas;
     private Vector2D positionVector;
-    private Color defaultTileColor = Color.GRAY;
+    private Color defaultTileColor = Color.DARK_GRAY;
+    private Color wallTileColor = Color.LIGHT_GRAY;
     private int pacManSize;
     private int tileSize;
+    private static final int SIZE_SCALE = 16;
     
     public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas, int pacManSize) {
         this.isWall = isWall;
@@ -29,16 +31,30 @@ public class Tile implements GameObject{
         tileShape.setSize(tileShape.getWidth() * scaleWidth, tileShape.getHeight() * scaleHeight);
     }
 
+    public void setDefault(){
+        isWall = false;
+        hasPellet = false;
+        isDefault = true;
+        handleTileType();
+        
+    }
+
     public void setWall(){
         isWall = true;
+        isDefault = false;
+        hasPellet = false;
+        handleTileType();
     }
 
     public void setPellet(){
         hasPellet = true;
+        isWall = false;
+        isDefault = false;
+        handleTileType();
     }
 
     public void scaleToPacMan(){
-        tileSize = pacManSize * 16;
+        tileSize = pacManSize * SIZE_SCALE;
     }
     
     public int size(){
@@ -46,7 +62,7 @@ public class Tile implements GameObject{
     }
 
     public void addWall() {
-        tileShape.setFillColor(Color.BLUE);
+        tileShape.setFillColor(wallTileColor);
     }
 
     public void addPellet() {

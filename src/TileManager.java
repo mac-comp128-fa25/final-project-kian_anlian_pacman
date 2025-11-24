@@ -20,7 +20,6 @@ public class TileManager implements Manager{
         this.canvas = canvas;
         pacManSize = pacMan.getScale(); 
         spawnCollection();
-        pacMan.addToCanvas(); //put him back on top layer of elements
     }
 
     public Tile[][] getTileMatrix(){
@@ -71,6 +70,7 @@ public class TileManager implements Manager{
 
                 if (i == tileMatrix.length - 1){ //scaling to cover last bit of y axis
                     newTile.scaleTile(2, 1);
+                
                 }
                 
                 tileMatrix[i][j] = newTile;
