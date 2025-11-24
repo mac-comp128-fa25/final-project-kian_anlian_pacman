@@ -7,6 +7,9 @@
  * will make this easier.
  */
 
+import java.io.InputStream;
+import java.util.Scanner;
+
 import edu.macalester.graphics.CanvasWindow;
 
 public class TileManager implements Manager{
@@ -70,7 +73,6 @@ public class TileManager implements Manager{
 
                 if (i == tileMatrix.length - 1){ //scaling to cover last bit of y axis
                     newTile.scaleTile(2, 1);
-                
                 }
                 
                 tileMatrix[i][j] = newTile;
@@ -79,6 +81,34 @@ public class TileManager implements Manager{
 
             }
         }
+
+        setTiles();
+    }
+
+    public void setTiles(){
+        InputStream resourceStream = TileManager.class.getResourceAsStream("/Maze1");
+
+        Scanner input = new Scanner(resourceStream);
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                int n = input.nextInt();
+                Tile tile = tileMatrix[j][i];
+                switch (n) {
+                    case 0:
+                        tile.setWall();
+                        break;
+                    case 1:
+                        tile.setPellet();
+                        break;
+                    case 2:
+                        tile.setDefault();
+                        break;
+                    default:
+                        throw new RuntimeException("square type value must be between [0,2]");
+                }
+            }
+        }
+        input.close();
     }
     
 }

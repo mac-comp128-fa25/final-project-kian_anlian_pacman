@@ -21,7 +21,7 @@ public class PacManGame {
         canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.setBackground(Color.BLACK); 
 
-        pacManPositionVector = new Vector2D(canvas.getWidth()/2, canvas.getHeight()/2);
+        pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2);
         pacManMovement = new RotationMovement(pacManPositionVector);
 
         pacMan = new PacMan(pacManPositionVector, canvas, pacManMovement);
