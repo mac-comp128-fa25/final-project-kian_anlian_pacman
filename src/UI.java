@@ -32,7 +32,7 @@ public class UI {
     public void createLifeIndicators(){
         lifeCount = 3; //in case we need to call again for restarting the game
         int startX = 0;
-        int y = canvas.getHeight() - (canvas.getWidth() / 15);
+        int y = canvas.getHeight() - (canvas.getWidth() / 20);
         int scale = 3;
         Vector2D currentPositionVector;
 

@@ -2,28 +2,25 @@
 import edu.macalester.graphics.CanvasWindow;
 
 public class PacMan extends PacManShape{
-    private Movement movement;
     private static final int SCALE = 5;
+    private HitCircle hitCircle;
+    private Vector2D hitCirclePosVector;
+    private double offsetX = 18;
+    private double offsetY = 20;
+    private int hitCircleScale = 40;
     
-    public PacMan (Vector2D positionVector, CanvasWindow canvas, Movement movement){//Spawn him in the middle
+    public PacMan (Vector2D positionVector, CanvasWindow canvas){//Spawn him in the middle
         super(positionVector, canvas, SCALE);
-        this.movement = movement;
+        hitCirclePosVector = new Vector2D(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
+        hitCircle = new HitCircle(hitCirclePosVector, canvas, hitCircleScale);
     }
 
-    public void moveUp() {
-        movement.moveUp();
-    }
- 
-    public void moveDown() {
-        movement.moveDown();
+    public void addHitCircle(){
+        hitCircle.addToCanvas();
     }
 
-    public void moveLeft() {
-        movement.moveLeft();
-    }
- 
-    public void moveRight() {
-        movement.moveRight();
+    public HitCircle getHitCircle(){
+        return hitCircle;
     }
 
     public int getScale(){

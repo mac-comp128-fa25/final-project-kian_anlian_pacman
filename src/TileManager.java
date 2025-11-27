@@ -76,9 +76,7 @@ public class TileManager implements Manager{
                 }
                 
                 tileMatrix[i][j] = newTile;
-                
                 newTile.addToCanvas();
-
             }
         }
 
@@ -86,9 +84,9 @@ public class TileManager implements Manager{
     }
 
     public void setTiles(){
-        InputStream resourceStream = TileManager.class.getResourceAsStream("/Maze1");
-
+        InputStream resourceStream = TileManager.class.getResourceAsStream("/Map1");
         Scanner input = new Scanner(resourceStream);
+        
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 int n = input.nextInt();
@@ -104,7 +102,7 @@ public class TileManager implements Manager{
                         tile.setDefault();
                         break;
                     default:
-                        throw new RuntimeException("square type value must be between [0,2]");
+                        throw new RuntimeException("Tile type value must be between [0,2]");
                 }
             }
         }

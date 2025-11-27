@@ -1,3 +1,5 @@
+import edu.macalester.graphics.Point;
+
 public class Vector2D {//For moving PacMan & Ghosts
     private double vx;
     private double vy;
@@ -6,6 +8,7 @@ public class Vector2D {//For moving PacMan & Ghosts
         this.vx = vx;
         this.vy = vy;
     }
+
     public void add(double vx, double vy){ //Updating GameCharacter positions
         this.vx += vx;
         this.vy -= vy; //Because we're using Canvas coordinates, y sign is flipped

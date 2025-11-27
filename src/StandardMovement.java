@@ -3,7 +3,7 @@ import edu.macalester.graphics.GraphicsObject;
 public class StandardMovement implements Movement{
     private Vector2D positionVector;
     private Vector2D velocityVector = new Vector2D(0,0);
-    private final double velVectorComponent = 4;
+    private double velVectorComponent = 2;
     private GraphicsObject objectShape; 
     
     public StandardMovement(Vector2D positionVector) {
@@ -13,6 +13,7 @@ public class StandardMovement implements Movement{
     public GraphicsObject getShape(){
         return objectShape;
     }
+    
     public void setShape(GraphicsObject objectShape){
         this.objectShape = objectShape;
     }
