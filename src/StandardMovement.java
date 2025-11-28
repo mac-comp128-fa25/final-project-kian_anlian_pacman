@@ -1,3 +1,4 @@
+import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 
 public class StandardMovement implements Movement{
@@ -5,9 +6,22 @@ public class StandardMovement implements Movement{
     private Vector2D velocityVector = new Vector2D(0,0);
     private double velVectorComponent = 2;
     private GraphicsObject objectShape; 
+    private GraphicsObject hitCircleShape;
+    private HitCircle hitCircle;
+    private int hitCircleScale = 40;
+    private Vector2D hitCirclePosVector;
+    private double offsetX = 18;
+    private double offsetY = 20;
     
-    public StandardMovement(Vector2D positionVector) {
+    public StandardMovement(Vector2D positionVector, CanvasWindow canvas) {
         this.positionVector = positionVector;
+        hitCirclePosVector = new Vector2D(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
+        hitCircle = new HitCircle(hitCirclePosVector, canvas, hitCircleScale, this);
+        hitCircleShape = hitCircle.getObjectShape();
+    }
+
+    public HitCircle getHitCircle() {
+        return hitCircle;
     }
 
     public GraphicsObject getShape(){
@@ -22,24 +36,28 @@ public class StandardMovement implements Movement{
         velocityVector.set(0,velVectorComponent);
         positionVector.add(velocityVector.getVX(),velocityVector.getVY()); //move 0 units right and 5 units up every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
+        hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
     }
 
     public void moveDown() {
         velocityVector.set(0,velVectorComponent);
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); //move 0 units right and 5 units down every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
+        hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
     }
 
     public void moveLeft() {
         velocityVector.set(velVectorComponent,0);
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); 
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
+        hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
     }
 
     public void moveRight() {
         velocityVector.set(velVectorComponent,0);
         positionVector.add(velocityVector.getVX(), velocityVector.getVY());
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
+        hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
     }
 
 }

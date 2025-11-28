@@ -1,4 +1,3 @@
-import edu.macalester.graphics.Point;
 
 public class Vector2D {//For moving PacMan & Ghosts
     private double vx;

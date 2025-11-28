@@ -12,7 +12,6 @@ public class PacManGame {
     private Movement pacManMovement;
     private KeyHandler keyHandler;
     
-
     public PacManGame(){
         createGameObjects();
         update();
@@ -22,9 +21,8 @@ public class PacManGame {
         canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.setBackground(Color.BLACK); 
         
-
         pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2);
-        pacManMovement = new RotationMovement(pacManPositionVector);
+        pacManMovement = new RotationMovement(pacManPositionVector, canvas);
 
         pacMan = new PacMan(pacManPositionVector, canvas);
         pacManMovement.setShape(pacMan.getObjectShape());
@@ -32,14 +30,15 @@ public class PacManGame {
         TileManager tileManager = new TileManager(canvas, pacMan);
 
         ghostManager = new GhostManager(canvas);
-        keyHandler = new KeyHandler(pacManMovement, pacMan.getHitCircle());
+        keyHandler = new KeyHandler(pacManMovement);
         
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
         
         pacMan.addToCanvas(); //we want pac-man and ui to be top elements
         ui = new UI(canvas, 3);
         ui.initialize();
-        pacMan.addHitCircle();
+        pacManMovement.getHitCircle().addToCanvas(); //for visual testing
+        
     }
 
     private void update(){ //Where we'll call all the move functions. Animates objects.

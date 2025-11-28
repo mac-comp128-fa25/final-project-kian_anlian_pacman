@@ -81,9 +81,10 @@ public class GhostManager implements Manager{
     }
 
     public void chooseMovement(){
-        pinkyMovement = new StandardMovement(pinkyPositionVector);
-        blinkyMovement = new StandardMovement(blinkyPositionVector);
-        inkyMovement = new StandardMovement(inkyPositionVector);
-        clydeMovement = new StandardMovement(clydePositionVector);
+        pinkyMovement = new StandardMovement(pinkyPositionVector, canvas);
+        blinkyMovement = new StandardMovement(blinkyPositionVector, canvas);
+        inkyMovement = new StandardMovement(inkyPositionVector, canvas);
+        clydeMovement = new StandardMovement(clydePositionVector, canvas);
     }
+
 }

@@ -6,4 +6,5 @@ public interface Movement {
     void moveLeft();
     void moveRight();
     void setShape(GraphicsObject objectShape);
+    HitCircle getHitCircle();
 }
