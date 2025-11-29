@@ -4,11 +4,10 @@ import edu.macalester.graphics.GraphicsObject;
 public class StandardMovement implements Movement{
     private Vector2D positionVector;
     private Vector2D velocityVector = new Vector2D(0,0);
-    private double velVectorComponent = 2;
+    private double velVectorComponent = 5;
     private GraphicsObject objectShape; 
     private GraphicsObject hitCircleShape;
     private HitCircle hitCircle;
-    private int hitCircleScale = 40;
     private Vector2D hitCirclePosVector;
     private double offsetX = 18;
     private double offsetY = 20;
@@ -16,7 +15,7 @@ public class StandardMovement implements Movement{
     public StandardMovement(Vector2D positionVector, CanvasWindow canvas) {
         this.positionVector = positionVector;
         hitCirclePosVector = new Vector2D(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
-        hitCircle = new HitCircle(hitCirclePosVector, canvas, hitCircleScale, this);
+        hitCircle = new HitCircle(hitCirclePosVector, canvas, this);
         hitCircleShape = hitCircle.getObjectShape();
     }
 

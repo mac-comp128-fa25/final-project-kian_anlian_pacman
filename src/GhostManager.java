@@ -3,6 +3,7 @@ import edu.macalester.graphics.CanvasWindow;
 
 public class GhostManager implements Manager{
     private CanvasWindow canvas;
+    private UI ui;
 
     //Names from original game
     private Ghost pinky; //pink ghost
@@ -19,9 +20,14 @@ public class GhostManager implements Manager{
     private Movement blinkyMovement;
     private Movement inkyMovement;
     private Movement clydeMovement;
+    private Movement pacManMovement;
 
-    public GhostManager(CanvasWindow canvas){
+    private Movement[] ghostMovements = new Movement[4];
+
+    public GhostManager(CanvasWindow canvas, Movement pacManMovement, UI ui){
         this.canvas = canvas;
+        this.ui = ui;
+        this.pacManMovement = pacManMovement;
         spawnCollection();
     }
 
@@ -76,8 +82,6 @@ public class GhostManager implements Manager{
         blinkyMovement.setShape(blinky.getObjectShape());
         inkyMovement.setShape(inky.getObjectShape());
         clydeMovement.setShape(clyde.getObjectShape());
-
-        
     }
 
     public void chooseMovement(){
@@ -85,6 +89,23 @@ public class GhostManager implements Manager{
         blinkyMovement = new StandardMovement(blinkyPositionVector, canvas);
         inkyMovement = new StandardMovement(inkyPositionVector, canvas);
         clydeMovement = new StandardMovement(clydePositionVector, canvas);
+
+        ghostMovements[0] = pinkyMovement;
+        ghostMovements[1] = blinkyMovement;
+        ghostMovements[2] = inkyMovement;
+        ghostMovements[3] = clydeMovement;
+    }
+
+    public boolean ghostCollision(){
+        for (Movement movement : ghostMovements){
+            HitCircle hitCircle = movement.getHitCircle();
+            HitCircle pacManHitCircle = pacManMovement.getHitCircle();
+            
+            if (hitCircle.intersects(pacManHitCircle) && ui.removeLife()){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

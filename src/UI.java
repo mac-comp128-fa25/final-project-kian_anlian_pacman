@@ -2,6 +2,7 @@
 import java.awt.Color;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsText;
+import edu.macalester.graphics.ui.Button;
 
 /*
  *Handles score text, game over text, etc
@@ -14,6 +15,8 @@ public class UI {
     private static int framesInCurrentSecond = 0;
     private int lifeCount = 3;
     private PacManShape [] lives;
+    private Button restartButton;
+    private long tenMinutes = 600000;
     
     public UI(CanvasWindow canvas, int lifeCount){
         this.canvas = canvas;
@@ -22,11 +25,13 @@ public class UI {
         createLifeIndicators();
     }
 
-    public void removeLife(){
-        if (lifeCount > 0){
+    public boolean removeLife(){ //TODO: Figure out how to pause canvas after 3rd life is gone so we can place restart button
+        if (lifeCount > 0 ){
             lives[--lifeCount].removeFromCanvas(); 
             lives[lifeCount] = null;
+            return true;
         }
+        return false;
     }
 
     public void createLifeIndicators(){
@@ -58,6 +63,18 @@ public class UI {
         framesInCurrentSecond++; //goes from 0 to 60 each second then resets
         
         return framesInLastSecond; //return the past second's FPS
+    }
+    
+    public Button createRestartButton(){ //once we get canvas to pause on no lives left
+      restartButton = new Button("R E S T A R T ?");
+      restartButton.setPosition(canvas.getWidth()/2,canvas.getHeight()/2);
+      restartButton.setScale(8);
+      canvas.add(restartButton);
+      return restartButton;
+    }
+
+    public void removeRestartButton(){
+        canvas.remove(restartButton);
     }
 
     public void initialize(){ //Adds FPS counter, will add play button later

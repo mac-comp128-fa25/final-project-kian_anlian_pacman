@@ -7,24 +7,18 @@ public class CircleShape implements GameObject{
     private Ellipse circleShape;
     private Vector2D positionVector;
     private CanvasWindow canvas;
-    private int scale;
+    public static final int RADIUS = 40;
 
-    public CircleShape(Vector2D positionVector, CanvasWindow canvas, int scale){
+    public CircleShape(Vector2D positionVector, CanvasWindow canvas){
         this.positionVector = positionVector;
         this.canvas = canvas;
-        this.scale = scale;
-        circleShape = new Ellipse(positionVector.getVX(), positionVector.getVY(), scale, scale);
+        circleShape = new Ellipse(positionVector.getVX(), positionVector.getVY(), RADIUS, RADIUS);
         circleShape.setFillColor(Color.RED);
-        addToCanvas();
     }
     
     @Override
     public GraphicsObject getObjectShape() {
         return circleShape;
-    }
-
-    public int getScale(){
-        return scale;
     }
 
     @Override
@@ -47,8 +41,15 @@ public class CircleShape implements GameObject{
       return positionVector.getVY();
     }
 
+    public double getCenterX(){
+        return circleShape.getCenter().getX();
+    }
+
+    public double getCenterY(){
+        return circleShape.getCenter().getY();
+    }
+
     @Override
     public void handleCollisions() {
     }
-
 }
