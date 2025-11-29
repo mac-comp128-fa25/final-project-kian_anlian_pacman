@@ -35,4 +35,11 @@ public class Vector2D {//For moving PacMan & Ghosts
         vx = 0;
         vy = 0;
     }
+
+    public double distance(Vector2D v) { 
+        double newVX = v.getVX() - vx;
+        double newVY = v.getVY() - vy;
+        
+        return Math.sqrt(newVX * newVX + newVY * newVY);
+    }
 }

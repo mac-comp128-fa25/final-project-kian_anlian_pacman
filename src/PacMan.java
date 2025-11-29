@@ -16,6 +16,17 @@ public class PacMan extends PacManShape{
         return SCALE;
     }
 
+    public boolean intersects(Tile tile){
+        Vector2D tilePositionVector = tile.getCenterVector();
+        
+        if (positionVector.distance(tilePositionVector) < CircleShape.RADIUS / 2){
+            return true;
+        }
+
+        return false;
+        
+    }
+
     public void respawn(){
         positionVector.set(canvas.getWidth()/2 - 10, canvas.getHeight()/2);
     }

@@ -58,23 +58,16 @@ public class Ghost implements GameObject{
         movement.moveUp();
     }
 
-    
     public void moveDown() {
         movement.moveDown();
     }
 
-    
     public void moveLeft() {
         movement.moveLeft();
     }
 
-    
     public void moveRight() {
         movement.moveRight();
-    }
-
-    @Override
-    public void handleCollisions() {
     }
 
     public void createGhost(Color color){

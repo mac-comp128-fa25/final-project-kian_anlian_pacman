@@ -9,10 +9,9 @@ public class HitCircle extends CircleShape{
 
     public boolean intersects(HitCircle other) {
         
-        //using distance formula
         double distance = Math.hypot(getCenterX()  - other.getCenterX(), getCenterY() - other.getCenterY());
         
-        if (distance <=  CircleShape.RADIUS) { //Normally we'd be checking the radius of both shapes but that screwed everything up. 
+        if (distance <=  CircleShape.RADIUS) { //Good distance 
             return true;
         }
         else {

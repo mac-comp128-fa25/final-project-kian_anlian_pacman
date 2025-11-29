@@ -54,10 +54,6 @@ public class PacManShape implements GameObject{
         return positionVector.getVY();
     }
 
-    @Override
-    public void handleCollisions() {
-    }
-
     public void createPacMan(){
         pacManShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,5, 60, 240);
         pacManShape.setScale(scale);

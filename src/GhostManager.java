@@ -1,7 +1,7 @@
 import java.awt.Color;
 import edu.macalester.graphics.CanvasWindow;
 
-public class GhostManager implements Manager{
+public class GhostManager{
     private CanvasWindow canvas;
     private UI ui;
 
@@ -28,35 +28,18 @@ public class GhostManager implements Manager{
         this.canvas = canvas;
         this.ui = ui;
         this.pacManMovement = pacManMovement;
-        spawnCollection();
+        spawnGhosts();
     }
 
-    @Override
-    public void spawnCollection() { //Spawn @ 4 cornerns, 50 x and y units away from each corner
+    public void spawnGhosts() { //Spawn @ 4 cornerns, 50 x and y units away from each corner
         chooseSpawnPoints();
         createGhosts();
         linkMovement();
         
     }
 
-    public Ghost getPinky(){
-        return pinky;
-    }
-
-    public Movement getPinkyMovement(){
-        return pinkyMovement;
-    }
-
-    @Override
-    public void manageCollection() { //Chase algorithm
-    }
-
-    @Override
-    public void handleCollisions() { //On collision, Pac-Man should lose one of his three lives
-    }
-
     public void chooseSpawnPoints(){//canvasWidth: 845  canvasHeight: 1540
-        int leftX = canvas.getWidth() / 8;
+        int leftX = canvas.getWidth() / 13;
         int topY = canvas.getHeight() / 8;
 
         int rightX = canvas.getWidth() - (canvas.getWidth() / 8);
@@ -73,6 +56,13 @@ public class GhostManager implements Manager{
         blinky = new Ghost(blinkyPositionVector, canvas, blinkyMovement, Color.RED);
         inky = new Ghost(inkyPositionVector, canvas, inkyMovement, Color.CYAN);
         clyde = new Ghost(clydePositionVector, canvas, clydeMovement, Color.ORANGE);
+    }
+
+    public void topLayer(){
+        pinky.addToCanvas();
+        blinky.addToCanvas();
+        inky.addToCanvas();
+        clyde.addToCanvas();
     }
 
     public void linkMovement(){

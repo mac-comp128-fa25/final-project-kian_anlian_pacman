@@ -112,6 +112,13 @@ public class Tile implements GameObject{
         return tileShape;
     }
 
+    public Vector2D getCenterVector(){
+        double centerX = tileShape.getCenter().getX();
+        double centerY = tileShape.getCenter().getY();
+
+        return new Vector2D (centerX, centerY);
+    }
+
     @Override
     public void addToCanvas() {
         canvas.add(tileShape);
@@ -130,9 +137,5 @@ public class Tile implements GameObject{
     @Override
     public double getYPosition() {
         return positionVector.getVY();
-    }
-
-    @Override
-    public void handleCollisions() {
     }
 }

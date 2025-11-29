@@ -24,7 +24,7 @@ public class PacManGame {
         canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.setBackground(Color.BLACK); 
         
-        pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2);
+        pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
 
         pacMan = new PacMan(pacManPositionVector, canvas);
@@ -38,7 +38,7 @@ public class PacManGame {
         
         pacMan.addToCanvas(); //we want pac-man and ui to be top elements
         
-        ui = new UI(canvas, 3);
+        ui = new UI(canvas, 3, tileManager);
         ui.initialize();
         ghostManager = new GhostManager(canvas, pacManMovement, ui);
     }
@@ -49,6 +49,7 @@ public class PacManGame {
         if (gameState == GameState.PLAYING){
             ui.update(); 
             updateLives();
+            tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
         }
     });
@@ -66,6 +67,14 @@ public class PacManGame {
 
     public static void restartGame(){
         gameState = GameState.PLAYING;
+    }
+
+    public static void pauseGame(){
+        gameState = GameState.PAUSED;
+    }
+
+    public static void gameMenu(){
+        gameState = GameState.MENU;
     }
 
     

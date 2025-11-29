@@ -9,20 +9,24 @@
 
 import java.io.InputStream;
 import java.util.Scanner;
-
 import edu.macalester.graphics.CanvasWindow;
 
-public class TileManager implements Manager{
+public class TileManager{
     private CanvasWindow canvas;
+    private PacMan pacMan;
+    private GhostManager ghostManager;
     private int pacManSize;
+    private int pelletsEaten = 0;
+    private int totalPellets = 0;
     private Tile[][] tileMatrix;
     private static final int NUM_COLS = 19;
     private static final int NUM_ROWS = 10;
 
     public TileManager(CanvasWindow canvas, PacMan pacMan){
         this.canvas = canvas;
+        this.pacMan = pacMan;
         pacManSize = pacMan.getScale(); 
-        spawnCollection();
+        createTiles();
     }
 
     public Tile[][] getTileMatrix(){
@@ -33,18 +37,31 @@ public class TileManager implements Manager{
         return tileMatrix[column][row];
     }
 
-    @Override
-    public void spawnCollection() { //Where the algorithm for spawning the layout of walls will be
-        createTiles();
-    }
+    public void handlePellets(GhostManager ghostManager) { //Pac-Man should stop moving on collision with a MazeWall.
 
-    @Override
-    public void manageCollection() {//Updating tile states to visited
-    }
-
-    @Override
-    public void handleCollisions() { //Pac-Man should stop moving on collision with a MazeWall.
+        for (Tile[] columnOfTiles : tileMatrix){ //columns
+            for (Tile tile : columnOfTiles){ //rows
+                if (tile.hasFoodPellet() && pacMan.intersects(tile)){
+                    tile.setDefault();
+                    ghostManager.topLayer();
+                    pacMan.addToCanvas();
+                    pelletsEaten++;
+                }
+            }
+        }
     } 
+    
+    public void resetPelletsEaten(){
+        pelletsEaten = 0;
+    }
+
+    public int getPelletsEaten(){
+        return pelletsEaten;
+    }
+
+    public int getTotalPellets(){
+        return totalPellets;
+    }
     //TODO: Use integer division to create a 2D array. Each tile = tiles[x][y].
     /*
     * Use int(x/tileWidth) and int(y/tileHeight) to round (x,y) pos 
@@ -96,6 +113,7 @@ public class TileManager implements Manager{
                         tile.setWall();
                         break;
                     case 1:
+                        totalPellets++;
                         tile.setPellet();
                         break;
                     case 2:

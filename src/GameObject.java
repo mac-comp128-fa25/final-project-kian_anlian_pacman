@@ -1,10 +1,9 @@
 import edu.macalester.graphics.GraphicsObject;
 
 public interface GameObject {
-    GraphicsObject getObjectShape(); //For managers (FoodPelletManager, GhostManager, etc)
+    GraphicsObject getObjectShape(); 
     void addToCanvas();
     void removeFromCanvas();
     double getXPosition();
     double getYPosition();
-    void handleCollisions();
 }

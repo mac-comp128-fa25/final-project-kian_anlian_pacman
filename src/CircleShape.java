@@ -48,8 +48,4 @@ public class CircleShape implements GameObject{
     public double getCenterY(){
         return circleShape.getCenter().getY();
     }
-
-    @Override
-    public void handleCollisions() {
-    }
 }
