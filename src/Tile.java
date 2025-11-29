@@ -74,7 +74,7 @@ public class Tile implements GameObject{
     public void handleTileType(){
         
         if (isWall && hasPellet || !isWall && !hasPellet){
-            System.out.println("ERROR: A tile cannot be a wall and have a pellet! This tile will be in default state");
+            // System.out.println("ERROR: A tile cannot be a wall and have a pellet! This tile will be in default state");
             isDefault = true;
         }
 

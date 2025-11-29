@@ -16,16 +16,15 @@ public class UI {
     private int lifeCount = 3;
     private PacManShape [] lives;
     private Button restartButton;
-    private long tenMinutes = 600000;
     
     public UI(CanvasWindow canvas, int lifeCount){
         this.canvas = canvas;
         this.lifeCount = lifeCount;
-        lives =  new PacManShape[lifeCount];
         createLifeIndicators();
     }
 
-    public boolean removeLife(){ //TODO: Figure out how to pause canvas after 3rd life is gone so we can place restart button
+    public boolean removeLife(){ 
+
         if (lifeCount > 0 ){
             lives[--lifeCount].removeFromCanvas(); 
             lives[lifeCount] = null;
@@ -36,6 +35,7 @@ public class UI {
 
     public void createLifeIndicators(){
         lifeCount = 3; //in case we need to call again for restarting the game
+        lives =  new PacManShape[lifeCount];
         int startX = 0;
         int y = canvas.getHeight() - (canvas.getWidth() / 20);
         int scale = 3;
@@ -65,16 +65,16 @@ public class UI {
         return framesInLastSecond; //return the past second's FPS
     }
     
-    public Button createRestartButton(){ //once we get canvas to pause on no lives left
+    public void createRestartButton(){ //once we get canvas to pause on no lives left
       restartButton = new Button("R E S T A R T ?");
-      restartButton.setPosition(canvas.getWidth()/2,canvas.getHeight()/2);
-      restartButton.setScale(8);
-      canvas.add(restartButton);
-      return restartButton;
-    }
-
-    public void removeRestartButton(){
-        canvas.remove(restartButton);
+      restartButton.setPosition(canvas.getWidth()/2.2,canvas.getHeight()/2.5);
+      restartButton.setScale(50);
+      canvas.add(restartButton);  
+      restartButton.onClick(() -> {
+           canvas.remove(restartButton);
+           createLifeIndicators();
+           PacManGame.restartGame();
+        });
     }
 
     public void initialize(){ //Adds FPS counter, will add play button later
@@ -84,6 +84,10 @@ public class UI {
     }
 
     public void update(){
+        if (lifeCount == 0) {
+            PacManGame.gameOver();
+            createRestartButton();
+        }
         fpsText.setText(getFPS() + " FPS");
     }
 }

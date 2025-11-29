@@ -12,6 +12,8 @@ public class PacManGame {
     private Vector2D pacManPositionVector;
     private Movement pacManMovement;
     private KeyHandler keyHandler;
+    private enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //enum = way to enclose a bunch of constants guarenteed to be different integers
+    private static GameState gameState = GameState.PLAYING; //start off in playing state
     
     public PacManGame(){
         createGameObjects();
@@ -42,19 +44,33 @@ public class PacManGame {
     }
 
     private void update(){ //Where we'll call all the move functions. Animates objects.
-    canvas.animate(animationEvent -> {
-        keyHandler.checkKeyPresses();
-        ui.update(); 
-        updateLives();
+        canvas.animate(animationEvent -> {
+        
+        if (gameState == GameState.PLAYING){
+            ui.update(); 
+            updateLives();
+            keyHandler.checkKeyPresses();
+        }
     });
     }
 
    public void updateLives(){
-        if (ghostManager.ghostCollision()) pacMan.respawn();
+        if (ghostManager.ghostCollision()) {
+            pacMan.respawn();
+        }
+    }
+
+    public static void gameOver(){
+        gameState = GameState.GAME_OVER;
+    }
+
+    public static void restartGame(){
+        gameState = GameState.PLAYING;
     }
 
     
     public static void main(String[] args) {
         new PacManGame();
     }
+    
 }
