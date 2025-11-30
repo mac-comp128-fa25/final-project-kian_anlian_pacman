@@ -13,24 +13,18 @@ public class KeyHandler {
     private TileManager tileManager;
     private Key pressedKey, releasedKey;
 
-    /*
-     * One example for purpose of GameCharacter interface. 
-     * We could swap in other characters and as long as
-     * they implement GameCharacter, we can move them
-     * using KeyHandler.
-     */
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
         this.gameObject = gameObject;
         this.tileManager = tileManager;
     }
 
-    public void checkKeyPresses(){
-        if (upPressed && (tileManager.getCurrentTile(gameObject).isLegal() || tileManager.getAboveTile(gameObject).isLegal())){
+    public void checkKeyPresses(){ //TODO: Get help from Suhas on walkable-tile logic
+        if (upPressed && (tileManager.getCurrentTile(gameObject).isLegal() || !tileManager.getAboveTile(gameObject).isLegal())){
             movement.moveUp();
         }
 
-        if (downPressed && (tileManager.getCurrentTile(gameObject).isLegal() || tileManager.getBelowTile(gameObject).isLegal())){
+        if (downPressed && (tileManager.getCurrentTile(gameObject).isLegal() || !tileManager.getBelowTile(gameObject).isLegal())){
             movement.moveDown();
         }
 

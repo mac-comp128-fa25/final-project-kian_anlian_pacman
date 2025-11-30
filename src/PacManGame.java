@@ -52,7 +52,6 @@ public class PacManGame {
             updateLives();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
-            tileManager.getLeftTile(pacMan);
         }
     });
     }

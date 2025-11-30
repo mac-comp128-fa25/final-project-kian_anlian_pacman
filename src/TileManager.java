@@ -33,36 +33,45 @@ public class TileManager{
     public Tile getCurrentTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-
+        
         return getTile(column, row);
     }
 
     public Tile getLeftTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-
-        return getTile(column - 1, row);
+        Tile leftTile = getTile(column - 1, row);
+        
+        if (leftTile != null) return leftTile;
+        else return getCurrentTile(gameObject);
     }
 
     public Tile getRightTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-
-        return getTile(column + 1, row);
+        Tile rightTile = getTile(column + 1, row);
+        
+        if (rightTile != null) return rightTile;
+        else return getCurrentTile(gameObject);
     }
 
     public Tile getAboveTile(GameObject gameObject){
+
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-
-        return getTile(column, row + 1);
+        Tile aboveTile = getTile(column, row + 1);
+        
+        if (aboveTile != null) return aboveTile;
+        else return getCurrentTile(gameObject);
     }
 
     public Tile getBelowTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-
-        return getTile(column, row - 1);
+        Tile belowTile = getTile(column, row - 1);
+        
+        if (belowTile != null) return belowTile;
+        else return getCurrentTile(gameObject);
     }
 
     public int getColumn(GameObject gameObject){
@@ -83,7 +92,7 @@ public class TileManager{
             return tileMatrix[column][row];
         } catch (IndexOutOfBoundsException e) {
             // System.out.println("TILE OUT OF BOUNDS, RETURNING NULL");
-            return null; //so we dont crash when we return a tile out of the matrix's indices
+            return null; //so we dont crash when we return a tile out of the matrix's indices. 
         }
     }
 
