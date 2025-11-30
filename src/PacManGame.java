@@ -1,12 +1,18 @@
 import java.awt.Color;
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.FontStyle;
+import edu.macalester.graphics.GraphicsText;
+import edu.macalester.graphics.ui.Button;
 
 public class PacManGame {
-    private CanvasWindow canvas;
+    private CanvasWindow canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
     private static final int CANVAS_WIDTH = 1920; 
     private static final int CANVAS_HEIGHT = 1080; // 1080p
     private PacMan pacMan;
     private UI ui;
+    private Button startButton;
+    private GraphicsText pacManText;
+    private GraphicsText javaText;
     private GhostManager ghostManager;
     private TileManager tileManager;
     private Vector2D pacManPositionVector;
@@ -16,14 +22,11 @@ public class PacManGame {
     private static GameState gameState = GameState.PLAYING; //start off in playing state
     
     public PacManGame(){
-        createGameObjects();
+        menu();
         update();
     }
 
-    private void createGameObjects(){
-        canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
-        canvas.setBackground(Color.BLACK); 
-        
+    public void createGameObjects(){ //All the references are tied together here so the order matters
         pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
 
@@ -41,12 +44,12 @@ public class PacManGame {
         
         ui = new UI(canvas, 3, tileManager);
         ui.initialize();
+        
         ghostManager = new GhostManager(canvas, pacManMovement, ui);
     }
 
-    private void update(){ //Where we'll call all the move functions. Animates objects.
+    public void update(){ //Where we'll call all the move functions. Animates objects.
         canvas.animate(animationEvent -> {
-        
         if (gameState == GameState.PLAYING){
             ui.update(); 
             updateLives();
@@ -62,11 +65,51 @@ public class PacManGame {
         }
     }
 
+    public void menu(){
+        canvas.setBackground(Color.BLACK);
+        gameMenu();
+        createPacManText();
+        createJavaText();
+        createStartButton();
+    }
+
+    public void createStartButton(){
+        startButton = new Button("S T A R T ");
+        startButton.setPosition(canvas.getWidth()/2.23,canvas.getHeight()/2.4);
+        canvas.add(startButton);
+        startButton.onClick(() -> {
+           canvas.remove(startButton);
+           canvas.remove(pacManText);
+           canvas.remove(javaText);
+           createGameObjects();
+           gameRunning();
+        });
+    }
+
+      public void createPacManText(){
+        pacManText = new GraphicsText("PAC-MAN", canvas.getWidth()/2.1 ,canvas.getHeight()/2.5);
+        pacManText.setStrokeWidth(.7);
+        pacManText.setStrokeColor(Color.YELLOW);
+        pacManText.setScale(25);
+        pacManText.setFilled(false);
+        canvas.add(pacManText);
+    }
+
+    public void createJavaText(){
+        javaText = new GraphicsText("Java Edition", canvas.getWidth()/2.1, canvas.getHeight()/1.5);
+        javaText.setStrokeWidth(.2);
+        javaText.setStrokeColor(new Color(200,0,255));
+        javaText.setScale(15);
+        javaText.setFontStyle(FontStyle.BOLD_ITALIC);
+        javaText.setFilled(false);
+        canvas.add(javaText);
+    }
+
     public static void gameOver(){
         gameState = GameState.GAME_OVER;
     }
 
-    public static void restartGame(){
+    public static void gameRunning(){
         gameState = GameState.PLAYING;
     }
 

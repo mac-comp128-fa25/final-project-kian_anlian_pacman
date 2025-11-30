@@ -29,7 +29,6 @@ public class UI {
     }
 
     public boolean removeLife(){ 
-
         if (lifeCount > 0 ){
             lives[--lifeCount].removeFromCanvas(); 
             lives[lifeCount] = null;
@@ -73,14 +72,13 @@ public class UI {
     public void createRestartButton(){ //once we get canvas to pause on no lives left
       restartButton = new Button("R E S T A R T ?");
       restartButton.setPosition(canvas.getWidth()/2.2,canvas.getHeight()/2.5);
-      restartButton.setScale(50);
       canvas.add(restartButton);  
       restartButton.onClick(() -> {
            canvas.remove(restartButton);
            resetTileMatrix();
            createLifeIndicators();
            initialize();
-           PacManGame.restartGame();
+           PacManGame.gameRunning();
         });
     }
 
