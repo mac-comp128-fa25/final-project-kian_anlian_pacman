@@ -3,8 +3,8 @@ import edu.macalester.graphics.CanvasWindow;
 
 public class PacManGame {
     private CanvasWindow canvas;
-    private static final int CANVAS_WIDTH = 1920; //665 x 665 good for 21x21 tiles
-    private static final int CANVAS_HEIGHT = 1080; // 1920 x 1080p originally
+    private static final int CANVAS_WIDTH = 1920; 
+    private static final int CANVAS_HEIGHT = 1080; // 1080p
     private PacMan pacMan;
     private UI ui;
     private GhostManager ghostManager;
@@ -12,7 +12,7 @@ public class PacManGame {
     private Vector2D pacManPositionVector;
     private Movement pacManMovement;
     private KeyHandler keyHandler;
-    private enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //enum = way to enclose a bunch of constants guarenteed to be different integers
+    public enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //enum = way to enclose a bunch of constants guarenteed to be different integers
     private static GameState gameState = GameState.PLAYING; //start off in playing state
     
     public PacManGame(){
@@ -32,9 +32,10 @@ public class PacManGame {
 
         tileManager = new TileManager(canvas, pacMan);
 
-        keyHandler = new KeyHandler(pacManMovement);
+        keyHandler = new KeyHandler(pacManMovement, pacMan, tileManager);
         
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
+        canvas.onKeyUp(keyUp -> keyHandler.keyReleased(keyUp));     
         
         pacMan.addToCanvas(); //we want pac-man and ui to be top elements
         
@@ -51,6 +52,7 @@ public class PacManGame {
             updateLives();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
+            tileManager.getLeftTile(pacMan);
         }
     });
     }

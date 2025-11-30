@@ -18,6 +18,7 @@ public class TileManager{
     private int pacManSize;
     private int pelletsEaten = 0;
     private int totalPellets = 0;
+    private static final int TILE_SIZE = 80;
     private Tile[][] tileMatrix;
     private static final int NUM_COLS = 19;
     private static final int NUM_ROWS = 10;
@@ -29,12 +30,61 @@ public class TileManager{
         createTiles();
     }
 
+    public Tile getCurrentTile(GameObject gameObject){
+        int column = getColumn(gameObject);
+        int row = getRow(gameObject);
+
+        return getTile(column, row);
+    }
+
+    public Tile getLeftTile(GameObject gameObject){
+        int column = getColumn(gameObject);
+        int row = getRow(gameObject);
+
+        return getTile(column - 1, row);
+    }
+
+    public Tile getRightTile(GameObject gameObject){
+        int column = getColumn(gameObject);
+        int row = getRow(gameObject);
+
+        return getTile(column + 1, row);
+    }
+
+    public Tile getAboveTile(GameObject gameObject){
+        int column = getColumn(gameObject);
+        int row = getRow(gameObject);
+
+        return getTile(column, row + 1);
+    }
+
+    public Tile getBelowTile(GameObject gameObject){
+        int column = getColumn(gameObject);
+        int row = getRow(gameObject);
+
+        return getTile(column, row - 1);
+    }
+
+    public int getColumn(GameObject gameObject){
+        return (int) (gameObject.getXPosition() / TILE_SIZE);
+    }
+
+    public int getRow (GameObject gameObject){
+        return (int) (gameObject.getYPosition() / TILE_SIZE);
+    }
+
     public Tile[][] getTileMatrix(){
         return tileMatrix;
     }
 
     public Tile getTile(int column, int row){
-        return tileMatrix[column][row];
+        // System.out.println("COLUMN: " + column + " ROW: " + row); //using array so 0-indexed. print for testing.. works so far.
+        try {
+            return tileMatrix[column][row];
+        } catch (IndexOutOfBoundsException e) {
+            // System.out.println("TILE OUT OF BOUNDS, RETURNING NULL");
+            return null; //so we dont crash when we return a tile out of the matrix's indices
+        }
     }
 
     public void handlePellets(GhostManager ghostManager) { //Pac-Man should stop moving on collision with a MazeWall.
@@ -53,6 +103,10 @@ public class TileManager{
     
     public void resetPelletsEaten(){
         pelletsEaten = 0;
+    }
+
+    public void resetTotalPellets(){
+        totalPellets = 0;
     }
 
     public int getPelletsEaten(){
@@ -97,7 +151,7 @@ public class TileManager{
             }
         }
 
-        setTiles();
+        setTiles(); //causing lag on restart
     }
 
     public void setTiles(){

@@ -4,7 +4,7 @@ import edu.macalester.graphics.GraphicsObject;
 public class StandardMovement implements Movement{
     private Vector2D positionVector;
     private Vector2D velocityVector = new Vector2D(0,0);
-    private double velVectorComponent = 5;
+    private double velVectorComponent = 3;
     private GraphicsObject objectShape; 
     private GraphicsObject hitCircleShape;
     private HitCircle hitCircle;

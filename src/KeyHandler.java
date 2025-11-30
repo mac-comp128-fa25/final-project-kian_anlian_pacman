@@ -9,6 +9,9 @@ import edu.macalester.graphics.events.KeyboardEvent;
 public class KeyHandler { 
     private boolean upPressed, leftPressed, rightPressed, downPressed;
     private Movement movement;
+    private GameObject gameObject;
+    private TileManager tileManager;
+    private Key pressedKey, releasedKey;
 
     /*
      * One example for purpose of GameCharacter interface. 
@@ -16,30 +19,32 @@ public class KeyHandler {
      * they implement GameCharacter, we can move them
      * using KeyHandler.
      */
-    public KeyHandler (Movement movement){ 
+    public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
+        this.gameObject = gameObject;
+        this.tileManager = tileManager;
     }
 
     public void checkKeyPresses(){
-        if (upPressed){
+        if (upPressed && (tileManager.getCurrentTile(gameObject).isLegal() || tileManager.getAboveTile(gameObject).isLegal())){
             movement.moveUp();
         }
 
-        if (downPressed){
+        if (downPressed && (tileManager.getCurrentTile(gameObject).isLegal() || tileManager.getBelowTile(gameObject).isLegal())){
             movement.moveDown();
         }
 
-        if (leftPressed){
+        if (leftPressed && (tileManager.getCurrentTile(gameObject).isLegal() || tileManager.getLeftTile(gameObject).isLegal())){
             movement.moveLeft();
         }
 
-        if (rightPressed){
+        if (rightPressed && (tileManager.getCurrentTile(gameObject).isLegal() || tileManager.getRightTile(gameObject).isLegal())){
             movement.moveRight();
         }
     }
 
     public void keyPressed(KeyboardEvent event){ 
-        Key pressedKey = event.getKey();
+        pressedKey = event.getKey();
 
         if (pressedKey == Key.UP_ARROW){
             upPressed = true;
@@ -68,5 +73,21 @@ public class KeyHandler {
             leftPressed = false;
             downPressed = false;
         }
+    }
+
+    public void keyReleased(KeyboardEvent event) {
+        releasedKey = event.getKey();
+        if (releasedKey == Key.UP_ARROW){
+            upPressed = false;
+        }
+        if (releasedKey == Key.LEFT_ARROW){
+            leftPressed = false;
+        }
+        if (releasedKey == Key.RIGHT_ARROW){
+            rightPressed = false;
+        }
+        if (releasedKey == Key.DOWN_ARROW){
+            downPressed = false;
+        }  
     }
 }

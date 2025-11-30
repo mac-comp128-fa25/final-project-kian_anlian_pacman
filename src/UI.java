@@ -77,12 +77,17 @@ public class UI {
       canvas.add(restartButton);  
       restartButton.onClick(() -> {
            canvas.remove(restartButton);
-           tileManager.resetPelletsEaten();
-           tileManager.setTiles();
+           resetTileMatrix();
            createLifeIndicators();
            initialize();
            PacManGame.restartGame();
         });
+    }
+
+    public void resetTileMatrix(){
+        tileManager.resetPelletsEaten();
+        tileManager.resetTotalPellets();
+        tileManager.setTiles(); //TODO: Get help from Suhas for lag... -20 FPS every restart
     }
 
     public void initialize(){ //Adds FPS counter, will add play button later

@@ -36,7 +36,6 @@ public class Tile implements GameObject{
         hasPellet = false;
         isDefault = true;
         handleTileType();
-        
     }
 
     public void setWall(){
@@ -54,7 +53,7 @@ public class Tile implements GameObject{
     }
 
     public void scaleToPacMan(){
-        tileSize = pacManSize * SIZE_SCALE;
+        tileSize = pacManSize * SIZE_SCALE; //tileSize is 80 currently
     }
     
     public int size(){
@@ -93,6 +92,10 @@ public class Tile implements GameObject{
             addPellet();
         }
 
+    }
+
+    public boolean isLegal(){
+        return ((isDefault || hasPellet) && !isWall);
     }
 
     public boolean isDefault(){
