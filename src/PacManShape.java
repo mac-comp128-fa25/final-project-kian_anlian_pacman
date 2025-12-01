@@ -61,5 +61,4 @@ public class PacManShape implements GameObject{
         ((Arc) pacManShape).setStrokeWidth(5);
         addToCanvas();
     }
-
 }

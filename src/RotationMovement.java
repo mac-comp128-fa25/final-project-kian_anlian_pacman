@@ -7,6 +7,22 @@ public class RotationMovement extends StandardMovement{
         super(positionVector, canvas);
     }
 
+    public boolean facingUp(){
+        return facingUp;
+    }
+
+    public boolean facingDown(){
+        return facingDown;
+    }
+
+    public boolean facingLeft(){
+        return facingLeft;
+    }
+
+    public boolean facingRight(){
+        return facingRight;
+    }
+
     @Override
     public void moveUp() {
         super.moveUp();

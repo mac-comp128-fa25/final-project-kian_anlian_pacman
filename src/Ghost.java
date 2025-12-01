@@ -76,4 +76,8 @@ public class Ghost implements GameObject{
         ((Arc) ghostShape).setStrokeWidth(10);
         ghostShape.setScale(3.5);
     } 
+
+    public Movement getMovement(){
+        return movement;
+    }
 }

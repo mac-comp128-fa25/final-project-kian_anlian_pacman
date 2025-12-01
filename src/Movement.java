@@ -5,6 +5,11 @@ public interface Movement {
     void moveDown();
     void moveLeft();
     void moveRight();
+    void collisionBuffer(double xBuffer, double yBuffer);
     void setShape(GraphicsObject objectShape);
     HitCircle getHitCircle();
+    boolean getFacingUp();
+    boolean getFacingDown();
+    boolean getFacingLeft();
+    boolean getFacingRight();
 }

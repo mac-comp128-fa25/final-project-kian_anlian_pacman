@@ -124,6 +124,10 @@ public class Tile implements GameObject{
         return new Vector2D (centerX, centerY);
     }
 
+    public Movement getMovement(){
+        return null;
+    }
+
     @Override
     public void addToCanvas() {
         canvas.add(tileShape);

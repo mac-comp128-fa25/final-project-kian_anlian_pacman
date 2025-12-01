@@ -48,4 +48,5 @@ public class FoodPellet implements GameObject{
         pelletShape.setFillColor(Color.WHITE);
         addToCanvas();
     }
+
 }
