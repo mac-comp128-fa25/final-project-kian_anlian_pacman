@@ -52,6 +52,10 @@ public class Tile implements GameObject{
         handleTileType();
     }
 
+    public void colorTile(Color color){
+        tileShape.setFillColor(color);
+    }
+
     public void scaleToPacMan(){
         tileSize = pacManSize * SIZE_SCALE; //tileSize is 80 currently
     }

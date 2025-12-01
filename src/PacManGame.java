@@ -52,15 +52,16 @@ public class PacManGame {
         canvas.animate(animationEvent -> {
         if (gameState == GameState.PLAYING){
             ui.update(); 
-            updateLives();
+            handleCollisions();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
         }
     });
     }
 
-   public void updateLives(){
+   public void handleCollisions(){
         if (ghostManager.ghostCollision()) {
+            canvas.pause(1000); //so the player has a second to breathe (literally)
             pacMan.respawn();
         }
     }
@@ -96,7 +97,7 @@ public class PacManGame {
     }
 
     public void createJavaText(){
-        javaText = new GraphicsText("Java Edition", canvas.getWidth()/2.1, canvas.getHeight()/1.5);
+        javaText = new GraphicsText("Java", canvas.getWidth()/2.1, canvas.getHeight()/1.5);
         javaText.setStrokeWidth(.2);
         javaText.setStrokeColor(new Color(200,0,255));
         javaText.setScale(15);

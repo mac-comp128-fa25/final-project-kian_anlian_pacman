@@ -8,6 +8,7 @@
  */
 
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.Scanner;
 import edu.macalester.graphics.CanvasWindow;
 
@@ -59,8 +60,7 @@ public class TileManager{
 
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-        Tile aboveTile = getTile(column, row + 1);
-        
+        Tile aboveTile = getTile(column , row - 1); //ABOVE IS ROW - 1 prev reversed
         if (aboveTile != null) return aboveTile;
         else return getCurrentTile(gameObject);
     }
@@ -68,18 +68,36 @@ public class TileManager{
     public Tile getBelowTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
-        Tile belowTile = getTile(column, row - 1);
+        Tile belowTile = getTile(column, row + 1); //BELOW IS ROW + 1 prev reversed
+        
+        if (belowTile != null) return belowTile;
+        else return getCurrentTile(gameObject);
+    }
+
+    public Tile getGrandBelowTile(GameObject gameObject){
+        int column = getColumn(gameObject);
+        int row = getRow(gameObject);
+        Tile belowTile = getTile(column, row + 2); //BELOW IS ROW + 1 prev reversed
         
         if (belowTile != null) return belowTile;
         else return getCurrentTile(gameObject);
     }
 
     public int getColumn(GameObject gameObject){
+        // System.out.println(" COLUMN: " + (gameObject.getXPosition() / TILE_SIZE) + " ROUNDED: " + (int)(gameObject.getXPosition() / TILE_SIZE));
         return (int) (gameObject.getXPosition() / TILE_SIZE);
     }
 
     public int getRow (GameObject gameObject){
+        // System.out.println(" ROW: " +gameObject.getYPosition() / TILE_SIZE + " ROUNDED: " + (int)(gameObject.getYPosition() / TILE_SIZE));
         return (int) (gameObject.getYPosition() / TILE_SIZE);
+    }
+
+    public LinkedList<Tile>[] getAdjacentTiles(Tile tile){ //returns adjacency list bc we have a sparse graph
+        int adjacenyListLength = tileMatrix[getColumn(tile)].length;
+        @SuppressWarnings("unchecked") //complains about cast (have to cast to do array of LinkedLists)
+        LinkedList<Tile> [] adjacentTiles = (LinkedList<Tile>[]) new LinkedList<?>[adjacenyListLength];
+        return adjacentTiles; //temp
     }
 
     public Tile[][] getTileMatrix(){
@@ -87,7 +105,13 @@ public class TileManager{
     }
 
     public Tile getTile(int column, int row){
-        // System.out.println("COLUMN: " + column + " ROW: " + row); //using array so 0-indexed. print for testing.. works so far.
+        // System.out.println("ABOVE TILE --  COLUMN: " + column + " ROW: " + (row + 1));
+        // System.out.println("BELOW TILE --  COLUMN: " + column + " ROW: " + (row - 1));
+        // System.out.println("LEFT TILE --  COLUMN: " + (column - 1) + " ROW: " + row);
+        // System.out.println("RIGHT TILE --  COLUMN: " + (column + 1) + " ROW: " + row);
+        
+        // System.out.println("COLUMN: " + column + " ROW: " + (row) + " LEGAL: " + !tileMatrix[column][row].isWall()); //using array so 0-indexed. print for testing.. works so far.
+        
         try {
             return tileMatrix[column][row];
         } catch (IndexOutOfBoundsException e) {
