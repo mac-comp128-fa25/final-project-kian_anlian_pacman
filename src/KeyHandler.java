@@ -12,7 +12,7 @@ public class KeyHandler {
     private Movement movement;
     private GameObject gameObject;
     private TileManager tileManager;
-    private Key pressedKey, releasedKey;
+    private Key pressedKey;
     private static final int COLLISION_BUFFER = 50;
 
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
@@ -27,46 +27,53 @@ public class KeyHandler {
         boolean facingDown = movement.getFacingDown();
         boolean facingLeft = movement.getFacingLeft();
         boolean facingRight = movement.getFacingRight();
+
+        boolean upLegal = upPressed && (!facingUp || currentLegal);
+        boolean downLegal = downPressed && (!facingDown || currentLegal);
+        boolean leftLegal = leftPressed && (!facingLeft || currentLegal);
+        boolean rightLegal = rightPressed && (!facingRight || currentLegal);
         
-        if (upPressed && (!(facingUp && !currentLegal))){
+        if (upLegal){
             movement.moveUp();
         }        
                                                                                                                                                             
-        if (downPressed && (!(facingDown && !currentLegal))){ 
+        if (downLegal){ 
             movement.moveDown();
         }
 
-        if (leftPressed && (!(facingLeft && !currentLegal))){
+        if (leftLegal){
             movement.moveLeft();
         }
 
-        if (rightPressed && (!(facingRight && !currentLegal))){
+        if (rightLegal){
             movement.moveRight();
         }
 
         //Buffer so can't clip through walls by spamming opposite directions. If the player taps the direction really quickly a few times before being rubber banded they can still slide... but that's hard to do now.
 
-        if (upPressed &&  facingUp && !currentLegal){
+        if (upPressed && !currentLegal){
             movement.collisionBuffer(0, COLLISION_BUFFER);
+            upPressed = false;
         }
 
-        if (downPressed && facingDown && !currentLegal){
+        if (downPressed && !currentLegal){
             movement.collisionBuffer(0,-COLLISION_BUFFER);
+            downPressed = false;
         }
 
-        if (leftPressed && facingLeft && !facingRight  && !currentLegal){
+        if (leftPressed && !currentLegal){
             movement.collisionBuffer(-COLLISION_BUFFER,0);
+            leftPressed = false;
         }
 
-        if (rightPressed && facingRight && !facingLeft && !currentLegal){
+        if (rightPressed && !currentLegal){
             movement.collisionBuffer(COLLISION_BUFFER,0);
+            rightPressed = false;
         }
-
-        // debugTiles();
     }
 
     /*
-     * For debugging tiles being set legal/illegal correctly
+     * Visual way during gameplay to make sure tiles being set legal/illegal correctly
      */
     public void debugTiles(){ 
          if (upPressed || downPressed || leftPressed || rightPressed){
@@ -109,21 +116,5 @@ public class KeyHandler {
             leftPressed = false;
             downPressed = false;
         }
-    }
-
-    public void keyReleased(KeyboardEvent event) {
-        releasedKey = event.getKey();
-        if (releasedKey == Key.UP_ARROW){
-            upPressed = false;
-        }
-        if (releasedKey == Key.LEFT_ARROW){
-            leftPressed = false;
-        }
-        if (releasedKey == Key.RIGHT_ARROW){
-            rightPressed = false;
-        }
-        if (releasedKey == Key.DOWN_ARROW){
-            downPressed = false;
-        }  
     }
 }

@@ -37,8 +37,7 @@ public class PacManGame {
 
         keyHandler = new KeyHandler(pacManMovement, pacMan, tileManager);
         
-        canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown)); 
-        canvas.onKeyUp(keyUp -> keyHandler.keyReleased(keyUp));     
+        canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown));    
         
         pacMan.addToCanvas(); //we want pac-man and ui to be top elements
         
