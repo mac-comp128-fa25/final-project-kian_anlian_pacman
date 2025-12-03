@@ -1,7 +1,5 @@
 import java.awt.Color;
 import java.util.List;
-import java.util.LinkedList;
-
 import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.events.KeyboardEvent;
 
@@ -24,9 +22,10 @@ public class KeyHandler {
     }
     
     public void checkKeyPresses(){ 
+        
         if (!movement.hitCircleTopCollision() && upPressed){
             movement.moveUp();
-        }        
+        }
                                                                                                                                                             
         if (!movement.hitCircleBottomCollision() && downPressed){ 
             movement.moveDown();
@@ -39,27 +38,19 @@ public class KeyHandler {
         if (!movement.hitCircleRightCollision() && rightPressed){
             movement.moveRight();
         }
-
-        debugTiles();
+        visualizePaths();
     }
 
     /*
-     * Visual way during gameplay to make sure tiles being set legal/illegal correctly
+     * Visual way during gameplay to make sure tiles being set legal/illegal correctly and paths being created correctly.
      */
-    public void debugTiles(){ 
-         if (upPressed || downPressed || leftPressed || rightPressed){
-            System.out.println(" CURRENT TILE IS LEGAL: " + !tileManager.getCurrentTile(gameObject).isWall() + " COLUMN: " + tileManager.getColumn(gameObject) +" ROW: " + tileManager.getRow(gameObject));
-            // tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN); 
-            List<Tile>  tileList = tileManager.getAdjacentTiles(tileManager.getCurrentTile(gameObject));
-            for (Tile tile : tileList){
-                tile.colorTile(Color.GREEN);
-            }
-
-            
-            // tileManager.getAboveTile(gameObject).colorTile(Color.BLUE);
-            // tileManager.getBelowTile(gameObject).colorTile(Color.RED);
-            // tileManager.getRightTile(gameObject).colorTile(Color.PINK);
-            // tileManager.getLeftTile(gameObject).colorTile(Color.ORANGE);
+    public void visualizePaths(){ 
+        tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN);
+        
+        List<Tile>  tileList = tileManager.getAdjacentTiles(tileManager.getCurrentTile(gameObject));
+        
+        for (Tile tile : tileList){
+            tile.colorTile(Color.GREEN);
         }
     }
 
@@ -99,13 +90,12 @@ public class KeyHandler {
         /*
          * Broad algorithm: Store each key press as a request to switch to that direction. 
          * If the direction is on the same axis (i.e going from right to left) 
-         *   Execute then mark that request false: Call movement.Up() then set upRequested = false)
+         *   Execute then mark that request false: (Call movement.Up() then set upRequested = false)
          * Otherwise: 
          *  If !movement.(hitCircleCollisionMethod) && requested
          *      Execute and mark that request false 
          *  Else
-         *      do nothing.
-         * 
+         *      Do nothing.
          */
     }
 }

@@ -1,15 +1,6 @@
-/*
- * Uses 2D array to determine what tiles are 
- * walkable and what tiles are MazeWalls.
- * This Maze will be used to 
- * implement the Ghost's DFS algorithm. 
- * Using the Graph-Maze activity as our template
- * will make this easier.
- */
+
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -72,15 +63,6 @@ public class TileManager{
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
         Tile belowTile = getTile(column, row + 1); //BELOW IS ROW + 1 prev reversed
-        
-        if (belowTile != null) return belowTile;
-        else return getCurrentTile(gameObject);
-    }
-
-    public Tile getGrandBelowTile(GameObject gameObject){
-        int column = getColumn(gameObject);
-        int row = getRow(gameObject);
-        Tile belowTile = getTile(column, row + 2); //BELOW IS ROW + 1 prev reversed
         
         if (belowTile != null) return belowTile;
         else return getCurrentTile(gameObject);
@@ -170,31 +152,28 @@ public class TileManager{
         createAdjacencyList();
     }
 
-    public void createAdjacencyList() {
+    public void createAdjacencyList() { //creates HashMap of Tile keys and TileAdjacencyList values
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
+                
                 Tile currentTile = getTile(j,i);
                 List<Tile> listOfAdjacentTiles = new LinkedList<>();
-                List<Tile> nearTiles = new ArrayList<>();
+                List<Tile> nearTiles = new LinkedList<>();
+                
                 nearTiles.add(getTile(j-1, i));
                 nearTiles.add(getTile(j+1, i));
                 nearTiles.add(getTile(j, i+1));
                 nearTiles.add(getTile(j, i-1));
-                for(int w = 0; w < nearTiles.size(); w++) {
-                    // if (!nearTiles.get(w).isWall()) 
+                
+                for (int nearTile = 0; nearTile < nearTiles.size(); nearTile ++) {
                     for (Tile tile : nearTiles){
-                        if (tile == null){
+                        if (tile == null || tile.isWall()){
                             continue;
                         }
-                        if (!tile.isWall()){
                         listOfAdjacentTiles.add(tile);
-                        }
-                       
                     }
-                        
                 }
                 adjacencyList.put(currentTile, listOfAdjacentTiles);
-
             }
         }
     }
