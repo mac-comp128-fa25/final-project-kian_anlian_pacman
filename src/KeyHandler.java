@@ -1,4 +1,7 @@
 import java.awt.Color;
+import java.util.List;
+import java.util.LinkedList;
+
 import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.events.KeyboardEvent;
 
@@ -36,6 +39,8 @@ public class KeyHandler {
         if (!movement.hitCircleRightCollision() && rightPressed){
             movement.moveRight();
         }
+
+        debugTiles();
     }
 
     /*
@@ -44,11 +49,17 @@ public class KeyHandler {
     public void debugTiles(){ 
          if (upPressed || downPressed || leftPressed || rightPressed){
             System.out.println(" CURRENT TILE IS LEGAL: " + !tileManager.getCurrentTile(gameObject).isWall() + " COLUMN: " + tileManager.getColumn(gameObject) +" ROW: " + tileManager.getRow(gameObject));
-            tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN); 
-            tileManager.getAboveTile(gameObject).colorTile(Color.BLUE);
-            tileManager.getBelowTile(gameObject).colorTile(Color.RED);
-            tileManager.getRightTile(gameObject).colorTile(Color.PINK);
-            tileManager.getLeftTile(gameObject).colorTile(Color.ORANGE);
+            // tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN); 
+            List<Tile>  tileList = tileManager.getAdjacentTiles(tileManager.getCurrentTile(gameObject));
+            for (Tile tile : tileList){
+                tile.colorTile(Color.GREEN);
+            }
+
+            
+            // tileManager.getAboveTile(gameObject).colorTile(Color.BLUE);
+            // tileManager.getBelowTile(gameObject).colorTile(Color.RED);
+            // tileManager.getRightTile(gameObject).colorTile(Color.PINK);
+            // tileManager.getLeftTile(gameObject).colorTile(Color.ORANGE);
         }
     }
 
@@ -91,8 +102,10 @@ public class KeyHandler {
          *   Execute then mark that request false: Call movement.Up() then set upRequested = false)
          * Otherwise: 
          *  If !movement.(hitCircleCollisionMethod) && requested
-         *      Execute and mark that request false (no else... semantically else: do nothing)
-         *  
+         *      Execute and mark that request false 
+         *  Else
+         *      do nothing.
+         * 
          */
     }
 }

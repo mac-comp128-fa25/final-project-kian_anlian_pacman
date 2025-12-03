@@ -36,7 +36,6 @@ public class GhostManager{
         chooseSpawnPoints();
         createGhosts();
         linkMovement();
-        
     }
 
     public void chooseSpawnPoints(){//canvasWidth: 845  canvasHeight: 1540

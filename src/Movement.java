@@ -6,7 +6,8 @@ public interface Movement {
     void moveLeft();
     void moveRight();
     void setShape(GraphicsObject objectShape);
-    HitCircle getHitCircle();
+    
+    HitCircle getHitCircle(); //TODO: During final refactor stage extract Collider inteface
     boolean hitCircleTopCollision();
     boolean hitCircleBottomCollision();
     boolean hitCircleLeftCollision();

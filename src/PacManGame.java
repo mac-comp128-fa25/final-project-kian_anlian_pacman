@@ -60,8 +60,8 @@ public class PacManGame {
 
    public void handleCollisions(){
         if (ghostManager.ghostCollision()) {
-            canvas.pause(1000); //so the player has a second to breathe (literally)
             pacMan.respawn();
+            canvas.pause(1000);  //so the player has a second to breathe (literally)
         }
     }
 
@@ -121,7 +121,6 @@ public class PacManGame {
         gameState = GameState.MENU;
     }
 
-    
     public static void main(String[] args) {
         new PacManGame();
     }

@@ -6,9 +6,12 @@
  * Using the Graph-Maze activity as our template
  * will make this easier.
  */
-
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 import edu.macalester.graphics.CanvasWindow;
 
@@ -20,12 +23,14 @@ public class TileManager{
     private int totalPellets = 0;
     private static final int TILE_SIZE = 80;
     private Tile[][] tileMatrix;
+    private HashMap<Tile,List<Tile>> adjacencyList;
     private static final int NUM_COLS = 19;
     private static final int NUM_ROWS = 10;
 
     public TileManager(CanvasWindow canvas, PacMan pacMan){
         this.canvas = canvas;
         this.pacMan = pacMan;
+        adjacencyList = new HashMap<>();
         pacManSize = pacMan.getScale(); 
         createTiles();
     }
@@ -56,7 +61,6 @@ public class TileManager{
     }
 
     public Tile getAboveTile(GameObject gameObject){
-
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
         Tile aboveTile = getTile(column , row - 1); //ABOVE IS ROW - 1 prev reversed
@@ -83,20 +87,15 @@ public class TileManager{
     }
 
     public int getColumn(GameObject gameObject){
-        // System.out.println(" COLUMN: " + (gameObject.getXPosition() / TILE_SIZE) + " ROUNDED: " + (int)(gameObject.getXPosition() / TILE_SIZE));
         return (int) (gameObject.getXPosition() / TILE_SIZE);
     }
 
     public int getRow (GameObject gameObject){
-        // System.out.println(" ROW: " +gameObject.getYPosition() / TILE_SIZE + " ROUNDED: " + (int)(gameObject.getYPosition() / TILE_SIZE));
         return (int) (gameObject.getYPosition() / TILE_SIZE);
     }
 
-    public LinkedList<Tile>[] getAdjacentTiles(Tile tile){ //returns adjacency list bc we have a sparse graph
-        int adjacenyListLength = tileMatrix[getColumn(tile)].length;
-        @SuppressWarnings("unchecked") //complains about cast (have to cast to do array of LinkedLists)
-        LinkedList<Tile> [] adjacentTiles = (LinkedList<Tile>[]) new LinkedList<?>[adjacenyListLength];
-        return adjacentTiles; //temp
+    public List<Tile> getAdjacentTiles(Tile tile){ //returns adjacency list bc we have a sparse graph
+        return adjacencyList.get(tile);
     }
 
     public Tile[][] getTileMatrix(){
@@ -112,7 +111,7 @@ public class TileManager{
         }
     }
 
-    public void handlePellets(GhostManager ghostManager) { //Pac-Man should stop moving on collision with a MazeWall.
+    public void handlePellets(GhostManager ghostManager) { 
 
         for (Tile[] columnOfTiles : tileMatrix){ //columns
             for (Tile tile : columnOfTiles){ //rows
@@ -154,7 +153,7 @@ public class TileManager{
             
             for (int j = 0; j < tileMatrix[0].length; j++){
 
-                Vector2D newTilePosVector = new Vector2D(tile.size() * i, tile.size() * j); //We were overcomplicating it way too much
+                Vector2D newTilePosVector = new Vector2D(tile.size() * i, tile.size() * j); 
 
                 Tile newTile = new Tile(false, false, newTilePosVector, canvas, pacManSize);
 
@@ -168,6 +167,36 @@ public class TileManager{
         }
 
         setTiles(); //TODO: Fix: This is causing lag on restart
+        createAdjacencyList();
+    }
+
+    public void createAdjacencyList() {
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                Tile currentTile = getTile(j,i);
+                List<Tile> listOfAdjacentTiles = new LinkedList<>();
+                List<Tile> nearTiles = new ArrayList<>();
+                nearTiles.add(getTile(j-1, i));
+                nearTiles.add(getTile(j+1, i));
+                nearTiles.add(getTile(j, i+1));
+                nearTiles.add(getTile(j, i-1));
+                for(int w = 0; w < nearTiles.size(); w++) {
+                    // if (!nearTiles.get(w).isWall()) 
+                    for (Tile tile : nearTiles){
+                        if (tile == null){
+                            continue;
+                        }
+                        if (!tile.isWall()){
+                        listOfAdjacentTiles.add(tile);
+                        }
+                       
+                    }
+                        
+                }
+                adjacencyList.put(currentTile, listOfAdjacentTiles);
+
+            }
+        }
     }
 
     public void setTiles(){

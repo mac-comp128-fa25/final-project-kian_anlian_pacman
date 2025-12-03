@@ -16,15 +16,6 @@ public class PacManShape implements GameObject{
         createPacMan();
     }
 
-    /*
-     *  If we run into the issue of the player accidentally running
-     * into wall tiles, we can fix the issue by using a Queue data structure to 
-     * hold inputted turns, and only executing (dequeuing) the turn when they're in 
-     * the center of the tile they're turning onto.
-     */
-    public void enqueueTurn(){
-    }
-
     public void setScale(int scale){
         this.scale = scale;
     }

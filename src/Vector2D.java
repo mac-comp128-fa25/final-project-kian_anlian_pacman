@@ -31,6 +31,11 @@ public class Vector2D {//For moving PacMan & Ghosts
         this.vy = vy;
     }
 
+    public void set(Vector2D v){
+        this.vx = v.getVX();
+        this.vy = v.getVY();
+    }
+
     public void stop(){ //For when PacMan collides w/ wall
         vx = 0;
         vy = 0;
