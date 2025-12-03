@@ -4,6 +4,7 @@ import edu.macalester.graphics.CanvasWindow;
 public class GhostManager{
     private CanvasWindow canvas;
     private UI ui;
+    private TileManager tileManager;
 
     //Names from original game
     private Ghost pinky; //pink ghost
@@ -75,10 +76,10 @@ public class GhostManager{
     }
 
     public void chooseMovement(){
-        pinkyMovement = new StandardMovement(pinkyPositionVector, canvas);
-        blinkyMovement = new StandardMovement(blinkyPositionVector, canvas);
-        inkyMovement = new StandardMovement(inkyPositionVector, canvas);
-        clydeMovement = new StandardMovement(clydePositionVector, canvas);
+        pinkyMovement = new StandardMovement(pinkyPositionVector, canvas, tileManager);
+        blinkyMovement = new StandardMovement(blinkyPositionVector, canvas, tileManager);
+        inkyMovement = new StandardMovement(inkyPositionVector, canvas, tileManager);
+        clydeMovement = new StandardMovement(clydePositionVector, canvas, tileManager);
 
         ghostMovements[0] = pinkyMovement;
         ghostMovements[1] = blinkyMovement;

@@ -3,24 +3,8 @@ import edu.macalester.graphics.CanvasWindow;
 public class RotationMovement extends StandardMovement{
     private boolean facingLeft, facingRight, facingUp, facingDown;
     
-    public RotationMovement(Vector2D positionVector, CanvasWindow canvas){
-        super(positionVector, canvas);
-    }
-
-    public boolean facingUp(){
-        return facingUp;
-    }
-
-    public boolean facingDown(){
-        return facingDown;
-    }
-
-    public boolean facingLeft(){
-        return facingLeft;
-    }
-
-    public boolean facingRight(){
-        return facingRight;
+    public RotationMovement(Vector2D positionVector, CanvasWindow canvas, TileManager tileManager){
+        super(positionVector, canvas, tileManager);
     }
 
     @Override

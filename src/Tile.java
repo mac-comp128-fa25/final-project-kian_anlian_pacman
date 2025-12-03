@@ -10,8 +10,8 @@ public class Tile implements GameObject{
     private Rectangle tileShape;
     private CanvasWindow canvas;
     private Vector2D positionVector;
-    private Color defaultTileColor = Color.DARK_GRAY;
-    private Color wallTileColor = Color.LIGHT_GRAY;
+    public static final Color DEFAULT_COLOR = Color.DARK_GRAY;
+    public static final Color WALL_COLOR = Color.LIGHT_GRAY;
     private int pacManSize;
     private int tileSize;
     private static final int SIZE_SCALE = 16;
@@ -65,7 +65,7 @@ public class Tile implements GameObject{
     }
 
     public void addWall() {
-        tileShape.setFillColor(wallTileColor);
+        tileShape.setFillColor(WALL_COLOR);
     }
 
     public void addPellet() {
@@ -85,7 +85,7 @@ public class Tile implements GameObject{
         }
 
         if (isDefault || hasPellet){
-            tileShape.setFillColor(defaultTileColor);
+            tileShape.setFillColor(DEFAULT_COLOR);
         }
 
         addToCanvas();
@@ -94,10 +94,6 @@ public class Tile implements GameObject{
             addPellet();
         }
 
-    }
-
-    public boolean isLegal(){
-        return ((isDefault || hasPellet) && !isWall);
     }
 
     public boolean isDefault(){
@@ -112,20 +108,11 @@ public class Tile implements GameObject{
         return hasPellet;
     }
 
-    @Override
-    public GraphicsObject getObjectShape() {
-        return tileShape;
-    }
-
     public Vector2D getCenterVector(){
         double centerX = tileShape.getCenter().getX();
         double centerY = tileShape.getCenter().getY();
 
         return new Vector2D (centerX, centerY);
-    }
-
-    public Movement getMovement(){
-        return null;
     }
 
     @Override
@@ -136,6 +123,11 @@ public class Tile implements GameObject{
     @Override
     public void removeFromCanvas() {
         canvas.remove(tileShape);
+    }
+
+     @Override
+    public GraphicsObject getObjectShape() {
+        return tileShape;
     }
 
     @Override

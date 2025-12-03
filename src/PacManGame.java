@@ -28,7 +28,7 @@ public class PacManGame {
 
     public void createGameObjects(){ //All the references are tied together here so the order matters
         pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
-        pacManMovement = new RotationMovement(pacManPositionVector, canvas);
+        pacManMovement = new RotationMovement(pacManPositionVector, canvas, tileManager);
 
         pacMan = new PacMan(pacManPositionVector, canvas);
         pacManMovement.setShape(pacMan.getObjectShape());

@@ -1,9 +1,9 @@
 import edu.macalester.graphics.CanvasWindow;
 
 public class HitCircle extends CircleShape{
-  
-    public HitCircle(Vector2D positionVector, CanvasWindow canvas, Movement movement) {
-        super(positionVector, canvas);
+
+    public HitCircle(Vector2D positionVector, CanvasWindow canvas, Movement movement, TileManager tileManager) {
+        super(positionVector, canvas, tileManager);
         movement.setShape(getObjectShape());
     }
 

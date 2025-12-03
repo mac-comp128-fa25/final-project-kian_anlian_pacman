@@ -11,29 +11,32 @@ public class StandardMovement implements Movement{
     private Vector2D hitCirclePosVector;
     private double offsetX = 18;
     private double offsetY = 20;
-    private boolean facingUp, facingDown, facingLeft, facingRight;
     
-    public StandardMovement(Vector2D positionVector, CanvasWindow canvas) {
+    public StandardMovement(Vector2D positionVector, CanvasWindow canvas, TileManager tileManager) {
         this.positionVector = positionVector;
         hitCirclePosVector = new Vector2D(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
-        hitCircle = new HitCircle(hitCirclePosVector, canvas, this);
+        hitCircle = new HitCircle(hitCirclePosVector, canvas, this, tileManager);
         hitCircleShape = hitCircle.getObjectShape();
     }
 
-    public boolean getFacingUp(){
-        return facingUp;
+    public boolean hitCircleTopCollision(){
+        if (hitCircle.topTileCollision()) return true;
+        return false;
     }
 
-    public boolean getFacingDown(){
-        return facingDown;
+    public boolean hitCircleBottomCollision(){
+        if (hitCircle.bottomTileCollision()) return true;
+        return false;
     }
 
-    public boolean getFacingLeft(){
-        return facingLeft;
+    public boolean hitCircleLeftCollision(){
+        if (hitCircle.leftTileCollision()) return true;
+        return false;
     }
 
-    public boolean getFacingRight(){
-        return facingRight;
+    public boolean hitCircleRightCollision(){
+        if (hitCircle.rightTileCollision()) return true;
+        return false;
     }
 
     public HitCircle getHitCircle() {
@@ -49,10 +52,6 @@ public class StandardMovement implements Movement{
     }
 
     public void moveUp() {
-        facingUp = true;
-        facingLeft = false;
-        facingRight = false;
-        facingDown = false;
         velocityVector.set(0,velVectorComponent);
         positionVector.add(velocityVector.getVX(),velocityVector.getVY()); //move 0 units right and 5 units up every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
@@ -60,10 +59,6 @@ public class StandardMovement implements Movement{
     }
 
     public void moveDown() {
-        facingDown = true;
-        facingLeft = false;
-        facingUp = false;
-        facingRight = false;
         velocityVector.set(0,velVectorComponent);
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); //move 0 units right and 5 units down every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
@@ -71,10 +66,6 @@ public class StandardMovement implements Movement{
     }
 
     public void moveLeft() {
-        facingUp = false;
-        facingDown = false;
-        facingRight = false;
-        facingLeft = true;
         velocityVector.set(velVectorComponent,0);
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); 
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
@@ -82,23 +73,9 @@ public class StandardMovement implements Movement{
     }
 
     public void moveRight() {
-        facingRight = true;
-        facingLeft = false;
-        facingUp = false;
-        facingDown = false;
         velocityVector.set(velVectorComponent,0);
         positionVector.add(velocityVector.getVX(), velocityVector.getVY());
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
     }
-
-    public void stop(){
-        velocityVector.set(0,0);
-    }
-
-    public void collisionBuffer(double xBuffer, double yBuffer){
-        positionVector.subtract(xBuffer, yBuffer);
-        objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
-    }
-
 }

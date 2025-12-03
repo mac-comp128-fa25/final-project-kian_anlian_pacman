@@ -15,7 +15,6 @@ import edu.macalester.graphics.CanvasWindow;
 public class TileManager{
     private CanvasWindow canvas;
     private PacMan pacMan;
-    private GhostManager ghostManager;
     private int pacManSize;
     private int pelletsEaten = 0;
     private int totalPellets = 0;
@@ -105,17 +104,10 @@ public class TileManager{
     }
 
     public Tile getTile(int column, int row){
-        // System.out.println("ABOVE TILE --  COLUMN: " + column + " ROW: " + (row + 1));
-        // System.out.println("BELOW TILE --  COLUMN: " + column + " ROW: " + (row - 1));
-        // System.out.println("LEFT TILE --  COLUMN: " + (column - 1) + " ROW: " + row);
-        // System.out.println("RIGHT TILE --  COLUMN: " + (column + 1) + " ROW: " + row);
-        
-        // System.out.println("COLUMN: " + column + " ROW: " + (row) + " LEGAL: " + !tileMatrix[column][row].isWall()); //using array so 0-indexed. print for testing.. works so far.
         
         try {
             return tileMatrix[column][row];
         } catch (IndexOutOfBoundsException e) {
-            // System.out.println("TILE OUT OF BOUNDS, RETURNING NULL");
             return null; //so we dont crash when we return a tile out of the matrix's indices. 
         }
     }
@@ -149,16 +141,7 @@ public class TileManager{
     public int getTotalPellets(){
         return totalPellets;
     }
-    //TODO: Use integer division to create a 2D array. Each tile = tiles[x][y].
-    /*
-    * Use int(x/tileWidth) and int(y/tileHeight) to round (x,y) pos 
-    * into a tile in 2D mazeArray, where tileWidth and tileHeight are just how 
-    * many pixels long and wide each tile are. For now we'll just try to get
-    * grid drawn on the canvas so we can see the outline of each tile on the
-    * game map. We'll hardcode the tiles with walls inside them to be 
-    * unwalkable. All other tiles are walkable for PacMan and the Ghosts.
-    */
-
+    
     public void createTiles(){
         
         tileMatrix = new Tile [NUM_COLS][NUM_ROWS]; //[#columns][#rows]  
@@ -184,7 +167,7 @@ public class TileManager{
             }
         }
 
-        setTiles(); //causing lag on restart
+        setTiles(); //TODO: Fix: This is causing lag on restart
     }
 
     public void setTiles(){
@@ -213,5 +196,4 @@ public class TileManager{
         }
         input.close();
     }
-    
 }

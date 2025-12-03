@@ -13,7 +13,6 @@ public class KeyHandler {
     private GameObject gameObject;
     private TileManager tileManager;
     private Key pressedKey;
-    private static final int COLLISION_BUFFER = 50;
 
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
@@ -22,53 +21,20 @@ public class KeyHandler {
     }
     
     public void checkKeyPresses(){ 
-        boolean currentLegal = !tileManager.getCurrentTile(gameObject).isWall();
-        boolean facingUp = movement.getFacingUp();
-        boolean facingDown = movement.getFacingDown();
-        boolean facingLeft = movement.getFacingLeft();
-        boolean facingRight = movement.getFacingRight();
-
-        boolean upLegal = upPressed && (!facingUp || currentLegal);
-        boolean downLegal = downPressed && (!facingDown || currentLegal);
-        boolean leftLegal = leftPressed && (!facingLeft || currentLegal);
-        boolean rightLegal = rightPressed && (!facingRight || currentLegal);
-        
-        if (upLegal){
+        if (!movement.hitCircleTopCollision() && upPressed){
             movement.moveUp();
         }        
                                                                                                                                                             
-        if (downLegal){ 
+        if (!movement.hitCircleBottomCollision() && downPressed){ 
             movement.moveDown();
         }
 
-        if (leftLegal){
+        if (!movement.hitCircleLeftCollision() && leftPressed){
             movement.moveLeft();
         }
 
-        if (rightLegal){
+        if (!movement.hitCircleRightCollision() && rightPressed){
             movement.moveRight();
-        }
-
-        //Buffer so can't clip through walls by spamming opposite directions. If the player taps the direction really quickly a few times before being rubber banded they can still slide... but that's hard to do now.
-
-        if (upPressed && !currentLegal){
-            movement.collisionBuffer(0, COLLISION_BUFFER);
-            upPressed = false;
-        }
-
-        if (downPressed && !currentLegal){
-            movement.collisionBuffer(0,-COLLISION_BUFFER);
-            downPressed = false;
-        }
-
-        if (leftPressed && !currentLegal){
-            movement.collisionBuffer(-COLLISION_BUFFER,0);
-            leftPressed = false;
-        }
-
-        if (rightPressed && !currentLegal){
-            movement.collisionBuffer(COLLISION_BUFFER,0);
-            rightPressed = false;
         }
     }
 
@@ -116,5 +82,17 @@ public class KeyHandler {
             leftPressed = false;
             downPressed = false;
         }
+    }
+
+    public void enqueueDirection(){ //TODO: Implement enqueing key presses and centering in tile
+        /*
+         * Broad algorithm: Store each key press as a request to switch to that direction. 
+         * If the direction is on the same axis (i.e going from right to left) 
+         *   Execute then mark that request false: Call movement.Up() then set upRequested = false)
+         * Otherwise: 
+         *  If !movement.(hitCircleCollisionMethod) && requested
+         *      Execute and mark that request false (no else... semantically else: do nothing)
+         *  
+         */
     }
 }
