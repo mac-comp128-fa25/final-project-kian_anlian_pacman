@@ -44,7 +44,7 @@ public class PacManGame {
         ui = new UI(canvas, 3, tileManager);
         ui.initialize();
         
-        ghostManager = new GhostManager(canvas, pacManMovement, ui);
+        ghostManager = new GhostManager(canvas, pacManMovement, pacMan, ui, tileManager);
     }
 
     public void update(){ //Where we'll call all the move functions. Animates objects.

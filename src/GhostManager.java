@@ -1,10 +1,17 @@
 import java.awt.Color;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import edu.macalester.graphics.CanvasWindow;
 
 public class GhostManager{
     private CanvasWindow canvas;
     private UI ui;
     private TileManager tileManager;
+    private PacMan pacMan;
 
     //Names from original game
     private Ghost pinky; //pink ghost
@@ -25,11 +32,32 @@ public class GhostManager{
 
     private Movement[] ghostMovements = new Movement[4];
 
-    public GhostManager(CanvasWindow canvas, Movement pacManMovement, UI ui){
+    public GhostManager(CanvasWindow canvas, Movement pacManMovement, PacMan pacMan, UI ui, TileManager tileManager){
+        this.tileManager = tileManager;
         this.canvas = canvas;
         this.ui = ui;
         this.pacManMovement = pacManMovement;
+        this.pacMan = pacMan;
         spawnGhosts();
+    }
+
+    public void ghostChase(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){
+        Queue<Tile> tileQueue = new ArrayDeque<>();
+        List<Tile> visitedTiles = new LinkedList<>();
+        Tile startingTile = tileManager.getCurrentTile(pinky);
+        tileQueue.add(startingTile);
+        
+        while(!tileQueue.isEmpty()) {
+            Tile currentTile = tileQueue.poll();
+            if (currentTile == tileManager.getCurrentTile(pacMan)) {
+                return;
+            }
+            visitedTiles.add(currentTile);
+            List<Tile> adjacentTiles = adjacencyList.get(currentTile);
+            for (Tile tile : adjacentTiles) {
+                tileQueue.add(tile);
+            }
+        }
     }
 
     public void spawnGhosts() { //Spawn @ 4 cornerns, 50 x and y units away from each corner

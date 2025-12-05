@@ -75,6 +75,7 @@ public class UI {
       canvas.add(restartButton);  
       restartButton.onClick(() -> {
            canvas.remove(restartButton);
+        //    canvas.removeAll(); //remember to fix lag bc draws twice
            resetTileMatrix();
            createLifeIndicators();
            initialize();
@@ -104,6 +105,7 @@ public class UI {
         if (lifeCount == 0 || tileManager.getPelletsEaten() == tileManager.getTotalPellets()) {
             PacManGame.gameOver();
             createRestartButton();
+
         }
         score = tileManager.getPelletsEaten() * 20;
         scoreText.setText("Score : " + score);

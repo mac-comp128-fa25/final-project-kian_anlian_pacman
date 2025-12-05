@@ -7,6 +7,7 @@ import java.util.Scanner;
 import edu.macalester.graphics.CanvasWindow;
 
 public class TileManager{
+    private HashMap<Tile,List<Tile>> adjacencyList;
     private CanvasWindow canvas;
     private PacMan pacMan;
     private int pacManSize;
@@ -14,9 +15,8 @@ public class TileManager{
     private int totalPellets = 0;
     private static final int TILE_SIZE = 80;
     private Tile[][] tileMatrix;
-    private HashMap<Tile,List<Tile>> adjacencyList;
-    private static final int NUM_COLS = 19;
-    private static final int NUM_ROWS = 10;
+    public static final int NUM_COLS = 19; //public for access in GhostManager
+    public static final int NUM_ROWS = 10;
 
     public TileManager(CanvasWindow canvas, PacMan pacMan){
         this.canvas = canvas;
@@ -26,6 +26,10 @@ public class TileManager{
         createTiles();
     }
 
+    public Tile[][] getTileMatrix(){
+        return tileMatrix;
+    }
+
     public Tile getCurrentTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);
@@ -33,39 +37,13 @@ public class TileManager{
         return getTile(column, row);
     }
 
-    public Tile getLeftTile(GameObject gameObject){
-        int column = getColumn(gameObject);
-        int row = getRow(gameObject);
-        Tile leftTile = getTile(column - 1, row);
+    public Tile getTile(int column, int row){
         
-        if (leftTile != null) return leftTile;
-        else return getCurrentTile(gameObject);
-    }
-
-    public Tile getRightTile(GameObject gameObject){
-        int column = getColumn(gameObject);
-        int row = getRow(gameObject);
-        Tile rightTile = getTile(column + 1, row);
-        
-        if (rightTile != null) return rightTile;
-        else return getCurrentTile(gameObject);
-    }
-
-    public Tile getAboveTile(GameObject gameObject){
-        int column = getColumn(gameObject);
-        int row = getRow(gameObject);
-        Tile aboveTile = getTile(column , row - 1); //ABOVE IS ROW - 1 prev reversed
-        if (aboveTile != null) return aboveTile;
-        else return getCurrentTile(gameObject);
-    }
-
-    public Tile getBelowTile(GameObject gameObject){
-        int column = getColumn(gameObject);
-        int row = getRow(gameObject);
-        Tile belowTile = getTile(column, row + 1); //BELOW IS ROW + 1 prev reversed
-        
-        if (belowTile != null) return belowTile;
-        else return getCurrentTile(gameObject);
+        try {
+            return tileMatrix[column][row];
+        } catch (IndexOutOfBoundsException e) {
+            return null; //so we dont crash when we return a tile out of the matrix's indices. 
+        }
     }
 
     public int getColumn(GameObject gameObject){
@@ -78,49 +56,6 @@ public class TileManager{
 
     public List<Tile> getAdjacentTiles(Tile tile){ //returns adjacency list bc we have a sparse graph
         return adjacencyList.get(tile);
-    }
-
-    public Tile[][] getTileMatrix(){
-        return tileMatrix;
-    }
-
-    public Tile getTile(int column, int row){
-        
-        try {
-            return tileMatrix[column][row];
-        } catch (IndexOutOfBoundsException e) {
-            return null; //so we dont crash when we return a tile out of the matrix's indices. 
-        }
-    }
-
-    public void handlePellets(GhostManager ghostManager) { 
-
-        for (Tile[] columnOfTiles : tileMatrix){ //columns
-            for (Tile tile : columnOfTiles){ //rows
-                if (tile.hasFoodPellet() && pacMan.intersects(tile)){
-                    tile.setDefault();
-                    ghostManager.topLayer();
-                    pacMan.addToCanvas();
-                    pelletsEaten++;
-                }
-            }
-        }
-    } 
-    
-    public void resetPelletsEaten(){
-        pelletsEaten = 0;
-    }
-
-    public void resetTotalPellets(){
-        totalPellets = 0;
-    }
-
-    public int getPelletsEaten(){
-        return pelletsEaten;
-    }
-
-    public int getTotalPellets(){
-        return totalPellets;
     }
     
     public void createTiles(){
@@ -153,6 +88,8 @@ public class TileManager{
     }
 
     public void createAdjacencyList() { //creates HashMap of Tile keys and TileAdjacencyList values
+        
+        
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 
@@ -164,15 +101,14 @@ public class TileManager{
                 nearTiles.add(getTile(j+1, i));
                 nearTiles.add(getTile(j, i+1));
                 nearTiles.add(getTile(j, i-1));
-                
-                for (int nearTile = 0; nearTile < nearTiles.size(); nearTile ++) {
-                    for (Tile tile : nearTiles){
-                        if (tile == null || tile.isWall()){
-                            continue;
-                        }
-                        listOfAdjacentTiles.add(tile);
+            
+                for (Tile tile : nearTiles){
+                    if (tile == null || tile.isWall()){
+                        continue;
                     }
+                    listOfAdjacentTiles.add(tile);
                 }
+            
                 adjacencyList.put(currentTile, listOfAdjacentTiles);
             }
         }
@@ -203,5 +139,35 @@ public class TileManager{
             }
         }
         input.close();
+    }
+
+    public void handlePellets(GhostManager ghostManager) { 
+
+        for (Tile[] columnOfTiles : tileMatrix){ //columns
+            for (Tile tile : columnOfTiles){ //rows
+                if (tile.hasFoodPellet() && pacMan.intersects(tile)){
+                    tile.setDefault();
+                    ghostManager.topLayer();
+                    pacMan.addToCanvas();
+                    pelletsEaten++;
+                }
+            }
+        }
+    } 
+    
+    public void resetPelletsEaten(){
+        pelletsEaten = 0;
+    }
+
+    public void resetTotalPellets(){
+        totalPellets = 0;
+    }
+
+    public int getPelletsEaten(){
+        return pelletsEaten;
+    }
+
+    public int getTotalPellets(){
+        return totalPellets;
     }
 }

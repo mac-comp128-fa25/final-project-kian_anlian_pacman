@@ -22,7 +22,6 @@ public class KeyHandler {
     }
     
     public void checkKeyPresses(){ 
-        
         if (!movement.hitCircleTopCollision() && upPressed){
             movement.moveUp();
         }
