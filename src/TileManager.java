@@ -30,6 +30,10 @@ public class TileManager{
         return tileMatrix;
     }
 
+    public HashMap<Tile,List<Tile>> getAdjacencyMap(){
+        return adjacencyList;
+    }
+
     public Tile getCurrentTile(GameObject gameObject){
         int column = getColumn(gameObject);
         int row = getRow(gameObject);

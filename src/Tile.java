@@ -4,10 +4,13 @@ import edu.macalester.graphics.Rectangle;
 import java.awt.Color;
 
 public class Tile implements GameObject{
-    private Boolean isWall = false;
-    private Boolean hasPellet = false;
-    private Boolean isDefault = false;
+    private boolean isWall = false;
+    private boolean hasPellet = false;
+    private boolean isDefault = false;
+    private boolean onFinalPath = false;
+    private boolean explored = false;
     private Rectangle tileShape;
+    private Tile previous;
     private CanvasWindow canvas;
     private Vector2D positionVector;
     public static final Color DEFAULT_COLOR = Color.DARK_GRAY;
@@ -22,6 +25,7 @@ public class Tile implements GameObject{
         this.positionVector = positionVector;
         this.canvas = canvas;
         this.pacManSize = pacManSize;
+        previous = null;
         scaleToPacMan();
         tileShape = new Rectangle(positionVector.getVX(), positionVector.getVY(), tileSize,  tileSize);
         handleTileType();
@@ -50,6 +54,30 @@ public class Tile implements GameObject{
         isWall = false;
         isDefault = false;
         handleTileType();
+    }
+
+    public boolean isExplored(){
+        return explored;
+    }
+
+    public void setExplored(boolean explored){
+        this.explored = explored;
+    }
+
+    public void setOnFinalPath(boolean onFinalPath){
+        this.onFinalPath = true;
+    }
+
+    public boolean isOnFinalPath(){
+        return onFinalPath;
+    }
+
+    public Tile getPrevious(){
+        return previous;
+    }
+
+    public void setPrevious(Tile previous){
+        this.previous = previous;
     }
 
     public void colorTile(Color color){

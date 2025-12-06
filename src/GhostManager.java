@@ -1,9 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import edu.macalester.graphics.CanvasWindow;
 
@@ -41,23 +40,35 @@ public class GhostManager{
         spawnGhosts();
     }
 
-    public void ghostChase(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){
-        Queue<Tile> tileQueue = new ArrayDeque<>();
-        List<Tile> visitedTiles = new LinkedList<>();
+    public void findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){ //adapted code from the maze activity just like we did for the file reading method
+        Deque<Tile> tileQueue = new ArrayDeque<>();
         Tile startingTile = tileManager.getCurrentTile(pinky);
         tileQueue.add(startingTile);
-        
-        while(!tileQueue.isEmpty()) {
-            Tile currentTile = tileQueue.poll();
+
+        while(!tileQueue.isEmpty()){
+            Tile currentTile = tileQueue.poll(); //dequeue operation
+            
             if (currentTile == tileManager.getCurrentTile(pacMan)) {
                 return;
             }
-            visitedTiles.add(currentTile);
+            
             List<Tile> adjacentTiles = adjacencyList.get(currentTile);
+            
             for (Tile tile : adjacentTiles) {
-                tileQueue.add(tile);
+                double adjDistance = tile.getCenterVector().distance(pacMan.getCenterVecter());
+                double curDistanceToPac = currentTile.getCenterVector().distance(pacMan.getCenterVecter());
+
+                boolean adjExplored = tile.isExplored();
+                boolean alreadyQueued = tileQueue.contains(tile);
+                
+                if ((adjDistance < curDistanceToPac) && !(adjExplored || alreadyQueued)){
+                    tile.setPrevious(currentTile); //not sure what to do w/ this yet... increment some tile count variable?
+                    tileQueue.add(tile);
+                }
+                currentTile.setExplored(true);
+                currentTile.colorTile(Color.GREEN);
             }
-        }
+        } 
     }
 
     public void spawnGhosts() { //Spawn @ 4 cornerns, 50 x and y units away from each corner

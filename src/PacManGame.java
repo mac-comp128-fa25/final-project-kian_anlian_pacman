@@ -54,6 +54,7 @@ public class PacManGame {
             handleCollisions();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
+            ghostManager.findShortestPath(pacMan, tileManager.getAdjacencyMap());
         }
     });
     }

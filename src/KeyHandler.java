@@ -44,13 +44,13 @@ public class KeyHandler {
      * Visual way during gameplay to make sure tiles being set legal/illegal correctly and paths being created correctly.
      */
     public void visualizePaths(){ 
-        tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN);
+        // tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN);
         
         List<Tile>  tileList = tileManager.getAdjacentTiles(tileManager.getCurrentTile(gameObject));
         
-        for (Tile tile : tileList){
-            tile.colorTile(Color.GREEN);
-        }
+        // for (Tile tile : tileList){
+        //     tile.colorTile(Color.GREEN);
+        // }
     }
 
     public void keyPressed(KeyboardEvent event){ 
