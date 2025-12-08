@@ -3,6 +3,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
 import edu.macalester.graphics.CanvasWindow;
 
@@ -40,35 +42,50 @@ public class GhostManager{
         spawnGhosts();
     }
 
-    public void findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){ //adapted code from the maze activity just like we did for the file reading method
-        Deque<Tile> tileQueue = new ArrayDeque<>();
+    public Deque<Tile> findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){ //adapted code from the maze activity just like we did for the file reading method
         Tile startingTile = tileManager.getCurrentTile(pinky);
+        Queue<Tile> tileQueue = new ArrayDeque<Tile>();
+        Deque<Tile> finalPathStack = new ArrayDeque<Tile>();
+        
         tileQueue.add(startingTile);
-
+        
         while(!tileQueue.isEmpty()){
             Tile currentTile = tileQueue.poll(); //dequeue operation
             
             if (currentTile == tileManager.getCurrentTile(pacMan)) {
-                return;
+                findPreviousTileRecursive(currentTile, finalPathStack);
+                
+                for (Tile tile : finalPathStack){
+                    tile.colorTile(Color.GREEN);
+                }
+                break;
             }
             
             List<Tile> adjacentTiles = adjacencyList.get(currentTile);
             
             for (Tile tile : adjacentTiles) {
-                double adjDistance = tile.getCenterVector().distance(pacMan.getCenterVecter());
-                double curDistanceToPac = currentTile.getCenterVector().distance(pacMan.getCenterVecter());
-
                 boolean adjExplored = tile.isExplored();
                 boolean alreadyQueued = tileQueue.contains(tile);
                 
-                if ((adjDistance < curDistanceToPac) && !(adjExplored || alreadyQueued)){
+                if (!(adjExplored || alreadyQueued)){
                     tile.setPrevious(currentTile); //not sure what to do w/ this yet... increment some tile count variable?
                     tileQueue.add(tile);
                 }
                 currentTile.setExplored(true);
-                currentTile.colorTile(Color.GREEN);
             }
-        } 
+        }
+        return finalPathStack;
+    }
+
+
+    private void findPreviousTileRecursive(Tile tile, Deque<Tile> finalPathStack) {
+        if (tile == tileManager.getCurrentTile(pinky)) {
+            return;
+        }
+        else {
+            findPreviousTileRecursive(tile.getPrevious(), finalPathStack);
+        }
+        finalPathStack.push(tile);
     }
 
     public void spawnGhosts() { //Spawn @ 4 cornerns, 50 x and y units away from each corner
