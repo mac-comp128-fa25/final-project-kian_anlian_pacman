@@ -4,8 +4,6 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
-
 import edu.macalester.graphics.CanvasWindow;
 
 public class GhostManager{
@@ -42,10 +40,10 @@ public class GhostManager{
         spawnGhosts();
     }
 
-    public Deque<Tile> findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){ //adapted code from the maze activity just like we did for the file reading method
-        Tile startingTile = tileManager.getCurrentTile(pinky);
+    public Deque<Tile> findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){
         Queue<Tile> tileQueue = new ArrayDeque<Tile>();
         Deque<Tile> finalPathStack = new ArrayDeque<Tile>();
+        Tile startingTile = tileManager.getCurrentTile(pinky);
         
         tileQueue.add(startingTile);
         
@@ -53,12 +51,11 @@ public class GhostManager{
             Tile currentTile = tileQueue.poll(); //dequeue operation
             
             if (currentTile == tileManager.getCurrentTile(pacMan)) {
-                findPreviousTileRecursive(currentTile, finalPathStack);
-                
+                finalPathStack = findPreviousTileRecursive(currentTile, finalPathStack);
+ 
                 for (Tile tile : finalPathStack){
                     tile.colorTile(Color.GREEN);
                 }
-                break;
             }
             
             List<Tile> adjacentTiles = adjacencyList.get(currentTile);
@@ -68,7 +65,7 @@ public class GhostManager{
                 boolean alreadyQueued = tileQueue.contains(tile);
                 
                 if (!(adjExplored || alreadyQueued)){
-                    tile.setPrevious(currentTile); //not sure what to do w/ this yet... increment some tile count variable?
+                    tile.setPrevious(currentTile); 
                     tileQueue.add(tile);
                 }
                 currentTile.setExplored(true);
@@ -78,14 +75,13 @@ public class GhostManager{
     }
 
 
-    private void findPreviousTileRecursive(Tile tile, Deque<Tile> finalPathStack) {
+    private Deque<Tile> findPreviousTileRecursive(Tile tile, Deque<Tile> finalPathStack) {
         if (tile == tileManager.getCurrentTile(pinky)) {
-            return;
+            return null; //we dont want the ghost's current tile on the path
         }
-        else {
-            findPreviousTileRecursive(tile.getPrevious(), finalPathStack);
-        }
+        findPreviousTileRecursive(tile.getPrevious(), finalPathStack);
         finalPathStack.push(tile);
+        return finalPathStack;
     }
 
     public void spawnGhosts() { //Spawn @ 4 cornerns, 50 x and y units away from each corner

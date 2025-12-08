@@ -76,6 +76,11 @@ public class Tile implements GameObject{
         return previous;
     }
 
+    public boolean hasPrevious(){
+        if( previous != null)return true;
+        return false;
+    }
+
     public void setPrevious(Tile previous){
         this.previous = previous;
     }
