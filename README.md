@@ -2,7 +2,7 @@
 
 Developed by Kian Naeimi and AnLian Krishnamurthy 
 
-## Project Description and Expected Functionality
+## 1.   Project Description and Expected Functionality
 Our goal is to recreate the original Pac-Man and its core features using only the libraries/frameworks we’re already familiar with from this course. 			       
 
 We had a lot to juggle: 
@@ -17,13 +17,22 @@ We had a lot to juggle:
 
 But in the end, our implementation of the game works like we hoped. The player is able to play as many rounds of the game as they want without closing the program (we have a restart button!) and running the code again. 
 
+
+
+
+
 ## 1.1   Expected Functionality
-The user runs the code, and is prompted to start the game
-The map loads with the walls, pellets, ghosts, and Pac-Man
-The user can only use the arrow keys to move, and once he moves, the ghosts begin their movement patterns
-As the user moves Pac-Man across tiles that aren’t walls, every pellet he collects by going over them increases his score. Once the pellets are connected, they disappear, and if Pac-Man eats all of the pellets, he wins the game. While moving, if Pac-Man collides with a wall, he stops moving until the user switches their direction
-If Pac-Man at any point collides with the ghosts, a life is lost and Pac-Man is reset to the center, while the ghosts are reset to their respective corners. If Pac-Man loses all his lives, he loses the game
-In the case of Pac-Man winning or losing, the user is prompted to restart the game, and everything is reset to normal
+The user runs the code, and is prompted to start the game <br>
+The map loads with the walls, pellets, ghosts, and Pac-Man <br>
+The user can only use the arrow keys to move, and once he moves, the ghosts begin their movement patterns <br>
+As the user moves Pac-Man across tiles that aren’t walls, every pellet he collects by going over them increases his score. Once the pellets are connected, they disappear, and if Pac-Man eats all of the pellets, he wins the game.<br>
+While moving, if Pac-Man collides with a wall, he stops moving until the user switches their direction <br>
+If Pac-Man at any point collides with the ghosts, a life is lost and Pac-Man is reset to the center, while the ghosts are reset to their respective corners. <br>
+If Pac-Man loses all his lives, he loses the game <br>
+In the case of Pac-Man winning or losing, the user is prompted to restart the game, and everything is reset to normal<br>
+
+
+
 
 ## 1.2   Implementation Details
 
@@ -33,10 +42,14 @@ Interfaces: Pac-Man and the Ghosts all had to be able to move, manage collision 
 
 Managers: Our GhostManager and TileManager classes abstract away the complex algorithms from the Tile and Ghost classes, so they just have to worry about their own creation.. The managers also allow clean method calls in the main class that have a clear purpose. 
 
-## Data Structure Choice
+## 2.   Data Structure Choice
+
+
 
 
 ## 2.1	Storing Adjacent Tiles
+
+
 
 
 ## Our Approach: Adjacency List HashMap
@@ -45,6 +58,8 @@ We created an Adjacency List as a Hash Map, where the keys are tiles in the map,
 
 
 ## 2.2  Storing the Map
+
+
 
 
 ## Our Approach: 2D Array
@@ -62,6 +77,8 @@ Our createAdjacencyList() method itself, which filled the adjacencyList HashMap 
 ## 2.3  Ghost Search Algorithm
 
 
+
+
 ## Our Naive Approach: 
 
 Originally, we adapted our main search algorithm from the code of one of the in-class maze activities, but we quickly ran into problems. First of all, we didn’t want to give a Ghost a LinkedList of ALL tiles leading from them to Pac-Man, which our original BFS did. 
@@ -77,6 +94,8 @@ Another option that a preceptor (Lucy!) had suggested was getting rid of the dis
 ## 3.  Bugs and Incomplete Features
 	
 
+
+
 ## 3.1 Automatic Player Centering & Queueing Intended Directions
 	
 Currently, we have no algorithm in place to keep the player in the center of a given path/tile. This means that depending on the response time of the player, gameplay could be unintendedly challenging. One feature that could help is the player being able to queue intended directions before they reach an intersection, but this was another idea scrapped due to time constraints. 
@@ -85,6 +104,8 @@ Currently, we have no algorithm in place to keep the player in the center of a g
 ## 3.2 Unstable Framerate On Restart
 		
 Whenever the player either wins the game by eating every pellet, or loses by being caught by a ghost three times, we allow the player to restart via a Button that pops up. Because all tiles need to be reset to their initial states like mentioned earlier, we read the matrix text file again and call the setTiles() method. Every time a player restarts, we lose ≈ 10 frames (i.e suppose we start at a stable 60 FPS… after 3 resets we’re at a variable 30 FPS). We plan on addressing this bug sometime after we have a functional build but before the 15th. 
+
+
 
 
 
