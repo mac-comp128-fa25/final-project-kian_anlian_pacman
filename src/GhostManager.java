@@ -52,10 +52,7 @@ public class GhostManager{
             
             if (currentTile == tileManager.getCurrentTile(pacMan)) {
                 finalPathStack = findPreviousTileRecursive(currentTile, finalPathStack);
- 
-                for (Tile tile : finalPathStack){
-                    tile.colorTile(Color.GREEN);
-                }
+                findPreviousTileRecursive(currentTile, finalPathStack);
             }
             
             List<Tile> adjacentTiles = adjacencyList.get(currentTile);
@@ -79,8 +76,12 @@ public class GhostManager{
         if (tile == tileManager.getCurrentTile(pinky)) {
             return null; //we dont want the ghost's current tile on the path
         }
-        findPreviousTileRecursive(tile.getPrevious(), finalPathStack);
         finalPathStack.push(tile);
+        findPreviousTileRecursive(tile.getPrevious(), finalPathStack);
+        
+        for (Tile pathTile : finalPathStack){
+            pathTile.colorTile(Color.GREEN);
+        }
         return finalPathStack;
     }
 
