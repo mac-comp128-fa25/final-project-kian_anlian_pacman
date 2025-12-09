@@ -7,14 +7,15 @@ Our goal is to recreate the original Pac-Man and its core features using only th
 
 We had a lot to juggle: 
 
--Pac-Man and the Ghosts moving as expected
--Wall tile collisions working as expected (stopping the player)
--Pac-Man - Ghost collisions resulting in a lost life 
--Ghosts chasing Pac-Man
--Visual life indicators 
--Real-time score
--And a game-map that could be dynamically created through arbitrary arrangements of a matrix text file.
--But in the end, our implementation of the game works like we hoped. The player is able to play as many rounds of the -game as they want without closing the program (we have a restart button!) and running the code again. 
+-Pac-Man and the Ghosts moving as expected <br>
+-Wall tile collisions working as expected (stopping the player) <br>
+-Pac-Man - Ghost collisions resulting in a lost life <br>
+-Ghosts chasing Pac-Man <br>
+-Visual life indicators <br>
+-Real-time score <br>
+-And a game-map that could be dynamically created through arbitrary arrangements of a matrix text file. <br>
+
+But in the end, our implementation of the game works like we hoped. The player is able to play as many rounds of the game as they want without closing the program (we have a restart button!) and running the code again. 
 
 ## 1.1   Expected Functionality
 The user runs the code, and is prompted to start the game
