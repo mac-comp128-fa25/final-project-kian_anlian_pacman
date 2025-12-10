@@ -184,6 +184,11 @@ public class GhostManager{
         inkyMovement = new StandardMovement(inkyPositionVector, canvas);
         clydeMovement = new StandardMovement(clydePositionVector, canvas);
 
+        pinkyMovement.setSpeed(3.05);
+        blinkyMovement.setSpeed(1.5);
+        inkyMovement.setSpeed(2);
+        clydeMovement.setSpeed(2.5);
+        
         ghostMovements[0] = pinkyMovement;
         ghostMovements[1] = blinkyMovement;
         ghostMovements[2] = inkyMovement;

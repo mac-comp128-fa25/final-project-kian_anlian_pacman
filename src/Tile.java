@@ -7,7 +7,6 @@ public class Tile implements GameObject{
     private boolean isWall = false;
     private boolean hasPellet = false;
     private boolean isDefault = false;
-    private boolean onFinalPath = false;
     private boolean explored = false;
     private Rectangle tileShape;
     private Tile previous;
@@ -64,21 +63,8 @@ public class Tile implements GameObject{
         this.explored = explored;
     }
 
-    public void setOnFinalPath(boolean onFinalPath){
-        this.onFinalPath = true;
-    }
-
-    public boolean isOnFinalPath(){
-        return onFinalPath;
-    }
-
     public Tile getPrevious(){
         return previous;
-    }
-
-    public boolean hasPrevious(){
-        if( previous != null)return true;
-        return false;
     }
 
     public void setPrevious(Tile previous){

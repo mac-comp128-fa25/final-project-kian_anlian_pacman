@@ -6,11 +6,12 @@ public interface Movement {
     void moveLeft();
     void moveRight();
     void setShape(GraphicsObject objectShape);
+    void setTileManager(TileManager tileManager);
+    void setSpeed(double velVectorComponent);
     
     HitCircle getHitCircle(); //TODO: During final refactor stage extract Collider inteface
     boolean hitCircleTopCollision();
     boolean hitCircleBottomCollision();
     boolean hitCircleLeftCollision();
     boolean hitCircleRightCollision();
-    void setTileManager(TileManager tileManager);
 }
