@@ -42,10 +42,11 @@ public class PacManGame {
         
         pacMan.addToCanvas(); //we want pac-man and ui to be top elements
         
-        ui = new UI(canvas, 3, tileManager);
+        ui = new UI(canvas, 3, tileManager, pacMan);
         ui.initialize();
         
         ghostManager = new GhostManager(canvas, pacManMovement, pacMan, ui, tileManager);
+        ui.setGhostManager(ghostManager);
     }
 
     public void update(){ //Where we'll call all the move functions. Animates objects.
@@ -63,6 +64,7 @@ public class PacManGame {
    public void handleCollisions(){
         if (ghostManager.ghostCollision()) {
             pacMan.respawn();
+            ghostManager.respawnGhosts();
             canvas.pause(1000);  //so the player has a second to breathe (literally)
         }
     }

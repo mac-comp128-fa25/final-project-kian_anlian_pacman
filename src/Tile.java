@@ -90,7 +90,7 @@ public class Tile implements GameObject{
     }
 
     public void scaleToPacMan(){
-        tileSize = pacManSize * SIZE_SCALE; //tileSize is 80 currently
+        tileSize = pacManSize * SIZE_SCALE; 
     }
     
     public int size(){
@@ -108,7 +108,6 @@ public class Tile implements GameObject{
     }
 
     public void handleTileType(){
-        
         if (isWall && hasPellet || !isWall && !hasPellet){ //back off to default on edge cases
             isDefault = true;
         }
@@ -126,7 +125,6 @@ public class Tile implements GameObject{
         if (hasPellet){
             addPellet();
         }
-
     }
 
     public boolean isDefault(){

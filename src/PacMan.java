@@ -1,4 +1,3 @@
-
 import edu.macalester.graphics.CanvasWindow;
 
 public class PacMan extends PacManShape{

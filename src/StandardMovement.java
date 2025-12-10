@@ -16,7 +16,6 @@ public class StandardMovement implements Movement{
     // private Move nextMove = null;
     // private Move currentMove = null;
 
-    
     public StandardMovement(Vector2D positionVector, CanvasWindow canvas) {
         this.positionVector = positionVector;
         hitCirclePosVector = new Vector2D(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);

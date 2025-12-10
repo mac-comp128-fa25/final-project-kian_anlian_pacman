@@ -8,13 +8,19 @@ public class Ghost implements GameObject{
     private CanvasWindow canvas;
     private Vector2D positionVector;
     private Movement movement;
+    private Color color;
 
     public Ghost (Vector2D positionVector, CanvasWindow canvas, Movement movement, Color color){
         this.canvas = canvas;
         this.positionVector = positionVector;
         this.movement = movement;
+        this.color = color;
         createGhost(color);
         addToCanvas();
+    }
+
+    public Color getColor(){ //for respawning in GhostManager
+        return color;
     }
 
     @Override

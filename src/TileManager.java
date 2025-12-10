@@ -1,4 +1,3 @@
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -58,13 +57,13 @@ public class TileManager{
         return (int) (gameObject.getYPosition() / TILE_SIZE);
     }
 
-    public List<Tile> getAdjacentTiles(Tile tile){ //returns adjacency list bc we have a sparse graph
+    public List<Tile> getAdjacentTiles(Tile tile){
         return adjacencyList.get(tile);
     }
     
     public void createTiles(){
         
-        tileMatrix = new Tile [NUM_COLS][NUM_ROWS]; //[#columns][#rows]  
+        tileMatrix = new Tile [NUM_COLS][NUM_ROWS];
         
         Vector2D tilePosVector = new Vector2D(0,0);
         
@@ -91,9 +90,7 @@ public class TileManager{
         createAdjacencyList();
     }
 
-    public void createAdjacencyList() { //creates HashMap of Tile keys and TileAdjacencyList values
-        
-        
+    public void createAdjacencyList() { //Creates HashMap of Tile keys and TileAdjacencyList values
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 
@@ -147,8 +144,8 @@ public class TileManager{
 
     public void handlePellets(GhostManager ghostManager) { 
 
-        for (Tile[] columnOfTiles : tileMatrix){ //columns
-            for (Tile tile : columnOfTiles){ //rows
+        for (Tile[] columnOfTiles : tileMatrix){
+            for (Tile tile : columnOfTiles){
                 if (tile.hasFoodPellet() && pacMan.intersects(tile)){
                     tile.setDefault();
                     ghostManager.topLayer();

@@ -41,8 +41,6 @@ public class GhostManager{
         spawnGhosts();
     }  
 
-    //TODO: Figure out why finalPathStack is null and causing crashes
-
     public Tile findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList, Ghost ghost){
         Queue<Tile> tileQueue = new ArrayDeque<Tile>();
         Deque<Tile> finalPathStack = new ArrayDeque<Tile>();
@@ -74,7 +72,10 @@ public class GhostManager{
         for (Tile tile : adjacencyList.keySet()) {
             tile.setExplored(false);
         }
-
+        
+        if (finalPathStack == null)  {
+            return tileManager.getCurrentTile(ghost);
+        }
         return finalPathStack.pop(); //first tile off the stack is all we need (the next tile for next direction)
     }
 
@@ -119,6 +120,7 @@ public class GhostManager{
         }
         finalPathStack.push(tile);
         findPreviousTileRecursive(tile.getPrevious(), finalPathStack, ghost);
+
         return finalPathStack;
     }
 
@@ -126,6 +128,13 @@ public class GhostManager{
         chooseSpawnPoints();
         createGhosts();
         linkMovement();
+    }
+
+    public void respawnGhosts(){
+        for (Ghost ghost : ghosts){
+            ghost.removeFromCanvas();
+        }
+        spawnGhosts();
     }
 
     public void chooseSpawnPoints(){//canvasWidth: 845  canvasHeight: 1540

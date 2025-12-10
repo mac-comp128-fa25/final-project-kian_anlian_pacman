@@ -43,7 +43,7 @@ public class FoodPellet implements GameObject{
         return positionVector.getVY();
     }
 
-    public void createFoodPellet(){ //Had to subtract scaled values because adding tileSize/2 wasnt centering right
+    public void createFoodPellet(){ 
         pelletShape = new Ellipse(positionVector.getVX() - padding, positionVector.getVY() - padding, sizeScalar, sizeScalar);
         pelletShape.setFillColor(Color.WHITE);
         addToCanvas();

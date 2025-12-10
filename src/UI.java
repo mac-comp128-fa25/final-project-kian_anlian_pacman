@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.FontStyle;
@@ -11,6 +10,8 @@ import edu.macalester.graphics.ui.Button;
 public class UI { 
     private CanvasWindow canvas;
     private TileManager tileManager;
+    private GhostManager ghostManager;
+    private PacMan pacMan;
     private GraphicsText fpsText = new GraphicsText("null", 50,50); //Need reference
     private static long nextSecond = System.currentTimeMillis() + 1000; //1000 ms = 1 sec
     private static int framesInLastSecond = 0;
@@ -21,10 +22,11 @@ public class UI {
     private Button restartButton;
     private GraphicsText scoreText = new GraphicsText("SCORE: " + score, 700, 40);
     
-    public UI(CanvasWindow canvas, int lifeCount, TileManager tileManager){
+    public UI(CanvasWindow canvas, int lifeCount, TileManager tileManager, PacMan pacMan){
         this.canvas = canvas;
         this.lifeCount = lifeCount;
         this.tileManager = tileManager;
+        this.pacMan = pacMan;
         createLifeIndicators();
     }
 
@@ -57,7 +59,7 @@ public class UI {
      * So we can see current FPS if we have lag spikes
      */
     public int getFPS(){
-        long currentTime = System.currentTimeMillis(); //constantly updating bc in lambda
+        long currentTime = System.currentTimeMillis(); 
         
         if (currentTime > nextSecond){ //if it's been a second, update
             nextSecond += 1000;
@@ -69,27 +71,32 @@ public class UI {
         return framesInLastSecond; //return the past second's FPS
     }
     
-    public void createRestartButton(){ //once we get canvas to pause on no lives left
+    public void createRestartButton(){ 
       restartButton = new Button("R E S T A R T ?");
       restartButton.setPosition(canvas.getWidth()/2.2,canvas.getHeight()/2.5);
       canvas.add(restartButton);  
       restartButton.onClick(() -> {
-           canvas.remove(restartButton);
-        //    canvas.removeAll(); //remember to fix lag bc draws twice
-           resetTileMatrix();
-           createLifeIndicators();
-           initialize();
-           PacManGame.gameRunning();
+        canvas.remove(restartButton);
+        ghostManager.respawnGhosts();
+        pacMan.respawn();
+        resetTileMatrix();
+        createLifeIndicators();
+        initialize();
+        PacManGame.gameRunning();
         });
+    }
+
+    public void setGhostManager(GhostManager ghostManager){
+        this.ghostManager = ghostManager;
     }
 
     public void resetTileMatrix(){
         tileManager.resetPelletsEaten();
         tileManager.resetTotalPellets();
-        tileManager.setTiles(); //TODO: Get help from Suhas for lag... -20 FPS every restart
+        tileManager.setTiles();
     }
 
-    public void initialize(){ //Adds FPS counter, will add play button later
+    public void initialize(){
         canvas.add(fpsText);
         canvas.add(scoreText);
         fpsText.setFillColor(Color.GREEN);
@@ -105,7 +112,6 @@ public class UI {
         if (lifeCount == 0 || tileManager.getPelletsEaten() == tileManager.getTotalPellets()) {
             PacManGame.gameOver();
             createRestartButton();
-
         }
         score = tileManager.getPelletsEaten() * 20;
         scoreText.setText("Score : " + score);
