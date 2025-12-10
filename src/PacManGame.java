@@ -28,12 +28,13 @@ public class PacManGame {
 
     public void createGameObjects(){ //All the references are tied together here so the order matters
         pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
-        pacManMovement = new RotationMovement(pacManPositionVector, canvas, tileManager);
+        pacManMovement = new RotationMovement(pacManPositionVector, canvas);
 
         pacMan = new PacMan(pacManPositionVector, canvas);
         pacManMovement.setShape(pacMan.getObjectShape());
 
         tileManager = new TileManager(canvas, pacMan);
+        pacManMovement.setTileManager(tileManager);
 
         keyHandler = new KeyHandler(pacManMovement, pacMan, tileManager);
         
@@ -54,7 +55,7 @@ public class PacManGame {
             handleCollisions();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
-            ghostManager.findShortestPath(pacMan, tileManager.getAdjacencyMap());
+            ghostManager.traverseShortestPath();
         }
     });
     }

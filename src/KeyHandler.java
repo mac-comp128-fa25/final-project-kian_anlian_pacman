@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.util.List;
+
 import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.events.KeyboardEvent;
 
@@ -11,14 +10,10 @@ import edu.macalester.graphics.events.KeyboardEvent;
 public class KeyHandler { 
     private boolean upPressed, leftPressed, rightPressed, downPressed;
     private Movement movement;
-    private GameObject gameObject;
-    private TileManager tileManager;
     private Key pressedKey;
 
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
-        this.gameObject = gameObject;
-        this.tileManager = tileManager;
     }
     
     public void checkKeyPresses(){ 
@@ -37,20 +32,6 @@ public class KeyHandler {
         if (!movement.hitCircleRightCollision() && rightPressed){
             movement.moveRight();
         }
-        visualizePaths();
-    }
-
-    /*
-     * Visual way during gameplay to make sure tiles being set legal/illegal correctly and paths being created correctly.
-     */
-    public void visualizePaths(){ 
-        // tileManager.getCurrentTile(gameObject).colorTile(Color.GREEN);
-        
-        List<Tile>  tileList = tileManager.getAdjacentTiles(tileManager.getCurrentTile(gameObject));
-        
-        // for (Tile tile : tileList){
-        //     tile.colorTile(Color.GREEN);
-        // }
     }
 
     public void keyPressed(KeyboardEvent event){ 
@@ -83,18 +64,5 @@ public class KeyHandler {
             leftPressed = false;
             downPressed = false;
         }
-    }
-
-    public void enqueueDirection(){ //TODO: Implement enqueing key presses and centering in tile
-        /*
-         * Broad algorithm: Store each key press as a request to switch to that direction. 
-         * If the direction is on the same axis (i.e going from right to left) 
-         *   Execute then mark that request false: (Call movement.Up() then set upRequested = false)
-         * Otherwise: 
-         *  If !movement.(hitCircleCollisionMethod) && requested
-         *      Execute and mark that request false 
-         *  Else
-         *      Do nothing.
-         */
     }
 }

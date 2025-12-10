@@ -3,8 +3,9 @@ import edu.macalester.graphics.CanvasWindow;
 public class RotationMovement extends StandardMovement{
     private boolean facingLeft, facingRight, facingUp, facingDown;
     
-    public RotationMovement(Vector2D positionVector, CanvasWindow canvas, TileManager tileManager){
-        super(positionVector, canvas, tileManager);
+    public RotationMovement(Vector2D positionVector, CanvasWindow canvas){
+        super(positionVector, canvas);
+        setSpeed(3);
     }
 
     @Override

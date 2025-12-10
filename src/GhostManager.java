@@ -30,6 +30,7 @@ public class GhostManager{
     private Movement pacManMovement;
 
     private Movement[] ghostMovements = new Movement[4];
+    private Ghost[] ghosts = new Ghost[4];
 
     public GhostManager(CanvasWindow canvas, Movement pacManMovement, PacMan pacMan, UI ui, TileManager tileManager){
         this.tileManager = tileManager;
@@ -38,12 +39,14 @@ public class GhostManager{
         this.pacManMovement = pacManMovement;
         this.pacMan = pacMan;
         spawnGhosts();
-    }
+    }  
 
-    public Deque<Tile> findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList){
+    //TODO: Figure out why finalPathStack is null and causing crashes
+
+    public Tile findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList, Ghost ghost){
         Queue<Tile> tileQueue = new ArrayDeque<Tile>();
         Deque<Tile> finalPathStack = new ArrayDeque<Tile>();
-        Tile startingTile = tileManager.getCurrentTile(pinky);
+        Tile startingTile = tileManager.getCurrentTile(ghost);
         
         tileQueue.add(startingTile);
         
@@ -51,8 +54,8 @@ public class GhostManager{
             Tile currentTile = tileQueue.poll(); //dequeue operation
             
             if (currentTile == tileManager.getCurrentTile(pacMan)) {
-                finalPathStack = findPreviousTileRecursive(currentTile, finalPathStack);
-                findPreviousTileRecursive(currentTile, finalPathStack);
+                finalPathStack = findPreviousTileRecursive(currentTile, finalPathStack, ghost);
+                break;
             }
             
             List<Tile> adjacentTiles = adjacencyList.get(currentTile);
@@ -68,20 +71,54 @@ public class GhostManager{
                 currentTile.setExplored(true);
             }
         }
-        return finalPathStack;
+        for (Tile tile : adjacencyList.keySet()) {
+            tile.setExplored(false);
+        }
+
+        return finalPathStack.pop(); //first tile off the stack is all we need (the next tile for next direction)
     }
 
+    public void traverseShortestPath(){
+        Movement ghostMovement = null;
+        
+        for (Ghost ghost : ghosts){
+            Tile nextTile = findShortestPath(pacMan, tileManager.getAdjacencyMap(), ghost);
+            if (ghost == pinky) ghostMovement = pinkyMovement;
+            if (ghost == blinky) ghostMovement = blinkyMovement;
+            if (ghost == clyde) ghostMovement = clydeMovement;
+            if (ghost == inky) ghostMovement = inkyMovement;
+    
+            int nextTileColumn = tileManager.getColumn(nextTile);
+            int nextTileRow = tileManager.getRow(nextTile);
 
-    private Deque<Tile> findPreviousTileRecursive(Tile tile, Deque<Tile> finalPathStack) {
-        if (tile == tileManager.getCurrentTile(pinky)) {
+            int ghostTileColumn = tileManager.getColumn(ghost);
+            int ghostTileRow = tileManager.getRow(ghost);
+
+            if (nextTileColumn == ghostTileColumn + 1){
+                ghostMovement.moveRight();
+            }
+
+            if (nextTileRow == ghostTileRow + 1){
+                ghostMovement.moveDown();
+                
+            }
+
+            if (nextTileRow == ghostTileRow - 1){
+                ghostMovement.moveUp();
+            }
+
+            if (nextTileColumn == ghostTileColumn - 1){
+                ghostMovement.moveLeft();
+            }
+        }
+    }
+    
+    private Deque<Tile> findPreviousTileRecursive(Tile tile, Deque<Tile> finalPathStack, Ghost ghost) {
+        if (tile == tileManager.getCurrentTile(ghost)) {
             return null; //we dont want the ghost's current tile on the path
         }
         finalPathStack.push(tile);
-        findPreviousTileRecursive(tile.getPrevious(), finalPathStack);
-        
-        for (Tile pathTile : finalPathStack){
-            pathTile.colorTile(Color.GREEN);
-        }
+        findPreviousTileRecursive(tile.getPrevious(), finalPathStack, ghost);
         return finalPathStack;
     }
 
@@ -93,10 +130,10 @@ public class GhostManager{
 
     public void chooseSpawnPoints(){//canvasWidth: 845  canvasHeight: 1540
         int leftX = canvas.getWidth() / 13;
-        int topY = canvas.getHeight() / 8;
+        double topY = canvas.getHeight() / 7;
 
         int rightX = canvas.getWidth() - (canvas.getWidth() / 8);
-        int bottomY = canvas.getHeight() - (canvas.getWidth() / 8);
+        int bottomY = canvas.getHeight() - (canvas.getWidth() / 7);
         
         pinkyPositionVector = new Vector2D(leftX, topY); //top left
         blinkyPositionVector = new Vector2D(rightX, bottomY); //bottom right
@@ -109,6 +146,11 @@ public class GhostManager{
         blinky = new Ghost(blinkyPositionVector, canvas, blinkyMovement, Color.RED);
         inky = new Ghost(inkyPositionVector, canvas, inkyMovement, Color.CYAN);
         clyde = new Ghost(clydePositionVector, canvas, clydeMovement, Color.ORANGE);
+
+        ghosts[0] = pinky;
+        ghosts[1] = blinky;
+        ghosts[2] = inky;
+        ghosts[3] = clyde;
     }
 
     public void topLayer(){
@@ -128,15 +170,19 @@ public class GhostManager{
     }
 
     public void chooseMovement(){
-        pinkyMovement = new StandardMovement(pinkyPositionVector, canvas, tileManager);
-        blinkyMovement = new StandardMovement(blinkyPositionVector, canvas, tileManager);
-        inkyMovement = new StandardMovement(inkyPositionVector, canvas, tileManager);
-        clydeMovement = new StandardMovement(clydePositionVector, canvas, tileManager);
+        pinkyMovement = new StandardMovement(pinkyPositionVector, canvas);
+        blinkyMovement = new StandardMovement(blinkyPositionVector, canvas);
+        inkyMovement = new StandardMovement(inkyPositionVector, canvas);
+        clydeMovement = new StandardMovement(clydePositionVector, canvas);
 
         ghostMovements[0] = pinkyMovement;
         ghostMovements[1] = blinkyMovement;
         ghostMovements[2] = inkyMovement;
         ghostMovements[3] = clydeMovement;
+
+        for (Movement movement : ghostMovements){
+            movement.setTileManager(tileManager);
+        }
     }
 
     public boolean ghostCollision(){
@@ -150,5 +196,4 @@ public class GhostManager{
         }
         return false;
     }
-
 }

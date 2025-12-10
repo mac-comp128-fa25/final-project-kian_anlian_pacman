@@ -12,4 +12,5 @@ public interface Movement {
     boolean hitCircleBottomCollision();
     boolean hitCircleLeftCollision();
     boolean hitCircleRightCollision();
+    void setTileManager(TileManager tileManager);
 }
