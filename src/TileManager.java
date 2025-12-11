@@ -7,13 +7,14 @@ import edu.macalester.graphics.CanvasWindow;
 
 public class TileManager{
     private HashMap<Tile,List<Tile>> adjacencyList;
+    private Tile[][] tileMatrix;
     private CanvasWindow canvas;
     private PacMan pacMan;
     private int pacManSize;
     private int pelletsEaten = 0;
     private int totalPellets = 0;
+    private int finalPelletAmount = 0;
     private static final int TILE_SIZE = 80;
-    private Tile[][] tileMatrix;
     public static final int NUM_COLS = 19; //public for access in GhostManager
     public static final int NUM_ROWS = 10;
 
@@ -80,13 +81,13 @@ public class TileManager{
                 if (i == tileMatrix.length - 1){ //scaling to cover last bit of y axis
                     newTile.scaleTile(2, 1);
                 }
-                
+        
                 tileMatrix[i][j] = newTile;
                 newTile.addToCanvas();
+
             }
         }
-
-        setTiles(); //TODO: Fix: This is causing lag on restart
+        setTiles(); 
         createAdjacencyList();
     }
 
@@ -109,7 +110,6 @@ public class TileManager{
                     }
                     listOfAdjacentTiles.add(tile);
                 }
-            
                 adjacencyList.put(currentTile, listOfAdjacentTiles);
             }
         }
@@ -139,11 +139,21 @@ public class TileManager{
                 }
             }
         }
+        finalPelletAmount = totalPellets;
         input.close();
     }
 
-    public void handlePellets(GhostManager ghostManager) { 
+    public void resetPelletTiles(GhostManager ghostManager){
+        for (Tile[] columnOfTiles : tileMatrix){
+            for (Tile tile : columnOfTiles){
+                if (tile.startedOutFoodPellet()){
+                    tile.setPellet(); //running handle tile types a jillion times a second
+                }
+            }
+        }
+    }
 
+    public void handlePellets(GhostManager ghostManager) { 
         for (Tile[] columnOfTiles : tileMatrix){
             for (Tile tile : columnOfTiles){
                 if (tile.hasFoodPellet() && pacMan.intersects(tile)){
@@ -161,7 +171,7 @@ public class TileManager{
     }
 
     public void resetTotalPellets(){
-        totalPellets = 0;
+        totalPellets = finalPelletAmount;
     }
 
     public int getPelletsEaten(){

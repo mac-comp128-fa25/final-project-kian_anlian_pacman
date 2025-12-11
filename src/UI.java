@@ -76,13 +76,11 @@ public class UI {
       restartButton.setPosition(canvas.getWidth()/2.2,canvas.getHeight()/2.5);
       canvas.add(restartButton);  
       restartButton.onClick(() -> {
-        canvas.remove(restartButton);
-        ghostManager.respawnGhosts();
-        pacMan.respawn();
-        resetTileMatrix();
-        createLifeIndicators();
-        initialize();
         PacManGame.gameRunning();
+        canvas.remove(restartButton);
+        createLifeIndicators();
+        resetTileMatrix();
+        initialize();
         });
     }
 
@@ -93,7 +91,9 @@ public class UI {
     public void resetTileMatrix(){
         tileManager.resetPelletsEaten();
         tileManager.resetTotalPellets();
-        tileManager.setTiles();
+        tileManager.resetPelletTiles(ghostManager); 
+        ghostManager.topLayer();
+        pacMan.addToCanvas();
     }
 
     public void initialize(){

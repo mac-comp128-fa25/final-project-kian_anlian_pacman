@@ -26,6 +26,12 @@ public class PacManGame {
         update();
     }
 
+    /*
+     * //TODO: Make centering algorithm. If you can't move up and down on tiles then the below TODO isn't neccesary bc you'll collide automatically (no wiggle room)
+     * //TODO: Finish report, add more choices/thoughts for each area. Add encountered problems etc.
+     * //TODO: Create slideshow.
+     */
+
     public void createGameObjects(){ //All the references are tied together here so the order matters
         pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
@@ -65,7 +71,7 @@ public class PacManGame {
         if (ghostManager.ghostCollision()) {
             pacMan.respawn();
             ghostManager.respawnGhosts();
-            canvas.pause(1000);  //so the player has a second to breathe (literally)
+            canvas.pause(500);  //so the player has half a second to breathe... literally.
         }
     }
 

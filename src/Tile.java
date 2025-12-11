@@ -6,8 +6,11 @@ import java.awt.Color;
 public class Tile implements GameObject{
     private boolean isWall = false;
     private boolean hasPellet = false;
+    private boolean startedOutPellet = false;
+    private boolean alreadyOnCanvas = false;
     private boolean isDefault = false;
     private boolean explored = false;
+    private FoodPellet foodPellet;
     private Rectangle tileShape;
     private Tile previous;
     private CanvasWindow canvas;
@@ -27,7 +30,6 @@ public class Tile implements GameObject{
         previous = null;
         scaleToPacMan();
         tileShape = new Rectangle(positionVector.getVX(), positionVector.getVY(), tileSize,  tileSize);
-        handleTileType();
     }
 
     public void scaleTile(double scaleWidth, double scaleHeight){
@@ -35,9 +37,11 @@ public class Tile implements GameObject{
     }
 
     public void setDefault(){
+        removeFoodPellet();
         isWall = false;
         hasPellet = false;
         isDefault = true;
+        alreadyOnCanvas = true;
         handleTileType();
     }
 
@@ -45,13 +49,16 @@ public class Tile implements GameObject{
         isWall = true;
         isDefault = false;
         hasPellet = false;
+        alreadyOnCanvas = true;
         handleTileType();
     }
 
     public void setPellet(){
         hasPellet = true;
+        startedOutPellet = true; //so we can add pellet back on restart
         isWall = false;
         isDefault = false;
+        alreadyOnCanvas = true; //for performance
         handleTileType();
     }
 
@@ -89,8 +96,9 @@ public class Tile implements GameObject{
 
     public void addPellet() {
         Vector2D pelletPosVector = new Vector2D(tileShape.getX() + (tileSize / 2), tileShape.getY() + (tileSize / 2));
-        FoodPellet foodPellet = new FoodPellet(pelletPosVector, canvas, this);
+        foodPellet = new FoodPellet(pelletPosVector, canvas, this);
         foodPellet.addToCanvas();
+        alreadyOnCanvas = true;
     }
 
     public void handleTileType(){
@@ -106,11 +114,20 @@ public class Tile implements GameObject{
             tileShape.setFillColor(DEFAULT_COLOR);
         }
 
-        addToCanvas();
+        if (!alreadyOnCanvas){ //helps performance
+            addToCanvas();
+        }
         
         if (hasPellet){
             addPellet();
         }
+    }
+
+    public void removeFoodPellet(){
+        if (hasPellet){
+            foodPellet.removeFromCanvas();
+        }
+        alreadyOnCanvas = false;
     }
 
     public boolean isDefault(){
@@ -125,6 +142,10 @@ public class Tile implements GameObject{
         return hasPellet;
     }
 
+    public boolean startedOutFoodPellet(){
+        return startedOutPellet;
+    }
+
     public Vector2D getCenterVector(){
         double centerX = tileShape.getCenter().getX();
         double centerY = tileShape.getCenter().getY();
@@ -135,6 +156,7 @@ public class Tile implements GameObject{
     @Override
     public void addToCanvas() {
         canvas.add(tileShape);
+        alreadyOnCanvas = true;
     }
 
     @Override
