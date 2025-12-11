@@ -47,25 +47,25 @@ public class StandardMovement implements Movement{
         return getCurrentTile().getYPosition();
     }
 
-    public boolean hitCircleTopCollision(){
-        if (hitCircle.topTileCollision()) return true;
-        return false;
-    }
+    // public boolean hitCircleTopCollision(){
+    //     if (hitCircle.topTileCollision()) return true;
+    //     return false;
+    // }
 
-    public boolean hitCircleBottomCollision(){
-        if (hitCircle.bottomTileCollision()) return true;
-        return false;
-    }
+    // public boolean hitCircleBottomCollision(){
+    //     if (hitCircle.bottomTileCollision()) return true;
+    //     return false;
+    // }
 
-    public boolean hitCircleLeftCollision(){
-        if (hitCircle.leftTileCollision()) return true;
-        return false;
-    }
+    // public boolean hitCircleLeftCollision(){
+    //     if (hitCircle.leftTileCollision()) return true;
+    //     return false;
+    // }
 
-    public boolean hitCircleRightCollision(){
-        if (hitCircle.rightTileCollision()) return true;
-        return false;
-    }
+    // public boolean hitCircleRightCollision(){
+    //     if (hitCircle.rightTileCollision()) return true;
+    //     return false;
+    // }
 
     public HitCircle getHitCircle() {
         return hitCircle;

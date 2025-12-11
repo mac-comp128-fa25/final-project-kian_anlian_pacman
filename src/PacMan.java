@@ -18,7 +18,7 @@ public class PacMan extends PacManShape{
     public boolean intersects(Tile tile){
         Vector2D tilePositionVector = tile.getCenterVector();
         
-        if (positionVector.distance(tilePositionVector) < CircleShape.RADIUS / 2){
+        if (positionVector.distance(tilePositionVector) < HitCircle.RADIUS / 2){
             return true;
         }
 

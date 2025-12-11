@@ -10,25 +10,27 @@ public class KeyHandler {
     private boolean upPressed, leftPressed, rightPressed, downPressed;
     private Movement movement;
     private Key pressedKey;
+    private HitCircle hitCircle;
 
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
+        hitCircle = movement.getHitCircle();
     }
     
     public void checkKeyPresses(){ 
-        if (!movement.hitCircleTopCollision() && upPressed){
+        if (!hitCircle.topTileCollision() && upPressed){
             movement.moveUp();
         }
                                                                                                                                                             
-        if (!movement.hitCircleBottomCollision() && downPressed){ 
+        if (!hitCircle.bottomTileCollision() && downPressed){ 
             movement.moveDown();
         }
 
-        if (!movement.hitCircleLeftCollision() && leftPressed){
+        if (!hitCircle.leftTileCollision() && leftPressed){
             movement.moveLeft();
         }
 
-        if (!movement.hitCircleRightCollision() && rightPressed){
+        if (!hitCircle.rightTileCollision() && rightPressed){
             movement.moveRight();
         }
     }

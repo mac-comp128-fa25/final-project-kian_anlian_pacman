@@ -27,7 +27,8 @@ public class PacManGame {
     }
 
     /*
-     * //TODO: Make centering algorithm. If you can't move up and down on tiles then the below TODO isn't neccesary bc you'll collide automatically (no wiggle room)
+     * //TODO: Make centering algorithm to fix being able to get around ghosts.
+     * //TODO: Implement queueing turns
      * //TODO: Finish report, add more choices/thoughts for each area. Add encountered problems etc.
      * //TODO: Create slideshow.
      */
