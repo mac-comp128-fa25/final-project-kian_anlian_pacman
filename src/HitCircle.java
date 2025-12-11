@@ -9,18 +9,20 @@ public class HitCircle implements GameObject{
     private Vector2D positionVector;
     private CanvasWindow canvas;
     public static final int RADIUS = 40;
+    private int radius;
     private Color wallColor = Tile.WALL_COLOR;
 
-    public HitCircle(Vector2D positionVector, CanvasWindow canvas, Movement movement, TileManager tileManager) {
+    public HitCircle(Vector2D positionVector, CanvasWindow canvas, Movement movement, TileManager tileManager, int radius) {
         this.positionVector = positionVector;
         this.canvas = canvas;
+        this.radius = radius;
         movement.setShape(circleShape);
-        circleShape = new Ellipse(positionVector.getVX(), positionVector.getVY(), RADIUS, RADIUS);
+        circleShape = new Ellipse(positionVector.getVX(), positionVector.getVY(), radius, radius);
         circleShape.setFillColor(Color.RED);
     }
 
     public boolean topTileCollision(){
-        double topCenterY = circleShape.getCenter().getY() - (RADIUS / 2);
+        double topCenterY = circleShape.getCenter().getY() - (radius / 2);
         
         GraphicsObject potentialWall = canvas.getElementAt(getCenterX(), topCenterY);
         if (potentialWall instanceof Rectangle){ 
@@ -30,7 +32,7 @@ public class HitCircle implements GameObject{
     }
 
     public boolean leftTileCollision(){
-        double leftCenterX = circleShape.getCenter().getX() - (RADIUS / 2);
+        double leftCenterX = circleShape.getCenter().getX() - (radius / 2);
         
         GraphicsObject potentialWall = canvas.getElementAt(leftCenterX, getCenterY());
         if (potentialWall instanceof Rectangle){ 
@@ -40,7 +42,7 @@ public class HitCircle implements GameObject{
     }
 
      public boolean bottomTileCollision() {
-        double bottomCenterY = circleShape.getCenter().getY() + (RADIUS / 2);
+        double bottomCenterY = circleShape.getCenter().getY() + (radius / 2);
         
         GraphicsObject potentialWall = canvas.getElementAt(getCenterX(), bottomCenterY);
         if (potentialWall instanceof Rectangle){ 
@@ -50,7 +52,7 @@ public class HitCircle implements GameObject{
     }
 
     public boolean rightTileCollision() {
-        double rightCenterX = circleShape.getCenter().getX() + (RADIUS / 2);
+        double rightCenterX = circleShape.getCenter().getX() + (radius / 2);
         
         GraphicsObject potentialWall = canvas.getElementAt(rightCenterX, getCenterY());
         if (potentialWall instanceof Rectangle){ 

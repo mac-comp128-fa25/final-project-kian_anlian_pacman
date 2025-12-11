@@ -96,21 +96,23 @@ public class GhostManager{
             int ghostTileRow = tileManager.getRow(ghost);
 
             if (nextTileColumn == ghostTileColumn + 1){
-                ghostMovement.moveRight();
+                ghostMovement.queueRight();
             }
 
             if (nextTileRow == ghostTileRow + 1){
-                ghostMovement.moveDown();
+                ghostMovement.queueDown();
                 
             }
 
             if (nextTileRow == ghostTileRow - 1){
-                ghostMovement.moveUp();
+                ghostMovement.queueUp();
             }
 
             if (nextTileColumn == ghostTileColumn - 1){
-                ghostMovement.moveLeft();
+                ghostMovement.queueLeft();
             }
+
+            ghostMovement.handleQueue();
         }
     }
     

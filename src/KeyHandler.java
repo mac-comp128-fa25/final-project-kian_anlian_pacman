@@ -11,27 +11,49 @@ public class KeyHandler {
     private Movement movement;
     private Key pressedKey;
     private HitCircle hitCircle;
+    private HitCircle queueHitCircle;
 
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
         hitCircle = movement.getHitCircle();
+        queueHitCircle = movement.getQueueHitCircle();
     }
     
     public void checkKeyPresses(){ 
-        if (!hitCircle.topTileCollision() && upPressed){
-            movement.moveUp();
+        if (!hitCircle.topTileCollision() && upPressed){  //should just feed request into movement and movement should use hit circle w/larger radius to check if compass point is on a wall
+            // movement.moveUp();
+            movement.currentUp();
         }
                                                                                                                                                             
         if (!hitCircle.bottomTileCollision() && downPressed){ 
-            movement.moveDown();
+            // movement.moveDown();
+            movement.currentDown();
         }
 
         if (!hitCircle.leftTileCollision() && leftPressed){
-            movement.moveLeft();
+            // movement.moveLeft();
+            movement.currentLeft();
         }
 
         if (!hitCircle.rightTileCollision() && rightPressed){
-            movement.moveRight();
+            movement.currentRight();
+
+        }
+
+        if (!queueHitCircle.topTileCollision() && upPressed){
+            movement.queueUp();
+        }
+
+        if (!queueHitCircle.bottomTileCollision() && downPressed){
+            movement.queueDown();
+        }
+
+        if (!queueHitCircle.leftTileCollision() && leftPressed){
+            movement.queueLeft();
+        }
+
+        if (!queueHitCircle.rightTileCollision() && rightPressed){
+            movement.queueRight();
         }
     }
 
@@ -40,6 +62,7 @@ public class KeyHandler {
 
         if (pressedKey == Key.UP_ARROW){
             upPressed = true;
+            
             leftPressed = false;
             rightPressed = false;
             downPressed = false;
@@ -65,5 +88,9 @@ public class KeyHandler {
             leftPressed = false;
             downPressed = false;
         }
+    }
+
+    public void move(){
+        movement.handleQueue();
     }
 }

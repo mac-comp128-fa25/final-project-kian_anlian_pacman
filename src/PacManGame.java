@@ -34,7 +34,7 @@ public class PacManGame {
      */
 
     public void createGameObjects(){ //All the references are tied together here so the order matters
-        pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
+        pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3 - 50);
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
 
         pacMan = new PacMan(pacManPositionVector, canvas);
@@ -63,6 +63,8 @@ public class PacManGame {
             handleCollisions();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
+            pacManMovement.handleQueue();
+            pacManMovement.getQueueHitCircle().addToCanvas();
             ghostManager.traverseShortestPath();
         }
     });
