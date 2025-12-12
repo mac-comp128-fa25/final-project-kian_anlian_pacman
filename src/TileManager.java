@@ -27,10 +27,6 @@ public class TileManager{
         createTiles();
     }
 
-    public Tile[][] getTileMatrix(){
-        return tileMatrix;
-    }
-
     public HashMap<Tile,List<Tile>> getAdjacencyMap(){
         return adjacencyList;
     }
@@ -88,10 +84,6 @@ public class TileManager{
 
     public boolean rightLegal(GraphicsObject objectShape){
         return !getTile(getColumn(objectShape) + 1, getRow(objectShape)).isWall();
-    }
-
-    public List<Tile> getAdjacentTiles(Tile tile){
-        return adjacencyList.get(tile);
     }
     
     public void createTiles(){

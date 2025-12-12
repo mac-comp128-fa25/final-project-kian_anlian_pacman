@@ -16,18 +16,6 @@ public class PacManShape implements GameObject{
         createPacMan();
     }
 
-    public void setScale(int scale){
-        this.scale = scale;
-    }
-
-    public Vector2D getCenterVecter(){
-        double centerX = pacManShape.getCenter().getX();
-        double centerY = pacManShape.getCenter().getY();
-        Vector2D centerVector = new Vector2D(centerX, centerY);
-        
-        return centerVector;
-    }
-
     @Override
     public GraphicsObject getObjectShape() {
         return pacManShape;

@@ -65,8 +65,4 @@ public class KeyHandler {
             downPressed = false;
         }
     }
-
-    public void move(){
-        movement.move();
-    }
 }

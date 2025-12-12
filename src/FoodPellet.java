@@ -45,7 +45,7 @@ public class FoodPellet implements GameObject{
 
     public void createFoodPellet(){ 
         pelletShape = new Ellipse(positionVector.getVX() - padding, positionVector.getVY() - padding, sizeScalar, sizeScalar);
-        pelletShape.setFillColor(Color.WHITE);
+        pelletShape.setFillColor(new Color(222, 161, 133));
         addToCanvas();
     }
 }

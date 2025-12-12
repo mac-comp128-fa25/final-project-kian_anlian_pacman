@@ -6,10 +6,6 @@ public interface Movement {
     void queueLeft();
     void queueRight();
     void move();
-    void moveUp();
-    void moveDown();
-    void moveLeft();
-    void moveRight();
     void setShape(GraphicsObject objectShape);
     void setTileManager(TileManager tileManager);
     void setSpeed(double velVectorComponent);

@@ -7,16 +7,16 @@ public class Tile implements GameObject{
     private boolean isWall = false;
     private boolean hasPellet = false;
     private boolean startedOutPellet = false;
-    private boolean alreadyOnCanvas = false;
     private boolean isDefault = false;
     private boolean explored = false;
+    private boolean pelletRemoved = false;
     private FoodPellet foodPellet;
     private Rectangle tileShape;
     private Tile previous;
     private CanvasWindow canvas;
     private Vector2D positionVector;
-    public static final Color DEFAULT_COLOR = Color.DARK_GRAY;
-    public static final Color WALL_COLOR = Color.LIGHT_GRAY;
+    public static final Color DEFAULT_COLOR = Color.BLACK;
+    public static final Color WALL_COLOR = Color.BLUE;
     private int pacManSize;
     private int tileSize;
     private static final int SIZE_SCALE = 16;
@@ -37,11 +37,14 @@ public class Tile implements GameObject{
     }
 
     public void setDefault(){
-        removeFoodPellet();
+        if (hasPellet){
+            foodPellet.removeFromCanvas();
+            pelletRemoved = true;
+        }
+
         isWall = false;
         hasPellet = false;
         isDefault = true;
-        alreadyOnCanvas = true;
         handleTileType();
     }
 
@@ -49,7 +52,6 @@ public class Tile implements GameObject{
         isWall = true;
         isDefault = false;
         hasPellet = false;
-        alreadyOnCanvas = true;
         handleTileType();
     }
 
@@ -58,7 +60,6 @@ public class Tile implements GameObject{
         startedOutPellet = true; //so we can add pellet back on restart
         isWall = false;
         isDefault = false;
-        alreadyOnCanvas = true; //for performance
         handleTileType();
     }
 
@@ -91,43 +92,26 @@ public class Tile implements GameObject{
     }
 
     public void addWall() {
-        tileShape.setFillColor(WALL_COLOR);
+        tileShape.setStrokeColor(WALL_COLOR);
+        tileShape.setStrokeWidth(5);
     }
 
     public void addPellet() {
         Vector2D pelletPosVector = new Vector2D(tileShape.getX() + (tileSize / 2), tileShape.getY() + (tileSize / 2));
         foodPellet = new FoodPellet(pelletPosVector, canvas, this);
         foodPellet.addToCanvas();
-        alreadyOnCanvas = true;
     }
 
     public void handleTileType(){
-        if (isWall && hasPellet || !isWall && !hasPellet){ //back off to default on edge cases
-            isDefault = true;
-        }
+        if (isWall && hasPellet || !isWall && !hasPellet) isDefault = true;//back off to default on edge cases
 
-        if(isWall){
-            addWall();
-        }
+        if(isWall) addWall();
 
-        if (isDefault || hasPellet){
-            tileShape.setFillColor(DEFAULT_COLOR);
-        }
-
-        if (!alreadyOnCanvas){ //helps performance
-            addToCanvas();
-        }
+        if (isDefault || hasPellet) tileShape.setFillColor(DEFAULT_COLOR);
+           
+        if (!pelletRemoved) addToCanvas(); //edge case: if we don't have this safeguard the blue stroke color of wall tiles gets drawn over if next to a tile that just had its pellet removed
         
-        if (hasPellet){
-            addPellet();
-        }
-    }
-
-    public void removeFoodPellet(){
-        if (hasPellet){
-            foodPellet.removeFromCanvas();
-        }
-        alreadyOnCanvas = false;
+        if (hasPellet) addPellet(); 
     }
 
     public boolean isDefault(){
@@ -156,7 +140,6 @@ public class Tile implements GameObject{
     @Override
     public void addToCanvas() {
         canvas.add(tileShape);
-        alreadyOnCanvas = true;
     }
 
     @Override
