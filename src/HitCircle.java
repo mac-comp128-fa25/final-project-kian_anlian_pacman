@@ -19,6 +19,7 @@ public class HitCircle implements GameObject{
         movement.setShape(circleShape);
         circleShape = new Ellipse(positionVector.getVX(), positionVector.getVY(), radius, radius);
         circleShape.setFillColor(Color.RED);
+        // addToCanvas();
     }
 
     public boolean topTileCollision(){

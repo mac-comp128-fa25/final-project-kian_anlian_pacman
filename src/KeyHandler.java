@@ -21,23 +21,19 @@ public class KeyHandler {
     
     public void checkKeyPresses(){ 
         if (!hitCircle.topTileCollision() && upPressed){  //should just feed request into movement and movement should use hit circle w/larger radius to check if compass point is on a wall
-            // movement.moveUp();
             movement.currentUp();
         }
                                                                                                                                                             
         if (!hitCircle.bottomTileCollision() && downPressed){ 
-            // movement.moveDown();
             movement.currentDown();
         }
 
         if (!hitCircle.leftTileCollision() && leftPressed){
-            // movement.moveLeft();
             movement.currentLeft();
         }
 
         if (!hitCircle.rightTileCollision() && rightPressed){
             movement.currentRight();
-
         }
 
         if (!queueHitCircle.topTileCollision() && upPressed){

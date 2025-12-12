@@ -24,7 +24,7 @@ public class StandardMovement implements Movement{
         hitCircle = new HitCircle(hitCirclePosVector, canvas, this, tileManager, 40);
         hitCircleShape = hitCircle.getObjectShape();
         Vector2D spawnPos = new Vector2D (positionVector.getVX() - 100, positionVector.getVY() - 30);
-        secondHitCircle = new HitCircle(spawnPos, canvas, this, tileManager, 150);
+        secondHitCircle = new HitCircle(spawnPos, canvas, this, tileManager, 100);
         secondHitCircleShape = secondHitCircle.getObjectShape();
         
         // secondHitCircle.addToCanvas();
@@ -106,7 +106,7 @@ public class StandardMovement implements Movement{
         positionVector.add(velocityVector.getVX(),velocityVector.getVY()); //move 0 units right and 5 units up every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
-       secondHitCircleShape.setPosition(positionVector.getVX() - 100, positionVector.getVY() - 30);
+        secondHitCircleShape.setPosition(positionVector.getVX() - 50, positionVector.getVY() - 20);
     }
     
     public void moveDown() {
@@ -114,7 +114,7 @@ public class StandardMovement implements Movement{
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); //move 0 units right and 5 units down every frame
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
-        secondHitCircleShape.setPosition(positionVector.getVX() - 100, positionVector.getVY() - 30);
+        secondHitCircleShape.setPosition(positionVector.getVX() - 50, positionVector.getVY() - 80);
     }
 
     public void moveLeft() {
@@ -122,7 +122,7 @@ public class StandardMovement implements Movement{
         positionVector.subtract(velocityVector.getVX(), velocityVector.getVY()); 
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
-        secondHitCircleShape.setPosition(positionVector.getVX() - 100, positionVector.getVY() - 30);
+        secondHitCircleShape.setPosition(positionVector.getVX() - 10, positionVector.getVY() - 30);
     }
 
     public void moveRight() {
@@ -130,7 +130,7 @@ public class StandardMovement implements Movement{
         positionVector.add(velocityVector.getVX(), velocityVector.getVY());
         objectShape.setPosition(positionVector.getVX(), positionVector.getVY());
         hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
-        secondHitCircleShape.setPosition(positionVector.getVX() - 70, positionVector.getVY() - 30);
+        secondHitCircleShape.setPosition(positionVector.getVX() - 80, positionVector.getVY() - 30);
     }
 
     public void handleMovement(){
@@ -168,25 +168,26 @@ public class StandardMovement implements Movement{
             currentMove = Move.RIGHT;
         }
 
-        // if (hitCircle.topTileCollision()){
-        //     currentMove = Move.STOPPED;
-        // }
+        if (hitCircle.topTileCollision() || hitCircle.bottomTileCollision() || hitCircle.leftTileCollision() || hitCircle.rightTileCollision()){
+            currentMove = Move.STOPPED;
+            
+        }
 
-        // if (hitCircle.bottomTileCollision()){
-        //     currentMove = Move.STOPPED;
-        // }
+        if (hitCircle.topTileCollision() && nextMove == Move.DOWN){
+            currentMove = Move.DOWN;
+        }
 
-        // if (hitCircle.leftTileCollision()){
-        //     currentMove = Move.STOPPED;
-        // }
+        if (hitCircle.bottomTileCollision() && nextMove == Move.UP){
+            currentMove = Move.UP;
+        }
 
-        // if (hitCircle.rightTileCollision()){
-        //     currentMove = Move.STOPPED;
-        // }
+        if (hitCircle.leftTileCollision() && nextMove == Move.RIGHT){
+            currentMove = Move.RIGHT;
+        }
 
-        // if (hitCircle.topTileCollision() || hitCircle.bottomTileCollision() || hitCircle.leftTileCollision() || hitCircle.rightTileCollision()){
-        //     currentMove = Move.STOPPED;
-        // }
+        if (hitCircle.rightTileCollision() && nextMove == Move.LEFT){
+            currentMove = Move.LEFT;
+        }
 
         handleMovement();
     }

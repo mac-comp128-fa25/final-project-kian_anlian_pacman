@@ -54,6 +54,8 @@ public class PacManGame {
         
         ghostManager = new GhostManager(canvas, pacManMovement, pacMan, ui, tileManager);
         ui.setGhostManager(ghostManager);
+        // pacManMovement.getQueueHitCircle().addToCanvas();
+        
     }
 
     public void update(){ //Where we'll call all the move functions. Animates objects.
@@ -64,8 +66,8 @@ public class PacManGame {
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
             pacManMovement.handleQueue();
-            pacManMovement.getQueueHitCircle().addToCanvas();
             ghostManager.traverseShortestPath();
+            // pacManMovement.getHitCircle().addToCanvas();
         }
     });
     }
