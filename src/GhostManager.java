@@ -143,8 +143,8 @@ public class GhostManager{
         int leftX = canvas.getWidth() / 13;
         double topY = canvas.getHeight() / 7;
 
-        int rightX = canvas.getWidth() - (canvas.getWidth() / 8);
-        int bottomY = canvas.getHeight() - (canvas.getWidth() / 7);
+        int rightX = canvas.getWidth() - (canvas.getWidth() / 11);
+        int bottomY = canvas.getHeight() - (canvas.getWidth() / 9);
         
         pinkyPositionVector = new Vector2D(leftX, topY); //top left
         blinkyPositionVector = new Vector2D(rightX, bottomY); //bottom right

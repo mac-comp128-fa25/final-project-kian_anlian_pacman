@@ -10,45 +10,25 @@ public class KeyHandler {
     private boolean upPressed, leftPressed, rightPressed, downPressed;
     private Movement movement;
     private Key pressedKey;
-    private HitCircle hitCircle;
-    private HitCircle queueHitCircle;
 
     public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
         this.movement = movement;
-        hitCircle = movement.getHitCircle();
-        queueHitCircle = movement.getQueueHitCircle();
     }
     
     public void checkKeyPresses(){ 
-        if (!hitCircle.topTileCollision() && upPressed){  //should just feed request into movement and movement should use hit circle w/larger radius to check if compass point is on a wall
-            movement.currentUp();
-        }
-                                                                                                                                                            
-        if (!hitCircle.bottomTileCollision() && downPressed){ 
-            movement.currentDown();
-        }
-
-        if (!hitCircle.leftTileCollision() && leftPressed){
-            movement.currentLeft();
-        }
-
-        if (!hitCircle.rightTileCollision() && rightPressed){
-            movement.currentRight();
-        }
-
-        if (!queueHitCircle.topTileCollision() && upPressed){
+        if (upPressed){
             movement.queueUp();
         }
 
-        if (!queueHitCircle.bottomTileCollision() && downPressed){
+        if (downPressed){
             movement.queueDown();
         }
 
-        if (!queueHitCircle.leftTileCollision() && leftPressed){
+        if (leftPressed){
             movement.queueLeft();
         }
 
-        if (!queueHitCircle.rightTileCollision() && rightPressed){
+        if (rightPressed){
             movement.queueRight();
         }
     }

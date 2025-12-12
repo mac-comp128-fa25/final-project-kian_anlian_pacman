@@ -48,22 +48,6 @@ public class Ghost implements GameObject{
         return positionVector.getVY();
     }
 
-    public void moveUp() {
-        movement.moveUp();
-    }
-
-    public void moveDown() {
-        movement.moveDown();
-    }
-
-    public void moveLeft() {
-        movement.moveLeft();
-    }
-
-    public void moveRight() {
-        movement.moveRight();
-    }
-
     public void createGhost(Color color){
         ghostShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,10, 0, 180); //temp
         ((Arc) ghostShape).setStrokeColor(color); //4 ghosts: Blue, Pink, Red, Orange

@@ -26,13 +26,8 @@ public class StandardMovement implements Movement{
         Vector2D spawnPos = new Vector2D (positionVector.getVX() - 100, positionVector.getVY() - 30);
         secondHitCircle = new HitCircle(spawnPos, canvas, this, tileManager, 100);
         secondHitCircleShape = secondHitCircle.getObjectShape();
-        
-        // secondHitCircle.addToCanvas();
     }
 
-    public HitCircle getQueueHitCircle(){
-        return secondHitCircle;
-    }
     public void setSpeed(double velVectorComponent){
         this.velVectorComponent = velVectorComponent;
     }
@@ -83,22 +78,6 @@ public class StandardMovement implements Movement{
 
     public void queueRight(){
         nextMove = Move.RIGHT;
-    }
-
-    public void currentUp(){
-        currentMove = Move.UP;
-    }
-
-    public void currentDown(){
-        currentMove = Move.DOWN;
-    }
-
-    public void currentLeft(){
-        currentMove = Move.LEFT;
-    }
-
-    public void currentRight(){
-        currentMove = Move.RIGHT;
     }
 
     public void moveUp() {
@@ -167,28 +146,6 @@ public class StandardMovement implements Movement{
         if (!secondHitCircle.rightTileCollision() && nextMove == Move.RIGHT){
             currentMove = Move.RIGHT;
         }
-
-        if (hitCircle.topTileCollision() || hitCircle.bottomTileCollision() || hitCircle.leftTileCollision() || hitCircle.rightTileCollision()){
-            currentMove = Move.STOPPED;
-            
-        }
-
-        if (hitCircle.topTileCollision() && nextMove == Move.DOWN){
-            currentMove = Move.DOWN;
-        }
-
-        if (hitCircle.bottomTileCollision() && nextMove == Move.UP){
-            currentMove = Move.UP;
-        }
-
-        if (hitCircle.leftTileCollision() && nextMove == Move.RIGHT){
-            currentMove = Move.RIGHT;
-        }
-
-        if (hitCircle.rightTileCollision() && nextMove == Move.LEFT){
-            currentMove = Move.LEFT;
-        }
-
         handleMovement();
     }
 }

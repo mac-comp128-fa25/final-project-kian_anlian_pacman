@@ -1,14 +1,6 @@
 import edu.macalester.graphics.GraphicsObject;
 
 public interface Movement {
-    void moveUp();
-    void moveDown();
-    void moveLeft();
-    void moveRight();
-    void currentUp();
-    void currentDown();
-    void currentLeft();
-    void currentRight();
     void queueUp();
     void queueDown();
     void queueLeft();
@@ -18,5 +10,4 @@ public interface Movement {
     void setTileManager(TileManager tileManager);
     void setSpeed(double velVectorComponent);
     HitCircle getHitCircle();
-    HitCircle getQueueHitCircle();
 }
