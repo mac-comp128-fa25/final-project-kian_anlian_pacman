@@ -21,10 +21,11 @@ public class UI {
     private PacManShape [] lives;
     private Button restartButton;
     private GraphicsText scoreText = new GraphicsText("SCORE: " + score, 700, 40);
+    private GraphicsText wonText = new GraphicsText("Y O U    W O N    ", 700, 500);
+    private boolean won;
     
-    public UI(CanvasWindow canvas, int lifeCount, TileManager tileManager, PacMan pacMan){
+    public UI(CanvasWindow canvas, TileManager tileManager, PacMan pacMan){
         this.canvas = canvas;
-        this.lifeCount = lifeCount;
         this.tileManager = tileManager;
         this.pacMan = pacMan;
         createLifeIndicators();
@@ -40,7 +41,7 @@ public class UI {
     }
 
     public void createLifeIndicators(){
-        lifeCount = 3; //in case we need to call again for restarting the game
+        lifeCount = 3;
         lives =  new PacManShape[lifeCount];
         int startX = 0;
         int y = canvas.getHeight() - (canvas.getWidth() / 20);
@@ -52,6 +53,12 @@ public class UI {
             PacManShape pacManLife  = new PacManShape(currentPositionVector, canvas, scale);
             lives[i] = pacManLife;
             pacManLife.addToCanvas();
+        }
+    }
+
+    public void clearLives(){
+        for (PacManShape pacManShape : lives){
+            if (pacManShape != null) pacManShape.removeFromCanvas();
         }
     }
     
@@ -75,9 +82,14 @@ public class UI {
       restartButton = new Button("R E S T A R T ?");
       restartButton.setPosition(canvas.getWidth()/2.2,canvas.getHeight()/2.5);
       canvas.add(restartButton);  
+      if (won) canvas.add(wonText);
+      
       restartButton.onClick(() -> {
-        PacManGame.gameRunning();
+        PacManGame.gameRunning(); //redrawing on top is issue
+        if (won) canvas.remove(wonText);
         canvas.remove(restartButton);
+        pacMan.respawn();
+        clearLives();
         createLifeIndicators();
         resetTileMatrix();
         initialize();
@@ -93,7 +105,7 @@ public class UI {
         tileManager.resetTotalPellets();
         tileManager.resetPelletTiles(ghostManager); 
         ghostManager.topLayer();
-        pacMan.addToCanvas();
+        pacMan.addToCanvas(); //so pac is on top layer of canvas
     }
 
     public void initialize(){
@@ -109,7 +121,12 @@ public class UI {
     }
 
     public void update(){
-        if (lifeCount == 0 || tileManager.getPelletsEaten() == tileManager.getTotalPellets()) {
+        won = tileManager.getPelletsEaten() == tileManager.getTotalPellets();
+        wonText.setStrokeColor(Color.GREEN);
+        wonText.setStrokeWidth(.7);
+        wonText.setScale(10);
+        
+        if (lifeCount == 0 || won) {
             PacManGame.gameOver();
             createRestartButton();
         }

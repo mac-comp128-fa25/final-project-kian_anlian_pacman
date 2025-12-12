@@ -54,7 +54,7 @@ public class PacManGame {
         
         pacMan.addToCanvas(); //we want pac-man and ui to be top elements
         
-        ui = new UI(canvas, 3, tileManager, pacMan);
+        ui = new UI(canvas, tileManager, pacMan);
         ui.initialize();
         
         ghostManager = new GhostManager(canvas, pacManMovement, pacMan, ui, tileManager);

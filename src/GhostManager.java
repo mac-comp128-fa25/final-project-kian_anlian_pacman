@@ -95,7 +95,7 @@ public class GhostManager{
             int ghostTileColumn = tileManager.getColumn(ghost);
             int ghostTileRow = tileManager.getRow(ghost);
 
-            //TODO: VERY LAST BUG
+            //TODO: VERY LAST BUG: Changing to queue system for movement makes finalPathNull again.....
 
             if (nextTileColumn == ghostTileColumn + 1){
                 ghostMovement.queueRight(); //its not bc we're queuing vs calling just moveUp etc... what is it?
