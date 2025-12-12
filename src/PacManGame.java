@@ -9,6 +9,8 @@ public class PacManGame {
     private static final int CANVAS_WIDTH = 1920; 
     private static final int CANVAS_HEIGHT = 1080; // 1080p
     private PacMan pacMan;
+    private Tile pacSpawnTile; //want col 9 row 4
+    private Vector2D tileCenterVector;
     private UI ui;
     private Button startButton;
     private GraphicsText pacManText;
@@ -27,21 +29,24 @@ public class PacManGame {
     }
 
     /*
-     * //TODO: Make centering algorithm to fix being able to get around ghosts.
-     * //TODO: Implement queueing turns
      * //TODO: Finish report, add more choices/thoughts for each area. Add encountered problems etc.
      * //TODO: Create slideshow.
      */
 
     public void createGameObjects(){ //All the references are tied together here so the order matters
-        pacManPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3 - 50);
+        pacManPositionVector = new Vector2D(0,0); //need reference
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
-
+        
         pacMan = new PacMan(pacManPositionVector, canvas);
         pacManMovement.setShape(pacMan.getObjectShape());
 
         tileManager = new TileManager(canvas, pacMan);
         pacManMovement.setTileManager(tileManager);
+
+        pacSpawnTile = tileManager.getTile(9,4);
+        tileCenterVector = pacSpawnTile.getCenterVector();
+        pacMan.setPositionVector(tileCenterVector);
+        pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
 
         keyHandler = new KeyHandler(pacManMovement, pacMan, tileManager);
         
@@ -63,16 +68,17 @@ public class PacManGame {
             handleCollisions();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
-            pacManMovement.handleQueue();
+            pacManMovement.move();
             // ghostManager.traverseShortestPath();
-            // pacManMovement.getHitCircle().addToCanvas();
         }
     });
     }
 
    public void handleCollisions(){
         if (ghostManager.ghostCollision()) {
-            pacMan.respawn();
+            tileCenterVector = pacSpawnTile.getCenterVector();
+            pacMan.setPositionVector(tileCenterVector);
+            pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
             ghostManager.respawnGhosts();
             canvas.pause(500);  //so the player has half a second to breathe... literally.
         }

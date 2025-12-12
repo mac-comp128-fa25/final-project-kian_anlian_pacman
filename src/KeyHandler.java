@@ -67,6 +67,6 @@ public class KeyHandler {
     }
 
     public void move(){
-        movement.handleQueue();
+        movement.move();
     }
 }

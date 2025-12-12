@@ -15,6 +15,10 @@ public class PacMan extends PacManShape{
         return SCALE;
     }
 
+    public void setPositionVector(Vector2D positionVector){
+        this.positionVector = positionVector;
+    }
+
     public boolean intersects(Tile tile){
         Vector2D tilePositionVector = tile.getCenterVector();
         

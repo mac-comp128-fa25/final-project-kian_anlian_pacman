@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsObject;
 
 public class TileManager{
     private HashMap<Tile,List<Tile>> adjacencyList;
@@ -41,6 +42,13 @@ public class TileManager{
         return getTile(column, row);
     }
 
+    public Tile getCurrentTile(GraphicsObject objectShape){
+        int column = getColumn(objectShape);
+        int row = getRow(objectShape);
+        
+        return getTile(column, row);
+    }
+
     public Tile getTile(int column, int row){
         
         try {
@@ -56,6 +64,30 @@ public class TileManager{
 
     public int getRow (GameObject gameObject){
         return (int) (gameObject.getYPosition() / TILE_SIZE);
+    }
+
+    public int getColumn(GraphicsObject objectShape){
+        return (int) (objectShape.getX() / TILE_SIZE);
+    }
+
+    public int getRow (GraphicsObject objectShape){
+        return (int) (objectShape.getY() / TILE_SIZE);
+    }
+
+    public boolean aboveLegal(GraphicsObject objectShape){
+        return !getTile(getColumn(objectShape), getRow(objectShape) - 1).isWall();
+    }
+
+    public boolean belowLegal(GraphicsObject objectShape){
+        return !getTile(getColumn(objectShape), getRow(objectShape) + 1).isWall();
+    }
+
+    public boolean leftLegal(GraphicsObject objectShape){
+        return !getTile(getColumn(objectShape) - 1, getRow(objectShape)).isWall();
+    }
+
+    public boolean rightLegal(GraphicsObject objectShape){
+        return !getTile(getColumn(objectShape) + 1, getRow(objectShape)).isWall();
     }
 
     public List<Tile> getAdjacentTiles(Tile tile){
@@ -146,7 +178,7 @@ public class TileManager{
     public void resetPelletTiles(GhostManager ghostManager){
         for (Tile[] columnOfTiles : tileMatrix){
             for (Tile tile : columnOfTiles){
-                if (tile.startedOutFoodPellet()){
+                if (tile.startedOutFoodPellet() && !tile.hasFoodPellet()){
                     tile.setPellet(); //running handle tile types a jillion times a second
                 }
             }

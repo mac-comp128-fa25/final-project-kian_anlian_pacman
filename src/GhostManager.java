@@ -17,12 +17,12 @@ public class GhostManager{
     private Ghost blinky; //red ghost
     private Ghost inky; //blue ghost
     private Ghost clyde; //orange ghost
-    
-    private Vector2D pinkyPositionVector;  
-    private Vector2D blinkyPositionVector; 
-    private Vector2D inkyPositionVector;
-    private Vector2D clydePositionVector;
 
+    private Vector2D pinkyTileCenterVector;
+    private Vector2D blinkyTileCenterVector;
+    private Vector2D inkyTileCenterVector;
+    private Vector2D clydeTileCenterVector;
+    
     private Movement pinkyMovement;
     private Movement blinkyMovement;
     private Movement inkyMovement;
@@ -95,8 +95,10 @@ public class GhostManager{
             int ghostTileColumn = tileManager.getColumn(ghost);
             int ghostTileRow = tileManager.getRow(ghost);
 
+            //TODO: VERY LAST BUG
+
             if (nextTileColumn == ghostTileColumn + 1){
-                ghostMovement.queueRight();
+                ghostMovement.queueRight(); //its not bc we're queuing vs calling just moveUp etc... what is it?
             }
 
             if (nextTileRow == ghostTileRow + 1){
@@ -111,8 +113,7 @@ public class GhostManager{
             if (nextTileColumn == ghostTileColumn - 1){
                 ghostMovement.queueLeft();
             }
-
-            ghostMovement.handleQueue();
+            ghostMovement.move();
         }
     }
     
@@ -130,6 +131,7 @@ public class GhostManager{
         chooseSpawnPoints();
         createGhosts();
         linkMovement();
+        centerGhosts();
     }
 
     public void respawnGhosts(){
@@ -139,24 +141,32 @@ public class GhostManager{
         spawnGhosts();
     }
 
-    public void chooseSpawnPoints(){//canvasWidth: 845  canvasHeight: 1540
-        int leftX = canvas.getWidth() / 13;
-        double topY = canvas.getHeight() / 7;
+    public void chooseSpawnPoints(){ //have to center after bc of reference order
+        Tile pinkySpawnTile = tileManager.getTile(1,1);
+        pinkyTileCenterVector = pinkySpawnTile.getCenterVector();
 
-        int rightX = canvas.getWidth() - (canvas.getWidth() / 11);
-        int bottomY = canvas.getHeight() - (canvas.getWidth() / 9);
-        
-        pinkyPositionVector = new Vector2D(leftX, topY); //top left
-        blinkyPositionVector = new Vector2D(rightX, bottomY); //bottom right
-        inkyPositionVector = new Vector2D(leftX, bottomY); //bottom left
-        clydePositionVector = new Vector2D(rightX, topY); //bottom right
+        Tile inkySpawnTile = tileManager.getTile(1, 8);
+        inkyTileCenterVector =inkySpawnTile.getCenterVector();
+
+        Tile blinkySpawnTile = tileManager.getTile(17, 8);
+        blinkyTileCenterVector = blinkySpawnTile.getCenterVector();
+
+        Tile clydeSpawnTile = tileManager.getTile(17,1);
+        clydeTileCenterVector = clydeSpawnTile.getCenterVector();
     }
 
+    public void centerGhosts(){
+        pinkyMovement.center(pinky.getObjectShape(), pinkyMovement.getHitCircle().getObjectShape(), pinkyTileCenterVector);
+        inkyMovement.center(inky.getObjectShape(), inkyMovement.getHitCircle().getObjectShape(), inkyTileCenterVector);
+        blinkyMovement.center(blinky.getObjectShape(), blinkyMovement.getHitCircle().getObjectShape(), blinkyTileCenterVector);
+        clydeMovement.center(clyde.getObjectShape(), clydeMovement.getHitCircle().getObjectShape(), clydeTileCenterVector);
+    }   
+
     public void createGhosts(){
-        pinky = new Ghost(pinkyPositionVector, canvas, pinkyMovement, Color.PINK);
-        blinky = new Ghost(blinkyPositionVector, canvas, blinkyMovement, Color.RED);
-        inky = new Ghost(inkyPositionVector, canvas, inkyMovement, Color.CYAN);
-        clyde = new Ghost(clydePositionVector, canvas, clydeMovement, Color.ORANGE);
+        pinky = new Ghost(pinkyTileCenterVector, canvas, pinkyMovement, Color.PINK);
+        blinky = new Ghost(blinkyTileCenterVector, canvas, blinkyMovement, Color.RED);
+        inky = new Ghost(inkyTileCenterVector, canvas, inkyMovement, Color.CYAN);
+        clyde = new Ghost(clydeTileCenterVector, canvas, clydeMovement, Color.ORANGE);
 
         ghosts[0] = pinky;
         ghosts[1] = blinky;
@@ -181,10 +191,10 @@ public class GhostManager{
     }
 
     public void chooseMovement(){
-        pinkyMovement = new StandardMovement(pinkyPositionVector, canvas);
-        blinkyMovement = new StandardMovement(blinkyPositionVector, canvas);
-        inkyMovement = new StandardMovement(inkyPositionVector, canvas);
-        clydeMovement = new StandardMovement(clydePositionVector, canvas);
+        pinkyMovement = new StandardMovement(pinkyTileCenterVector, canvas);
+        blinkyMovement = new StandardMovement(blinkyTileCenterVector, canvas);
+        inkyMovement = new StandardMovement(inkyTileCenterVector, canvas);
+        clydeMovement = new StandardMovement(clydeTileCenterVector, canvas);
 
         pinkyMovement.setSpeed(3.05);
         blinkyMovement.setSpeed(1.5);
