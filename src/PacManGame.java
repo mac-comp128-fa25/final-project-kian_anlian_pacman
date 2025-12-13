@@ -21,7 +21,6 @@ public class PacManGame {
     private Movement pacManMovement;
     private KeyHandler keyHandler;
     public enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //makes state transitions easier
-    public static final Tile PAC_SPAWN_TILE = null;
     private static GameState gameState = GameState.PLAYING; //start off in playing state
     
     public PacManGame(){
@@ -69,12 +68,12 @@ public class PacManGame {
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
             pacManMovement.move();
-            handleGhostCollisions();
             ghostManager.traverseShortestPath();
+            handleGhostCollisions();
         }
 
         if (gameState == GameState.GAME_OVER){
-            respawnPacMan();
+            respawnCharacters();
         }
     });
     }
@@ -87,9 +86,19 @@ public class PacManGame {
 
    public void handleGhostCollisions(){
         if (ghostManager.ghostCollision()) { //these first 3 lines are what we need in restart somehow...
-            respawnPacMan();
-            ghostManager.respawnGhosts();
+            respawnCharacters();
             canvas.pause(500);  //so the player has half a second to breathe... literally.
+        }
+    }
+
+    public void respawnCharacters(){
+        respawnPacMan();
+        ghostManager.respawnGhosts();
+    }
+
+    public void handleGameOver(){
+        if (gameState == GameState.GAME_OVER){
+            respawnPacMan();
         }
     }
 

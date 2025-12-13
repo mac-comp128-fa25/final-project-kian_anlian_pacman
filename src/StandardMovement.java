@@ -13,14 +13,18 @@ public class StandardMovement implements Movement{
     private double offsetX = 18;
     private double offsetY = 20;
     public enum Move{UP, DOWN, LEFT, RIGHT} 
-    private Move nextMove = null;
-    private Move currentMove = null;
+    private Move nextMove, currentMove = null;
 
     public StandardMovement(Vector2D positionVector, CanvasWindow canvas) {
         this.positionVector = positionVector;
         hitCirclePosVector = new Vector2D(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
         hitCircle = new HitCircle(hitCirclePosVector, canvas, this, tileManager);
         hitCircleShape = hitCircle.getObjectShape();
+    }
+
+    public void move(){
+        handleQueue();
+        handleMovement();
     }
 
     public void setSpeed(double velVectorComponent){
@@ -41,16 +45,6 @@ public class StandardMovement implements Movement{
     
     public void setShape(GraphicsObject objectShape){
         this.objectShape = objectShape;
-    }
-
-    public void center(GraphicsObject objectShape, GraphicsObject hitCircleShape, Vector2D tileCenterVector){
-        positionVector = tileCenterVector; //update reference... thinks we're still @ 0,0 in main class if not
-        objectShape.setCenter(tileCenterVector.getVX(), tileCenterVector.getVY());
-        hitCircleShape.setCenter(tileCenterVector.getVX(), tileCenterVector.getVY());
-    }
-
-    public boolean centered(){
-        return tileManager.getCurrentTile(objectShape).getCenterVector().distance(positionVector) < 10;
     }
 
     public void moveUp() {
@@ -81,61 +75,7 @@ public class StandardMovement implements Movement{
         hitCircleShape.setPosition(positionVector.getVX() - offsetX, positionVector.getVY() - offsetY);
     }
 
-    public void queueUp(){
-        nextMove = Move.UP;
-    }
-
-    public void queueDown(){
-        nextMove = Move.DOWN;
-    }
-
-    public void queueLeft(){
-        nextMove = Move.LEFT;
-    }
-
-    public void queueRight(){ 
-        nextMove = Move.RIGHT;
-    }
-
-    public void handleQueue(){ //Instead: Are we at the center of currentTile, and is aboveTile (belowTile, etc) legal? If so go up. Else do nothing.
-        if (centered() && nextMove == Move.UP && tileManager.aboveLegal(objectShape)){
-            currentMove = Move.UP;
-        }
-
-        if (centered() && nextMove == Move.DOWN && tileManager.belowLegal(objectShape)){
-            currentMove = Move.DOWN;
-        }
-
-        if (centered() && nextMove == Move.LEFT && tileManager.leftLegal(objectShape)){
-            currentMove = Move.LEFT;
-        }
-
-        if (centered() && nextMove == Move.RIGHT && tileManager.rightLegal(objectShape)){
-            currentMove = Move.RIGHT;
-        }
-
-        if (centered() && currentMove == Move.UP && !tileManager.aboveLegal(objectShape)){
-            currentMove = null;
-            nextMove = null;
-        }
-
-        if (centered()  && currentMove == Move.DOWN && !tileManager.belowLegal(objectShape)){
-            currentMove = null;
-            nextMove = null;
-        }
-
-        if (centered()  && currentMove == Move.LEFT && !tileManager.leftLegal(objectShape)){
-            currentMove = null;
-            nextMove = null;
-        }
-
-        if (centered()  && currentMove == Move.RIGHT && !tileManager.rightLegal(objectShape)){
-            currentMove = null;
-            nextMove = null;
-        }
-    }
-
-    public void handleMovement(){
+      public void handleMovement(){
         if (currentMove == Move.UP){
             moveUp();
         }
@@ -153,8 +93,55 @@ public class StandardMovement implements Movement{
         }
     }
 
-    public void move(){
-        handleQueue();
-        handleMovement();
+    public void queueUp(){
+        nextMove = Move.UP;
+    }
+
+    public void queueDown(){
+        nextMove = Move.DOWN;
+    }
+
+    public void queueLeft(){
+        nextMove = Move.LEFT;
+    }
+
+    public void queueRight(){ 
+        nextMove = Move.RIGHT;
+    }
+
+    public void center(GraphicsObject objectShape, GraphicsObject hitCircleShape, Vector2D tileCenterVector){
+        positionVector = tileCenterVector; //update reference
+        objectShape.setCenter(tileCenterVector.getVX(), tileCenterVector.getVY());
+        hitCircleShape.setCenter(tileCenterVector.getVX(), tileCenterVector.getVY());
+    }
+
+    public boolean centered(){
+        return tileManager.getCurrentTile(objectShape).getCenterVector().distance(positionVector) < 10;
+    }
+
+    public void handleQueue(){
+        if (centered()){
+            handleLegalMoves();
+            handleIllegalMoves();
+        }
+    }
+
+    public void handleLegalMoves(){
+        if (nextMove == Move.UP && tileManager.aboveLegal(objectShape)) currentMove = Move.UP;
+        if (nextMove == Move.DOWN && tileManager.belowLegal(objectShape)) currentMove = Move.DOWN;
+        if (nextMove == Move.LEFT && tileManager.leftLegal(objectShape)) currentMove = Move.LEFT;
+        if (nextMove == Move.RIGHT && tileManager.rightLegal(objectShape)) currentMove = Move.RIGHT;
+    }
+
+    public void handleIllegalMoves(){
+        boolean upIllegal = currentMove == Move.UP && !tileManager.aboveLegal(objectShape);
+        boolean downIllegal = currentMove == Move.DOWN && !tileManager.belowLegal(objectShape);
+        boolean leftIllegal = currentMove == Move.LEFT && !tileManager.leftLegal(objectShape);
+        boolean rightIllegal = currentMove == Move.RIGHT && !tileManager.rightLegal(objectShape);
+
+        if (upIllegal || downIllegal || leftIllegal || rightIllegal){
+            currentMove = null; 
+            nextMove = null;
+        }
     }
 }

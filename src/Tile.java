@@ -4,12 +4,7 @@ import edu.macalester.graphics.Rectangle;
 import java.awt.Color;
 
 public class Tile implements GameObject{
-    private boolean isWall = false;
-    private boolean hasPellet = false;
-    private boolean startedOutPellet = false;
-    private boolean isDefault = false;
-    private boolean explored = false;
-    private boolean pelletRemoved = false;
+    private boolean isWall, hasPellet, startedOutPellet, isDefault, explored, pelletRemoved = false;
     private FoodPellet foodPellet;
     private Rectangle tileShape;
     private Tile previous;

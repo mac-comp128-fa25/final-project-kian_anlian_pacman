@@ -12,7 +12,7 @@ public class GhostManager{
     private TileManager tileManager;
     private PacMan pacMan;
 
-    //Names from original game
+    //Names from original game!
     private Ghost pinky; //pink ghost
     private Ghost blinky; //red ghost
     private Ghost inky; //blue ghost

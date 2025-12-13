@@ -16,8 +16,8 @@ public class TileManager{
     private int totalPellets = 0;
     private int finalPelletAmount = 0;
     private static final int TILE_SIZE = 80;
-    public static final int NUM_COLS = 19; //public for access in GhostManager
-    public static final int NUM_ROWS = 10;
+    private static final int NUM_COLS = 19; //public for access in GhostManager
+    private static final int NUM_ROWS = 10;
 
     public TileManager(CanvasWindow canvas, PacMan pacMan){
         this.canvas = canvas;
