@@ -48,7 +48,7 @@ public class PacManGame {
         pacMan.setPositionVector(tileCenterVector);
         pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
 
-        keyHandler = new KeyHandler(pacManMovement, pacMan, tileManager);
+        keyHandler = new KeyHandler(pacManMovement, pacMan.getObjectShape(), tileManager);
         
         canvas.onKeyDown(keyDown -> keyHandler.keyPressed(keyDown));    
         
@@ -57,7 +57,7 @@ public class PacManGame {
         ui = new UI(canvas, tileManager, pacMan);
         ui.initialize();
         
-        ghostManager = new GhostManager(canvas, pacManMovement, pacMan, ui, tileManager);
+        ghostManager = new GhostManager(canvas, pacManMovement, pacMan.getObjectShape(), ui, tileManager);
         ui.setGhostManager(ghostManager);
     }
 

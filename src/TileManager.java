@@ -31,13 +31,6 @@ public class TileManager{
         return adjacencyList;
     }
 
-    public Tile getCurrentTile(GameObject gameObject){
-        int column = getColumn(gameObject);
-        int row = getRow(gameObject);
-        
-        return getTile(column, row);
-    }
-
     public Tile getCurrentTile(GraphicsObject objectShape){
         int column = getColumn(objectShape);
         int row = getRow(objectShape);
@@ -52,14 +45,6 @@ public class TileManager{
         } catch (IndexOutOfBoundsException e) {
             return null; //so we dont crash when we return a tile out of the matrix's indices. 
         }
-    }
-
-    public int getColumn(GameObject gameObject){
-        return (int) (gameObject.getXPosition() / TILE_SIZE);
-    }
-
-    public int getRow (GameObject gameObject){
-        return (int) (gameObject.getYPosition() / TILE_SIZE);
     }
 
     public int getColumn(GraphicsObject objectShape){
@@ -140,7 +125,7 @@ public class TileManager{
     }
 
     public void setTiles(){
-        InputStream resourceStream = TileManager.class.getResourceAsStream("/Map1");
+        InputStream resourceStream = TileManager.class.getResourceAsStream("/DefaultMap");
         Scanner input = new Scanner(resourceStream);
         
         for (int i = 0; i < NUM_ROWS; i++) {

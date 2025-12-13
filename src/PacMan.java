@@ -3,7 +3,7 @@ import edu.macalester.graphics.Arc;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 
-public class PacMan implements GameObject{
+public class PacMan {
     private Vector2D positionVector;
     private CanvasWindow canvas;
     private GraphicsObject pacManShape;
@@ -20,29 +20,16 @@ public class PacMan implements GameObject{
         return scale;
     }
 
-    @Override
     public GraphicsObject getObjectShape() {
         return pacManShape;
     }
 
-    @Override
     public void addToCanvas() {
         canvas.add(pacManShape);
     }
 
-    @Override
     public void removeFromCanvas() {
         canvas.remove(pacManShape);
-    }
-
-    @Override
-    public double getXPosition() {
-        return positionVector.getVX();
-    }
-
-    @Override
-    public double getYPosition() {
-        return positionVector.getVY();
     }
     
     public void setPositionVector(Vector2D positionVector){

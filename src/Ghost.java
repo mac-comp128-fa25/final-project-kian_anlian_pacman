@@ -3,7 +3,7 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Arc;
 
-public class Ghost implements GameObject{
+public class Ghost {
     private GraphicsObject ghostShape; //Ellipse until we figure out how to draw ghosts
     private CanvasWindow canvas;
     private Vector2D positionVector;
@@ -15,29 +15,16 @@ public class Ghost implements GameObject{
         addToCanvas();
     }
 
-    @Override
     public GraphicsObject getObjectShape() {
         return ghostShape;
     }
 
-    @Override
     public void addToCanvas() {
        canvas.add(ghostShape);
     }
 
-    @Override
     public void removeFromCanvas() {
         canvas.remove(ghostShape);
-    }
-
-    @Override
-    public double getXPosition() {
-        return positionVector.getVX();
-    }
-
-    @Override
-    public double getYPosition() {
-        return positionVector.getVY();
     }
 
     public void createGhost(Color color){

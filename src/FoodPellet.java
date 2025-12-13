@@ -1,9 +1,8 @@
 import edu.macalester.graphics.Ellipse;
-import edu.macalester.graphics.GraphicsObject;
 import java.awt.Color;
 import edu.macalester.graphics.CanvasWindow;
 
-public class FoodPellet implements GameObject{
+public class FoodPellet{
     private Ellipse pelletShape;
     private Vector2D positionVector;
     private CanvasWindow canvas;
@@ -20,29 +19,12 @@ public class FoodPellet implements GameObject{
         createFoodPellet();
     }
 
-    @Override
-    public GraphicsObject getObjectShape() {
-        return pelletShape;
-    }
-
-    @Override
     public void addToCanvas() {
         canvas.add(pelletShape);
     }
 
-    @Override
     public void removeFromCanvas() {
         canvas.remove(pelletShape);
-    }
-
-    @Override
-    public double getXPosition() {
-        return positionVector.getVX();
-    }
-
-    @Override
-    public double getYPosition() { 
-        return positionVector.getVY();
     }
 
     public void createFoodPellet(){ 

@@ -6,9 +6,11 @@ public interface Movement {
     void queueLeft();
     void queueRight();
     void move();
-    void setShape(GraphicsObject objectShape);
-    void setTileManager(TileManager tileManager);
     void setSpeed(double velVectorComponent);
     void center(GraphicsObject objectShape, GraphicsObject hitCircle, Vector2D tileCenterVector);
+
+    //Are these related?
     HitCircle getHitCircle();
+    void setShape(GraphicsObject objectShape);
+    void setTileManager(TileManager tileManager);
 }

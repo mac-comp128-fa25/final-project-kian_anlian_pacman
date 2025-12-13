@@ -1,3 +1,4 @@
+import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.events.KeyboardEvent;
 
@@ -11,7 +12,7 @@ public class KeyHandler {
     private Movement movement;
     private Key pressedKey;
 
-    public KeyHandler (Movement movement, GameObject gameObject, TileManager tileManager){ 
+    public KeyHandler (Movement movement, GraphicsObject objectShape, TileManager tileManager){ 
         this.movement = movement;
     }
     

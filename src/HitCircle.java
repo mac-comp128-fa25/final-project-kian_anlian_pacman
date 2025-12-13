@@ -3,43 +3,18 @@ import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsObject;
 
-public class HitCircle implements GameObject{
+public class HitCircle{
     private Ellipse circleShape;
-    private Vector2D positionVector;
-    private CanvasWindow canvas;
     public static final int RADIUS = 40;
 
     public HitCircle(Vector2D positionVector, CanvasWindow canvas, Movement movement, TileManager tileManager) {
-        this.positionVector = positionVector;
-        this.canvas = canvas;
         movement.setShape(circleShape);
         circleShape = new Ellipse(positionVector.getVX(), positionVector.getVY(), RADIUS, RADIUS);
         circleShape.setFillColor(Color.RED);
     }
 
-    @Override
-    public void addToCanvas() {
-        canvas.add(circleShape);
-    }
-
-    @Override
-    public void removeFromCanvas() {
-        canvas.remove(circleShape);
-    }
-
-    @Override
     public GraphicsObject getObjectShape() {
         return circleShape;
-    }
-
-    @Override
-    public double getXPosition() {
-        return positionVector.getVX();
-    }
-
-    @Override
-    public double getYPosition() {
-      return positionVector.getVY();
     }
 
     public double getCenterX(){

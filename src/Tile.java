@@ -3,23 +3,21 @@ import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Rectangle;
 import java.awt.Color;
 
-public class Tile implements GameObject{
+public class Tile {
     private boolean isWall, hasPellet, startedOutPellet, isDefault, explored, pelletRemoved = false;
     private FoodPellet foodPellet;
     private Rectangle tileShape;
     private Tile previous;
     private CanvasWindow canvas;
-    private Vector2D positionVector;
     private int pacManSize;
     private int tileSize;
-     public static final Color DEFAULT_COLOR = Color.BLACK;
+    public static final Color DEFAULT_COLOR = Color.BLACK;
     public static final Color WALL_COLOR = Color.BLUE;
     private static final int SIZE_SCALE = 16;
     
     public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas, int pacManSize) {
         this.isWall = isWall;
         this.hasPellet = hasPellet;
-        this.positionVector = positionVector;
         this.canvas = canvas;
         this.pacManSize = pacManSize;
         previous = null;
@@ -132,28 +130,11 @@ public class Tile implements GameObject{
         return new Vector2D (centerX, centerY);
     }
 
-    @Override
     public void addToCanvas() {
         canvas.add(tileShape);
     }
 
-    @Override
-    public void removeFromCanvas() {
-        canvas.remove(tileShape);
-    }
-
-     @Override
     public GraphicsObject getObjectShape() {
         return tileShape;
-    }
-
-    @Override
-    public double getXPosition() {
-        return positionVector.getVX();
-    }
-
-    @Override
-    public double getYPosition() {
-        return positionVector.getVY();
     }
 }

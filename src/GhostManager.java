@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsObject;
 
 public class GhostManager{
     private CanvasWindow canvas;
     private UI ui;
     private TileManager tileManager;
-    private PacMan pacMan;
+    private GraphicsObject pacMan;
 
     //Names from original game!
     private Ghost pinky; //pink ghost
@@ -32,7 +33,7 @@ public class GhostManager{
     private Movement[] ghostMovements = new Movement[4];
     private Ghost[] ghosts = new Ghost[4];
 
-    public GhostManager(CanvasWindow canvas, Movement pacManMovement, PacMan pacMan, UI ui, TileManager tileManager){
+    public GhostManager(CanvasWindow canvas, Movement pacManMovement, GraphicsObject pacMan, UI ui, TileManager tileManager){
         this.tileManager = tileManager;
         this.canvas = canvas;
         this.ui = ui;
@@ -41,10 +42,11 @@ public class GhostManager{
         spawnGhosts();
     }  
 
-    public Tile findShortestPath(PacMan pacMan, HashMap<Tile,List<Tile>> adjacencyList, Ghost ghost){
+    public Tile findShortestPath(GraphicsObject pacMan, HashMap<Tile,List<Tile>> adjacencyList, Ghost ghost){
         Queue<Tile> tileQueue = new ArrayDeque<Tile>();
         Deque<Tile> finalPathStack = new ArrayDeque<Tile>();
-        Tile startingTile = tileManager.getCurrentTile(ghost);
+        GraphicsObject ghostShape = ghost.getObjectShape();
+        Tile startingTile = tileManager.getCurrentTile(ghostShape);
         
         tileQueue.add(startingTile);
         
@@ -74,7 +76,7 @@ public class GhostManager{
         }
         
         if (finalPathStack == null)  { //pop is null
-            return tileManager.getCurrentTile(ghost);
+            return tileManager.getCurrentTile(ghostShape);
         }
         return finalPathStack.pop(); //first tile off the stack is all we need (the next tile for next direction)
     }
@@ -84,16 +86,16 @@ public class GhostManager{
         
         for (Ghost ghost : ghosts){
             Tile nextTile = findShortestPath(pacMan, tileManager.getAdjacencyMap(), ghost);
-            if (ghost == pinky) ghostMovement = pinkyMovement;
-            if (ghost == blinky) ghostMovement = blinkyMovement;
-            if (ghost == clyde) ghostMovement = clydeMovement;
-            if (ghost == inky) ghostMovement = inkyMovement;
+            if (ghost.equals(pinky)) ghostMovement = pinkyMovement;
+            if (ghost.equals(blinky)) ghostMovement = blinkyMovement;
+            if (ghost.equals(clyde)) ghostMovement = clydeMovement;
+            if (ghost.equals(inky)) ghostMovement = inkyMovement;
     
-            int nextTileColumn = tileManager.getColumn(nextTile);
-            int nextTileRow = tileManager.getRow(nextTile);
+            int nextTileColumn = tileManager.getColumn(nextTile.getObjectShape());
+            int nextTileRow = tileManager.getRow(nextTile.getObjectShape());
 
-            int ghostTileColumn = tileManager.getColumn(ghost);
-            int ghostTileRow = tileManager.getRow(ghost);
+            int ghostTileColumn = tileManager.getColumn(ghost.getObjectShape());
+            int ghostTileRow = tileManager.getRow(ghost.getObjectShape());
 
             if (nextTileColumn == ghostTileColumn + 1){
                 ghostMovement.queueRight(); 
@@ -116,7 +118,7 @@ public class GhostManager{
     }
     
     private Deque<Tile> findPreviousTileRecursive(Tile tile, Deque<Tile> finalPathStack, Ghost ghost) {
-        if (tile == tileManager.getCurrentTile(ghost)) {
+        if (tile == tileManager.getCurrentTile(ghost.getObjectShape())) {
             return null; //we dont want the ghost's current tile on the path
         }
         finalPathStack.push(tile);
