@@ -3,6 +3,14 @@ import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Rectangle;
 import java.awt.Color;
 
+/**
+ * @author Kian Naeimi
+ * @author AnLian Krishnamurthy
+ * 
+ * This class let's us actually create a game-loop. We're able to create multiple types of tiles based 
+ * on the boolean values passed in the constructor. A Tile is either: A defaultTile, defaultTile w/ a FoodPellet,
+ * or a WallTile.
+ */
 public class Tile {
     private boolean isWall, hasPellet, startedOutPellet, isDefault, explored, pelletRemoved = false;
     private FoodPellet foodPellet;
@@ -11,8 +19,8 @@ public class Tile {
     private CanvasWindow canvas;
     private int pacManSize;
     private int tileSize;
-    public static final Color DEFAULT_COLOR = Color.BLACK;
-    public static final Color WALL_COLOR = Color.BLUE;
+    private static final Color DEFAULT_COLOR = Color.BLACK;
+    private static final Color WALL_COLOR = Color.BLUE;
     private static final int SIZE_SCALE = 16;
     
     public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas, int pacManSize) {
@@ -20,8 +28,8 @@ public class Tile {
         this.hasPellet = hasPellet;
         this.canvas = canvas;
         this.pacManSize = pacManSize;
-        previous = null;
-        scaleToPacMan();
+        previous = null; //We use previous pointers in GhostManager to complete it's BFS algorithm, so every Tile needs one!
+        scaleToPacMan(); 
         tileShape = new Rectangle(positionVector.getVX(), positionVector.getVY(), tileSize,  tileSize);
     }
 
@@ -123,7 +131,7 @@ public class Tile {
         return startedOutPellet;
     }
 
-    public Vector2D getCenterVector(){
+    public Vector2D getCenterVector(){ //For centering characters to enable smooth movement with our nextMove/currentMove system.
         double centerX = tileShape.getCenter().getX();
         double centerY = tileShape.getCenter().getY();
 

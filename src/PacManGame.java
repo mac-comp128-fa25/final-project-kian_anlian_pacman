@@ -4,6 +4,15 @@ import edu.macalester.graphics.FontStyle;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.ui.Button;
 
+/**
+ * @author Kian Naeimi
+ * @author AnLian Krishnamurthy
+ * December 2025
+ * 
+ * Main-Class. We piece together every object and it's corresponding state into one cohesive game-loop here!
+ * We use the GameState enum to smoothly transition between each GameState, and provide several methods 
+ * available to the UI class for access to state transitions.
+ */
 public class PacManGame {
     private CanvasWindow canvas = new CanvasWindow("Pac-Man: Java", CANVAS_WIDTH, CANVAS_HEIGHT);
     private static final int CANVAS_WIDTH = 1920; 
@@ -20,8 +29,8 @@ public class PacManGame {
     private Vector2D pacManPositionVector;
     private Movement pacManMovement;
     private KeyHandler keyHandler;
-    public enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //makes state transitions easier
-    private static GameState gameState = GameState.PLAYING; //start off in playing state
+    private enum GameState {MENU, RUNNING, PAUSED, GAME_OVER} //makes state transitions easier
+    private static GameState gameState = GameState.RUNNING; //start off in running state
     
     public PacManGame(){
         menu();
@@ -33,20 +42,20 @@ public class PacManGame {
      * //TODO: Create slideshow.
      */
 
-    public void createGameObjects(){ //All the references are tied together here so the order matters
-        pacManPositionVector = new Vector2D(0,0); //need reference
+    /**
+     * Where we instantiate all of our objects before begining the main update loop. 
+     */
+    public void createGameObjects(){ 
+        pacManPositionVector = new Vector2D(0,0); //Need reference for pacManMovement
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
         
         pacMan = new PacMan(pacManPositionVector, canvas, 5);
         pacManMovement.setShape(pacMan.getObjectShape());
 
         tileManager = new TileManager(canvas, pacMan);
-        pacManMovement.setTileManager(tileManager);
+        pacManMovement.setTileManager(tileManager); //We have setters like this one because objects are tied together a bit roughly.
 
-        pacSpawnTile = tileManager.getTile(9,4);
-        tileCenterVector = pacSpawnTile.getCenterVector();
-        pacMan.setPositionVector(tileCenterVector);
-        pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
+        spawnPacMan();
 
         keyHandler = new KeyHandler(pacManMovement, pacMan.getObjectShape(), tileManager);
         
@@ -58,12 +67,12 @@ public class PacManGame {
         ui.initialize();
         
         ghostManager = new GhostManager(canvas, pacManMovement, pacMan.getObjectShape(), ui, tileManager);
-        ui.setGhostManager(ghostManager);
+        ui.setGhostManager(ghostManager); //Another example of one of these setters: GhostManager needs a reference to ui before it can be assigned to UI itself!
     }
 
-    public void update(){ //Where we'll call all the move functions. Animates objects.
+    public void update(){ //Where our game-loop lives. All objects are animated and handle state (collision, movement, etc) here.
         canvas.animate(animationEvent -> {
-        if (gameState == GameState.PLAYING){
+        if (gameState == GameState.RUNNING){
             ui.update(); 
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
@@ -71,35 +80,31 @@ public class PacManGame {
             ghostManager.traverseShortestPath();
             handleGhostCollisions();
         }
-
-        if (gameState == GameState.GAME_OVER){
-            respawnCharacters();
-        }
+        if (gameState == GameState.GAME_OVER) respawnCharacters();
     });
     }
 
-    public void respawnPacMan(){
+    /**
+     * To maintain the smooth centering mechanic implemented in StandardMovement, we need to start PacMan (and all the 
+     * other characters) in the center of whatever tile we choose to spawn them on.
+     */
+    public void spawnPacMan(){ 
+        pacSpawnTile = tileManager.getTile(9,4); 
         tileCenterVector = pacSpawnTile.getCenterVector();
         pacMan.setPositionVector(tileCenterVector);
         pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
     }
 
    public void handleGhostCollisions(){
-        if (ghostManager.ghostCollision()) { //these first 3 lines are what we need in restart somehow...
+        if (ghostManager.ghostCollision()) { 
             respawnCharacters();
-            canvas.pause(500);  //so the player has half a second to breathe... literally.
+            canvas.pause(500);  //So the player has half a second to breathe... literally.
         }
     }
 
     public void respawnCharacters(){
-        respawnPacMan();
+        spawnPacMan();
         ghostManager.respawnGhosts();
-    }
-
-    public void handleGameOver(){
-        if (gameState == GameState.GAME_OVER){
-            respawnPacMan();
-        }
     }
 
     public void menu(){
@@ -147,7 +152,7 @@ public class PacManGame {
     }
 
     public static void gameRunning(){
-        gameState = GameState.PLAYING;
+        gameState = GameState.RUNNING;
     }
 
     public static void pauseGame(){

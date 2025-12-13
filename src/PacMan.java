@@ -3,6 +3,19 @@ import edu.macalester.graphics.Arc;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 
+/**
+ * @author Kian Naeimi
+ * @author AnLian Krishnamurthy
+ * December 2025
+ * 
+ * This class let's us create our Pac-Man! Due to time-constraints (and lack of artistic talent), we chose not
+ * to implement an opening/closing mouth. The only interesting method here is our intersects() implementation.
+ * In this instance, we want a pretty rough approximation of Pac-Man's distance from a Tile's center.
+ * Essentially, we use this method to remove FoodPellets from Tiles (that have them, obviously) once Pac-Man's
+ * at a distance that makes sense visually. This way, player's can quickly run through pellets without worrying
+ * about a HitCircle! 
+ * 
+ */
 public class PacMan {
     private Vector2D positionVector;
     private CanvasWindow canvas;
@@ -36,13 +49,15 @@ public class PacMan {
         this.positionVector = positionVector;
     }
 
+    /**
+     * 
+     * @param tile a tile that has a FoodPellet.
+     * @return True if Pac-Man's positionVector has gotten reasonably close to the Tile's centerVector.
+     */
     public boolean intersects(Tile tile){
         Vector2D tilePositionVector = tile.getCenterVector();
         
-        if (positionVector.distance(tilePositionVector) < HitCircle.RADIUS / 2){
-            return true;
-        }
-
+        if (positionVector.distance(tilePositionVector) < HitCircle.RADIUS / 2) return true; 
         return false;
     }
 

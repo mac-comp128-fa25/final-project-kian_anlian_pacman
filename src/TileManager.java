@@ -6,8 +6,20 @@ import java.util.Scanner;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 
+/**
+ * @author Kian Naeimi
+ * @author AnLian Krishnamurthy
+ * 
+ * This class is our graph representation of the Pac-Man game map. We have a tileMatrix represented by a 2D Array
+ * data structure, which we populate based on the DefaultMap text file's structure. If you want, you can add
+ * new maps!
+ * 
+ * Our adjacency list representation is very efficient: We have O(1) access to any Tile's (our key) LinkedList of
+ * adjacentTiles! We also benefit from the fact that our 2D Array wastes no space - we have a dense graph
+ * (where you can consider non-wall tiles vertices), such that every spot in the array is filled.
+ */
 public class TileManager{
-    private HashMap<Tile,List<Tile>> adjacencyList;
+    private HashMap<Tile,List<Tile>> adjacencyList; 
     private Tile[][] tileMatrix;
     private CanvasWindow canvas;
     private PacMan pacMan;
@@ -16,7 +28,7 @@ public class TileManager{
     private int totalPellets = 0;
     private int finalPelletAmount = 0;
     private static final int TILE_SIZE = 80;
-    private static final int NUM_COLS = 19; //public for access in GhostManager
+    private static final int NUM_COLS = 19; 
     private static final int NUM_ROWS = 10;
 
     public TileManager(CanvasWindow canvas, PacMan pacMan){
@@ -27,6 +39,10 @@ public class TileManager{
         createTiles();
     }
 
+    /**
+     * Getter for GhostManager to access the map and execute it's BFS algorithm.
+     * @return
+     */
     public HashMap<Tile,List<Tile>> getAdjacencyMap(){
         return adjacencyList;
     }
@@ -43,7 +59,7 @@ public class TileManager{
         try {
             return tileMatrix[column][row];
         } catch (IndexOutOfBoundsException e) {
-            return null; //so we dont crash when we return a tile out of the matrix's indices. 
+            return null; //So we dont crash when we return a tile out of the matrix's indices. 
         }
     }
 
@@ -87,20 +103,17 @@ public class TileManager{
 
                 Tile newTile = new Tile(false, false, newTilePosVector, canvas, pacManSize);
 
-                if (i == tileMatrix.length - 1){ //scaling to cover last bit of y axis
-                    newTile.scaleTile(2, 1);
-                }
-        
+                if (i == tileMatrix.length - 1) newTile.scaleTile(2, 1); //scaling to cover last bit of y axis
+            
                 tileMatrix[i][j] = newTile;
                 newTile.addToCanvas();
-
             }
         }
         setTiles(); 
         createAdjacencyList();
     }
 
-    public void createAdjacencyList() { //Creates HashMap of Tile keys and TileAdjacencyList values
+    public void createAdjacencyList() { //Creates HashMap of Tile keys and adjacencyList values
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 
@@ -108,15 +121,15 @@ public class TileManager{
                 List<Tile> listOfAdjacentTiles = new LinkedList<>();
                 List<Tile> nearTiles = new LinkedList<>();
                 
-                nearTiles.add(getTile(j-1, i));
+                nearTiles.add(getTile(j-1, i)); //adding all 4 adj tiles
                 nearTiles.add(getTile(j+1, i));
                 nearTiles.add(getTile(j, i+1));
                 nearTiles.add(getTile(j, i-1));
             
                 for (Tile tile : nearTiles){
-                    if (tile == null || tile.isWall()){
-                        continue;
-                    }
+
+                    if (tile == null || tile.isWall()) continue; //skip illegal tiles
+
                     listOfAdjacentTiles.add(tile);
                 }
                 adjacencyList.put(currentTile, listOfAdjacentTiles);
@@ -124,6 +137,9 @@ public class TileManager{
         }
     }
 
+    /**
+     * Read through the DefaultMap file to determine what our graph representation looks like.
+     */
     public void setTiles(){
         InputStream resourceStream = TileManager.class.getResourceAsStream("/DefaultMap");
         Scanner input = new Scanner(resourceStream);
@@ -137,7 +153,7 @@ public class TileManager{
                         tile.setWall();
                         break;
                     case 1:
-                        totalPellets++;
+                        totalPellets++; //This accumulator is for resetting state later on
                         tile.setPellet();
                         break;
                     case 2:
@@ -148,16 +164,14 @@ public class TileManager{
                 }
             }
         }
-        finalPelletAmount = totalPellets;
+        finalPelletAmount = totalPellets; //Save final amount of pellets for UI to determine if we're in a win or loss state.
         input.close();
     }
 
     public void resetPelletTiles(GhostManager ghostManager){
         for (Tile[] columnOfTiles : tileMatrix){
             for (Tile tile : columnOfTiles){
-                if (tile.startedOutFoodPellet() && !tile.hasFoodPellet()){
-                    tile.setPellet(); //running handle tile types a jillion times a second
-                }
+                if (tile.startedOutFoodPellet() && !tile.hasFoodPellet()) tile.setPellet();
             }
         }
     }

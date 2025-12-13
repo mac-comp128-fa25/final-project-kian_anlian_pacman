@@ -1,11 +1,17 @@
 import edu.macalester.graphics.CanvasWindow;
 
+/**
+ * @author Kian Naeimi
+ * December 2025
+ * 
+ * Provides GraphicsObject rotation for Pac-Man based on current direction.
+ */
 public class RotationMovement extends StandardMovement{
     private boolean facingLeft, facingRight, facingUp, facingDown;
     
     public RotationMovement(Vector2D positionVector, CanvasWindow canvas){
         super(positionVector, canvas);
-        setSpeed(3);
+        setSpeed(3); //Good speed for challenging but fair gameplay
     }
 
     @Override

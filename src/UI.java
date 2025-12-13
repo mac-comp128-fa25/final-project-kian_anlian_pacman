@@ -5,7 +5,7 @@ import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.ui.Button;
 
 /*
- *Handles score text, game over text, etc
+ *Handles most of the text in the game (including a live FPS counter for judging performance!) along with lives.
  */
 public class UI { 
     private CanvasWindow canvas;
@@ -31,7 +31,7 @@ public class UI {
         createLifeIndicators();
     }
 
-    public boolean removeLife(){ 
+    public boolean removeLife(){ //Can we remove a life? If we can, do so and return true.
         if (lifeCount > 0 ){
             lives[--lifeCount].removeFromCanvas(); 
             lives[lifeCount] = null;
@@ -56,10 +56,8 @@ public class UI {
         }
     }
 
-    public void clearLives(){
-        for (PacMan pacManShape : lives){
-            if (pacManShape != null) pacManShape.removeFromCanvas();
-        }
+    public void clearLives(){ //Reset life state on restart
+        for (PacMan pacManShape : lives) if (pacManShape != null) pacManShape.removeFromCanvas();
     }
     
      /*
@@ -85,7 +83,7 @@ public class UI {
       if (won) canvas.add(wonText);
       
     restartButton.onClick(() -> {
-        PacManGame.gameRunning(); //redrawing on top is issue
+        PacManGame.gameRunning(); 
         if (won) canvas.remove(wonText);
         canvas.remove(restartButton);
         clearLives();
@@ -118,7 +116,10 @@ public class UI {
         scoreText.setScale(5);
         scoreText.setFontStyle(FontStyle.BOLD);
     }
-
+    
+    /**
+     * Updates score text, FPS text, etc.
+     */
     public void update(){
         won = tileManager.getPelletsEaten() == tileManager.getTotalPellets();
         wonText.setStrokeColor(Color.GREEN);
