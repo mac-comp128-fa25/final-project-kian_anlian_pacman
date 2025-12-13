@@ -1,20 +1,50 @@
+import java.awt.Color;
+import edu.macalester.graphics.Arc;
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsObject;
 
-public class PacMan extends PacManShape{
-    private static final int SCALE = 5;
+public class PacMan implements GameObject{
     private Vector2D positionVector;
-    private Vector2D respawnPositionVector;
-    
-    public PacMan (Vector2D positionVector, CanvasWindow canvas){//Spawn him in the middle
-        super(positionVector, canvas, SCALE);  
+    private CanvasWindow canvas;
+    private GraphicsObject pacManShape;
+    private int scale;
+
+    public PacMan(Vector2D positionVector, CanvasWindow canvas, int scale){
         this.positionVector = positionVector;
-        respawnPositionVector = new Vector2D(canvas.getWidth()/2 - 10, canvas.getHeight()/2.3);
+        this.canvas = canvas;
+        this.scale = scale;
+        createPacMan();
     }
 
     public int getScale(){
-        return SCALE;
+        return scale;
     }
 
+    @Override
+    public GraphicsObject getObjectShape() {
+        return pacManShape;
+    }
+
+    @Override
+    public void addToCanvas() {
+        canvas.add(pacManShape);
+    }
+
+    @Override
+    public void removeFromCanvas() {
+        canvas.remove(pacManShape);
+    }
+
+    @Override
+    public double getXPosition() {
+        return positionVector.getVX();
+    }
+
+    @Override
+    public double getYPosition() {
+        return positionVector.getVY();
+    }
+    
     public void setPositionVector(Vector2D positionVector){
         this.positionVector = positionVector;
     }
@@ -29,7 +59,11 @@ public class PacMan extends PacManShape{
         return false;
     }
 
-    public void respawn(){
-        positionVector.set(respawnPositionVector);
+    public void createPacMan(){
+        pacManShape = new Arc(positionVector.getVX(),positionVector.getVY(),5,5, 60, 240);
+        pacManShape.setScale(scale);
+        ((Arc) pacManShape).setStrokeColor(Color.YELLOW);
+        ((Arc) pacManShape).setStrokeWidth(5);
+        addToCanvas();
     }
 }

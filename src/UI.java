@@ -18,7 +18,7 @@ public class UI {
     private static int framesInCurrentSecond = 0;
     private int lifeCount = 3;
     private int score = 0;
-    private PacManShape [] lives;
+    private PacMan [] lives;
     private Button restartButton;
     private GraphicsText scoreText = new GraphicsText("SCORE: " + score, 700, 40);
     private GraphicsText wonText = new GraphicsText("Y O U    W O N    ", 700, 500);
@@ -42,7 +42,7 @@ public class UI {
 
     public void createLifeIndicators(){
         lifeCount = 3;
-        lives =  new PacManShape[lifeCount];
+        lives =  new PacMan[lifeCount];
         int startX = 0;
         int y = canvas.getHeight() - (canvas.getWidth() / 20);
         int scale = 3;
@@ -50,14 +50,14 @@ public class UI {
 
         for (int i = 0; i < lifeCount; i++){
             currentPositionVector = new Vector2D (startX += 50, y);
-            PacManShape pacManLife  = new PacManShape(currentPositionVector, canvas, scale);
+            PacMan pacManLife  = new PacMan(currentPositionVector, canvas, scale);
             lives[i] = pacManLife;
             pacManLife.addToCanvas();
         }
     }
 
     public void clearLives(){
-        for (PacManShape pacManShape : lives){
+        for (PacMan pacManShape : lives){
             if (pacManShape != null) pacManShape.removeFromCanvas();
         }
     }
@@ -84,16 +84,15 @@ public class UI {
       canvas.add(restartButton);  
       if (won) canvas.add(wonText);
       
-      restartButton.onClick(() -> {
+    restartButton.onClick(() -> {
         PacManGame.gameRunning(); //redrawing on top is issue
         if (won) canvas.remove(wonText);
         canvas.remove(restartButton);
-        pacMan.respawn();
         clearLives();
         createLifeIndicators();
         resetTileMatrix();
         initialize();
-        });
+    });
     }
 
     public void setGhostManager(GhostManager ghostManager){

@@ -20,7 +20,8 @@ public class PacManGame {
     private Vector2D pacManPositionVector;
     private Movement pacManMovement;
     private KeyHandler keyHandler;
-    public enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //enum = way to enclose a bunch of constants guarenteed to be different integers
+    public enum GameState {MENU, PLAYING, PAUSED, GAME_OVER} //makes state transitions easier
+    public static final Tile PAC_SPAWN_TILE = null;
     private static GameState gameState = GameState.PLAYING; //start off in playing state
     
     public PacManGame(){
@@ -37,7 +38,7 @@ public class PacManGame {
         pacManPositionVector = new Vector2D(0,0); //need reference
         pacManMovement = new RotationMovement(pacManPositionVector, canvas);
         
-        pacMan = new PacMan(pacManPositionVector, canvas);
+        pacMan = new PacMan(pacManPositionVector, canvas, 5);
         pacManMovement.setShape(pacMan.getObjectShape());
 
         tileManager = new TileManager(canvas, pacMan);
@@ -65,20 +66,28 @@ public class PacManGame {
         canvas.animate(animationEvent -> {
         if (gameState == GameState.PLAYING){
             ui.update(); 
-            handleCollisions();
             tileManager.handlePellets(ghostManager);
             keyHandler.checkKeyPresses();
             pacManMovement.move();
-            // ghostManager.traverseShortestPath();
+            handleGhostCollisions();
+            ghostManager.traverseShortestPath();
+        }
+
+        if (gameState == GameState.GAME_OVER){
+            respawnPacMan();
         }
     });
     }
 
-   public void handleCollisions(){
-        if (ghostManager.ghostCollision()) {
-            tileCenterVector = pacSpawnTile.getCenterVector();
-            pacMan.setPositionVector(tileCenterVector);
-            pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
+    public void respawnPacMan(){
+        tileCenterVector = pacSpawnTile.getCenterVector();
+        pacMan.setPositionVector(tileCenterVector);
+        pacManMovement.center(pacMan.getObjectShape(), pacManMovement.getHitCircle().getObjectShape(), tileCenterVector);
+    }
+
+   public void handleGhostCollisions(){
+        if (ghostManager.ghostCollision()) { //these first 3 lines are what we need in restart somehow...
+            respawnPacMan();
             ghostManager.respawnGhosts();
             canvas.pause(500);  //so the player has half a second to breathe... literally.
         }

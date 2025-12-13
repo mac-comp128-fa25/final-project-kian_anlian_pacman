@@ -15,10 +15,10 @@ public class Tile implements GameObject{
     private Tile previous;
     private CanvasWindow canvas;
     private Vector2D positionVector;
-    public static final Color DEFAULT_COLOR = Color.BLACK;
-    public static final Color WALL_COLOR = Color.BLUE;
     private int pacManSize;
     private int tileSize;
+     public static final Color DEFAULT_COLOR = Color.BLACK;
+    public static final Color WALL_COLOR = Color.BLUE;
     private static final int SIZE_SCALE = 16;
     
     public Tile(Boolean isWall, Boolean hasPellet, Vector2D positionVector, CanvasWindow canvas, int pacManSize) {

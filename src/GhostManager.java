@@ -50,7 +50,7 @@ public class GhostManager{
         
         while(!tileQueue.isEmpty()){
             Tile currentTile = tileQueue.poll(); //dequeue operation
-            
+
             if (currentTile == tileManager.getCurrentTile(pacMan)) {
                 finalPathStack = findPreviousTileRecursive(currentTile, finalPathStack, ghost);
                 break;
@@ -73,7 +73,7 @@ public class GhostManager{
             tile.setExplored(false);
         }
         
-        if (finalPathStack == null)  {
+        if (finalPathStack == null)  { //pop is null
             return tileManager.getCurrentTile(ghost);
         }
         return finalPathStack.pop(); //first tile off the stack is all we need (the next tile for next direction)
@@ -95,10 +95,8 @@ public class GhostManager{
             int ghostTileColumn = tileManager.getColumn(ghost);
             int ghostTileRow = tileManager.getRow(ghost);
 
-            //TODO: VERY LAST BUG: Changing to queue system for movement makes finalPathNull again.....
-
             if (nextTileColumn == ghostTileColumn + 1){
-                ghostMovement.queueRight(); //its not bc we're queuing vs calling just moveUp etc... what is it?
+                ghostMovement.queueRight(); 
             }
 
             if (nextTileRow == ghostTileRow + 1){
@@ -163,10 +161,10 @@ public class GhostManager{
     }   
 
     public void createGhosts(){
-        pinky = new Ghost(pinkyTileCenterVector, canvas, pinkyMovement, Color.PINK);
-        blinky = new Ghost(blinkyTileCenterVector, canvas, blinkyMovement, Color.RED);
-        inky = new Ghost(inkyTileCenterVector, canvas, inkyMovement, Color.CYAN);
-        clyde = new Ghost(clydeTileCenterVector, canvas, clydeMovement, Color.ORANGE);
+        pinky = new Ghost(pinkyTileCenterVector, canvas, Color.PINK);
+        blinky = new Ghost(blinkyTileCenterVector, canvas, Color.RED);
+        inky = new Ghost(inkyTileCenterVector, canvas, Color.CYAN);
+        clyde = new Ghost(clydeTileCenterVector, canvas, Color.ORANGE);
 
         ghosts[0] = pinky;
         ghosts[1] = blinky;

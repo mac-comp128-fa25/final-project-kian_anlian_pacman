@@ -7,12 +7,10 @@ public class Ghost implements GameObject{
     private GraphicsObject ghostShape; //Ellipse until we figure out how to draw ghosts
     private CanvasWindow canvas;
     private Vector2D positionVector;
-    private Movement movement;
 
-    public Ghost (Vector2D positionVector, CanvasWindow canvas, Movement movement, Color color){
+    public Ghost (Vector2D positionVector, CanvasWindow canvas, Color color){
         this.canvas = canvas;
         this.positionVector = positionVector;
-        this.movement = movement;
         createGhost(color);
         addToCanvas();
     }
@@ -48,8 +46,4 @@ public class Ghost implements GameObject{
         ((Arc) ghostShape).setStrokeWidth(10);
         ghostShape.setScale(3.5);
     } 
-
-    public Movement getMovement(){
-        return movement;
-    }
 }

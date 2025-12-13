@@ -7,14 +7,16 @@ public class FoodPellet implements GameObject{
     private Ellipse pelletShape;
     private Vector2D positionVector;
     private CanvasWindow canvas;
-    private int padding;
-    private int sizeScalar;
+    private final int paddingScalar = 6;
+    private final int sizeScaler = 3;
+    private final int padding;
+    private final int size;
 
     public FoodPellet(Vector2D positionVector, CanvasWindow canvas, Tile tile){
         this.positionVector = positionVector;
         this.canvas = canvas;
-        padding = tile.size() / 6;
-        sizeScalar = tile.size() / 3;
+        padding = tile.size() / paddingScalar;
+        size = tile.size() / sizeScaler;
         createFoodPellet();
     }
 
@@ -44,7 +46,7 @@ public class FoodPellet implements GameObject{
     }
 
     public void createFoodPellet(){ 
-        pelletShape = new Ellipse(positionVector.getVX() - padding, positionVector.getVY() - padding, sizeScalar, sizeScalar);
+        pelletShape = new Ellipse(positionVector.getVX() - padding, positionVector.getVY() - padding, size, size);
         pelletShape.setFillColor(new Color(222, 161, 133));
         addToCanvas();
     }
