@@ -82,6 +82,11 @@ public class PacManGame {
     });
     }
 
+     public static boolean gameIsOver(){
+        if (gameState == GameState.GAME_OVER) return true;
+        return false;
+    }
+
     /**
      * To maintain the smooth centering mechanic implemented in StandardMovement, we need to start PacMan (and all the 
      * other characters) in the center of whatever tile we choose to spawn them on.

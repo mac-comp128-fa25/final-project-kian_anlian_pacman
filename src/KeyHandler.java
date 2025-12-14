@@ -53,42 +53,45 @@ public class KeyHandler {
      */
     public void keyPressed(KeyboardEvent event){ 
         pressedKey = event.getKey();
+        
+        if (!PacManGame.gameIsOver()){ //Allowing inputs during game over state makes the restart button not disapear when clicked.
+            
+            if (pressedKey == Key.UP_ARROW || pressedKey == Key.W){
+                upPressed = true;
+                leftPressed = false;
+                rightPressed = false;
+                downPressed = false;
+            }
 
-        if (pressedKey == Key.UP_ARROW || pressedKey == Key.W){
-            upPressed = true;
-            leftPressed = false;
-            rightPressed = false;
-            downPressed = false;
-        }
+            if (pressedKey == Key.DOWN_ARROW || pressedKey == Key.S){
+                downPressed = true;
+                upPressed = false;
+                rightPressed = false;
+                leftPressed = false;
+            }
 
-        if (pressedKey == Key.DOWN_ARROW || pressedKey == Key.S){
-            downPressed = true;
-            upPressed = false;
-            rightPressed = false;
-            leftPressed = false;
-        }
+            if (pressedKey == Key.LEFT_ARROW || pressedKey == Key.A){
+                leftPressed = true;
+                rightPressed = false;
+                upPressed = false;
+                downPressed = false;
+            }
 
-        if (pressedKey == Key.LEFT_ARROW || pressedKey == Key.A){
-            leftPressed = true;
-            rightPressed = false;
-            upPressed = false;
-            downPressed = false;
-        }
+            if (pressedKey == Key.RIGHT_ARROW || pressedKey == Key.D){
+                rightPressed = true;
+                upPressed = false;
+                leftPressed = false;
+                downPressed = false;
+            }
 
-        if (pressedKey == Key.RIGHT_ARROW || pressedKey == Key.D){
-            rightPressed = true;
-            upPressed = false;
-            leftPressed = false;
-            downPressed = false;
-        }
+            if (pressedKey == Key.ESCAPE || pressedKey == Key.P){
+                pausePressed = true;
+            }
 
-        if (pressedKey == Key.ESCAPE || pressedKey == Key.P){
-            pausePressed = true;
-        }
-
-        if (pressedKey != Key.ESCAPE && pressedKey != Key.P){
-            pausePressed = false;
-            PacManGame.gameRunning();
+            if (pressedKey != Key.ESCAPE && pressedKey != Key.P){
+                pausePressed = false;
+                PacManGame.gameRunning();
+            }
         }
     }
 }
