@@ -24,6 +24,7 @@ public class PacManGame {
     private Button startButton;
     private GraphicsText pacManText;
     private GraphicsText javaText;
+    private GraphicsText pauseText;
     private GhostManager ghostManager;
     private TileManager tileManager;
     private Vector2D pacManPositionVector;
@@ -36,11 +37,6 @@ public class PacManGame {
         menu();
         update();
     }
-
-    /*
-     * //TODO: Finish report, add more choices/thoughts for each area. Add encountered problems etc.
-     * //TODO: Create slideshow.
-     */
 
     /**
      * Where we instantiate all of our objects before begining the main update loop. 
@@ -68,6 +64,8 @@ public class PacManGame {
         
         ghostManager = new GhostManager(canvas, pacManMovement, pacMan.getObjectShape(), ui, tileManager);
         ui.setGhostManager(ghostManager); //Another example of one of these setters: GhostManager needs a reference to ui before it can be assigned to UI itself!
+
+        createPauseText();
     }
 
     public void update(){ //Where our game-loop lives. All objects are animated and handle state (collision, movement, etc) here.
@@ -128,7 +126,16 @@ public class PacManGame {
         });
     }
 
-      public void createPacManText(){
+    public void createPauseText(){
+        pauseText = new GraphicsText("Press P or Escape to pause and any key to unpause", canvas.getWidth() / 2 - 150, canvas.getHeight() - 80);
+        pauseText.setStrokeWidth(.5);
+        pauseText.setStrokeColor(new Color (200, 0, 255));
+        pauseText.setScale(3);
+        pauseText.setFilled(false);
+        canvas.add(pauseText);
+    }
+
+    public void createPacManText(){
         pacManText = new GraphicsText("PAC-MAN", canvas.getWidth()/2.1 ,canvas.getHeight()/2.5);
         pacManText.setStrokeWidth(.7);
         pacManText.setStrokeColor(Color.YELLOW);
@@ -136,6 +143,7 @@ public class PacManGame {
         pacManText.setFilled(false);
         canvas.add(pacManText);
     }
+
 
     public void createJavaText(){
         javaText = new GraphicsText("Java", canvas.getWidth()/2.1, canvas.getHeight()/1.5);

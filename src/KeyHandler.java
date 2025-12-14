@@ -19,7 +19,7 @@ import edu.macalester.graphics.events.KeyboardEvent;
 
  
 public class KeyHandler { 
-    private boolean upPressed, leftPressed, rightPressed, downPressed;
+    private boolean upPressed, leftPressed, rightPressed, downPressed, pausePressed;
     private Movement movement;
     private Key pressedKey;
 
@@ -35,6 +35,7 @@ public class KeyHandler {
         if (downPressed) movement.queueDown();
         if (leftPressed) movement.queueLeft();
         if (rightPressed)  movement.queueRight();
+        if (pausePressed) PacManGame.pauseGame();
     }
 
     /**
@@ -79,6 +80,15 @@ public class KeyHandler {
             upPressed = false;
             leftPressed = false;
             downPressed = false;
+        }
+
+        if (pressedKey == Key.ESCAPE || pressedKey == Key.P){
+            pausePressed = true;
+        }
+
+        if (pressedKey != Key.ESCAPE && pressedKey != Key.P){
+            pausePressed = false;
+            PacManGame.gameRunning();
         }
     }
 }

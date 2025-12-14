@@ -43,13 +43,13 @@ public class UI {
     public void createLifeIndicators(){
         lifeCount = 3;
         lives =  new PacMan[lifeCount];
-        int startX = 0;
-        int y = canvas.getHeight() - (canvas.getWidth() / 20);
-        int scale = 3;
+        int startX = canvas.getWidth() - 300;
+        int y = 40;
+        int scale = 6;
         Vector2D currentPositionVector;
 
         for (int i = 0; i < lifeCount; i++){
-            currentPositionVector = new Vector2D (startX += 50, y);
+            currentPositionVector = new Vector2D (startX += 80, y);
             PacMan pacManLife  = new PacMan(currentPositionVector, canvas, scale);
             lives[i] = pacManLife;
             pacManLife.addToCanvas();

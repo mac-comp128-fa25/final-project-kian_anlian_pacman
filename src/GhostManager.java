@@ -22,7 +22,7 @@ import edu.macalester.graphics.GraphicsObject;
  * 
  * This was a very interesting problem to chew on: 
  * How do you create a graph pathfinding algorithm that can hold up to both it's target (controlled by the user!) 
- * and it's sources constantly traveling between vertices in real-time? As it turns out, besides some interesting 
+ * and its sources constantly traveling between vertices in real-time? As it turns out, besides some interesting 
  * variations, Pac-Man really is just a variation of a maze problem*. So let's treat it as such!
  * 
  *  *Actually, the original Pac-Man didn't use any complex pathfinding algorithms for ghost behavior! 
