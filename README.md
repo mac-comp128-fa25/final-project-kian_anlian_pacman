@@ -90,7 +90,9 @@ Based on these tradeoffs, we chose to use the adjacency list to implement our gh
 
 ## 3	Bug Reports & Incomplete Features 
 
-Currently, we have no game-breaking bugs. But, all four ghosts following the shortest path algorithm can lead to gameplay
+Currently, we have no game-breaking bugs. However we do have a bug with the restart button: If you input any keys while it's on the screen, it won't disapear after being clicked. <br>  
+
+Additionally, all four ghosts following the shortest path algorithm can lead to gameplay
 feeling somewhat unfair. Due to the scope of the project we have no plans to fix this, as it is less of a bug and more just a product of the aforementioned project scope. <br>
 
 In terms of incomplete features, most of them are only enhancements to the core gameplay loop, including: actual textures for the characters (i.e ghosts getting custom character sprites), animating Pac-Man’s mouth and the ghosts eyes, powerups, and ghost-specific behavior (i.e Pinky aggresses constantly while Blinky patrols specific areas, etc). 
